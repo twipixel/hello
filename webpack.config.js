@@ -7,10 +7,44 @@ const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 const regJS = /\.js$/;
 const regMap = /\.map$/gi;
+const regHTML = /\.html$/;
 const regDotFolder = /^\./;
 const regMin = /\.min\.js/gi;
 const regModules = /modules$/i;
 const regBundle = /\.bundle\.js/gi;
+
+const PATH_SRC = './src/';
+const PATH_TEST = './test/';
+const PATH_DIST = './dist/';
+const PATH_ASSET = './asset/';
+const PATH_EXTERNAL = './external/';
+const PATH_LIB = PATH_EXTERNAL + 'lib/';
+const PATH_VENDOR = PATH_EXTERNAL + 'vendor/';
+const PATH_NODE_MODULES = './node_modules';
+
+
+
+
+/**
+ * setRoot 함수에서
+ * modules.filter(dir => regModules.test(dir)) 실행 과정을 출력합니다.
+ * @param modules
+ */
+const debugSetRoot = modules => {
+
+    console.log('\n DebugSetRoot');
+    console.log('----------------------------------------');
+    console.log('fs.readdirSync(PATH_SRC, utf8) -> modules:', modules);
+    console.log('----------------------------------------');
+
+    var copy = modules.slice(0);
+
+    copy.forEach(dir => {
+        console.log('regModules.test(' + dir + '):', regModules.test(dir));
+    });
+    var filterResult = copy.filter(dir => regModules.test(dir));
+    console.log('modules.filter(dir => regModules.test(dir)) -> [' + filterResult.toString() + ']');
+};
 
 
 /**
@@ -25,21 +59,9 @@ const setRoot = list => {
      * 디렉토리에서 '.'와 '..'를 제외한 파일명들의 배열이다.
      * http://nodejs.sideeffect.kr/docs/v0.8.20/api/fs.html#fs_fs_readdirsync_path
      */
-    const modules = fs.readdirSync('./src/', 'utf8') || [];
+    const modules = fs.readdirSync(PATH_SRC, 'utf8') || [];
 
-    // 동작 디버그 코드
-    console.log('\n[SetRoot Start]');
-    console.log('-----------------------------------');
-    console.log('arguments:', list);
-    console.log('readdirSync -> modules:', modules);
-
-    var copy = modules.slice(0);
-    console.log('filter before:', copy.toString());
-    copy.forEach(dir => {
-        console.log('regModules.test(' + dir + '):', regModules.test(dir));
-    });
-    var filterResult = copy.filter(dir => regModules.test(dir));
-    console.log('filter after:', '[', filterResult.toString(), ']');
+    debugSetRoot(modules);
 
     /**
      * path.resolve
@@ -51,11 +73,11 @@ const setRoot = list => {
         .concat(list || [])
         .map(dir => path.resolve(dir));
 
-    console.log('filter -> modules:', result);
-    console.log('[SetRoot End]\n');
+    console.log('resolve.root:', result);
 
     return result;
 };
+
 
 
 const setEntry = list => {
@@ -69,8 +91,8 @@ const setEntry = list => {
      * https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98
      */
     list = list
-        .filter(entry => regDotFolder.test(entry) === false)
-        .filter(entry => regMin.test(entry) === false);
+        .filter(entry => regHTML.test(entry) === false)
+        .filter(entry => regDotFolder.test(entry) === false);
 
     console.log('fiter result:\n', list);
 
@@ -81,11 +103,11 @@ const setEntry = list => {
      */
     var result = list.reduce((entry, app) => {
         app = app.replace(regJS, '');
-        entry[app] = './src/test/' + app + '/index.js';
+        entry[app] = PATH_TEST + app + '/index.js';
         return entry;
     }, {});
 
-    console.log('result:', result);
+    console.log('RESULT:\n', result);
     console.log('[SetEntry End]\n');
     return result;
 };
@@ -94,6 +116,7 @@ const setEntry = list => {
 
 const base = {
     /**
+     * resolve
      * require(모듈명)에서의 모듈명을 어떻게 해석할지에 대한 옵션.
      *
      * resolve 설정하면
@@ -122,25 +145,26 @@ const base = {
      * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
      */
     resolve: {
-        root: setRoot([
-            './vendor',
-            './node_modules'
-        ])
+        root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
     },
 
-    entry: setEntry(fs.readdirSync('./src/test/', 'utf8')),
+    entry: setEntry(fs.readdirSync(PATH_TEST, 'utf8')),
 
     /**
      * publicPath: 웹사이트에서 해당 에셋에 접근하기 위해 필요한 경로.
      */
     output: {
-        path: 'dist/test/',
-        publicPath: 'assets/',
-        filename: '[name].min.js'
+        path: PATH_DIST + 'bundle',
+        publicPath: PATH_ASSET,
+        filename: '[name].js'
     },
 
     plugins: [
-        new webpack.optimize.CommonsChunkPlugin('commons.min.js'),
+
+        /**
+         * 공통으로 사용하는 파일을 뽑아주는 플러그인
+         */
+        new webpack.optimize.CommonsChunkPlugin('commons.js'),
         /**
          * 브라우저 환경의 전역 scope 로 미리 등록시켜주는 플러그인
          */
@@ -151,15 +175,16 @@ const base = {
 
         new CopyWebpackPlugin([
             {
-                from: './src/index.html',
-                to: '../'
+                from: PATH_TEST + 'index.html',
+                to: './../'
             },
             {
-                context: './src/test',
+                context: PATH_TEST,
                 from: '**/*',
-                to: '../test',
+                to: './../',
                 transform: content =>
-                    new Buffer(content).toString('utf-8').replace(regBundle, '.min.js')
+                    new Buffer(content).toString('utf-8').replace(regBundle, '.min.js'),
+                ignore: '*.js'
             }
         ], {
             ignore: [
