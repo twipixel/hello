@@ -1,5 +1,6 @@
-(function ( global ) {
-//--Animation methods
+(function ( global )
+{
+    //--Animation methods
     //Easing functions adapted from Robert Penner's easing equations
     //http://www.robertpenner.com/easing/
     var easingEffects = {
@@ -152,7 +153,8 @@
     };
 
     //Request animation polyfill - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-    var requestAnimFrame = (function () {
+    var requestAnimFrame = (function ()
+    {
         return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
             window.mozRequestAnimationFrame ||
@@ -163,7 +165,8 @@
             };
     })();
 
-    var cancelAnimFrame = (function () {
+    var cancelAnimFrame = (function ()
+    {
         return window.cancelAnimationFrame ||
             window.webkitCancelAnimationFrame ||
             window.mozCancelAnimationFrame ||
@@ -174,7 +177,8 @@
             };
     })();
 
-    var animationLoop = function (callback, totalSteps, easingString, onProgress, onComplete, chartInstance) {
+    var animationLoop = function (callback, totalSteps, easingString, onProgress, onComplete, chartInstance)
+    {
         var currentStep = 0,
             easingFunction = easingEffects[easingString] || easingEffects.linear;
 
@@ -198,19 +202,16 @@
         requestAnimFrame(animationFrame);
     };
 
-    if( typeof module === "undefined" || typeof module.exports === "undefined" ){
-
+    if (typeof module === "undefined" || typeof module.exports === "undefined")  {
         global.easingEffects = easingEffects;
         global.requestAnimFrame = requestAnimFrame;
         global.cancelAnimFrame = cancelAnimFrame;
         global.animationLoop = animationLoop;
     }
     else{
-
         module.exports.easingEffects = easingEffects;
         module.exports.requestAnimFrame = requestAnimFrame;
         module.exports.cancelAnimFrame = cancelAnimFrame;
         module.exports.animationLoop = animationLoop;
     }
-
-})( typeof window === "undefined" ? this : window );
+})(typeof window === "undefined" ? this : window);
