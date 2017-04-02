@@ -1,9 +1,9 @@
-(function ( global )
+(function (global)
 {
     //--Animation methods
     //Easing functions adapted from Robert Penner's easing equations
     //http://www.robertpenner.com/easing/
-    var easingEffects = {
+    var Easing = {
         linear: function (t) {
             return t;
         },
@@ -133,7 +133,7 @@
             return 1 / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2);
         },
         easeInBounce: function (t) {
-            return 1 - easingEffects.easeOutBounce(1 - t);
+            return 1 - Easing.easeOutBounce(1 - t);
         },
         easeOutBounce: function (t) {
             if ((t /= 1) < (1 / 2.75)) {
@@ -147,13 +147,13 @@
             }
         },
         easeInOutBounce: function (t) {
-            if (t < 1 / 2) return easingEffects.easeInBounce(t * 2) * 0.5;
-            return easingEffects.easeOutBounce(t * 2 - 1) * 0.5 + 1 * 0.5;
+            if (t < 1 / 2) return Easing.easeInBounce(t * 2) * 0.5;
+            return Easing.easeOutBounce(t * 2 - 1) * 0.5 + 1 * 0.5;
         }
     };
 
     //Request animation polyfill - http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-    var requestAnimFrame = (function ()
+    var requestAnimationFrame = (function ()
     {
         return window.requestAnimationFrame ||
             window.webkitRequestAnimationFrame ||
@@ -161,11 +161,11 @@
             window.oRequestAnimationFrame ||
             window.msRequestAnimationFrame ||
             function (callback) {
-                return window.setTimeout(callback, 1000 / 60);
+                return window.setTimeout(callback, 16);
             };
     })();
 
-    var cancelAnimFrame = (function ()
+    var cancelAnimationFrame = (function ()
     {
         return window.cancelAnimationFrame ||
             window.webkitCancelAnimationFrame ||
@@ -173,45 +173,52 @@
             window.oCancelAnimationFrame ||
             window.msCancelAnimationFrame ||
             function (callback) {
-                return window.clearTimeout(callback, 1000 / 60);
+                return window.clearTimeout(callback, 16);
             };
     })();
 
-    var animationLoop = function (callback, totalSteps, easingString, onProgress, onComplete, chartInstance)
+    var animation = function (thisArg, onAnimation, totalStep, easing, onComplete)
     {
+        if(typeof onAnimation !== 'function')
+            throw Error('onAnimation must be function');
+
         var currentStep = 0,
-            easingFunction = easingEffects[easingString] || easingEffects.linear;
+            easingFunction = (typeof easing === 'string') ?
+                (Easing[easing] || Easing.linear) : easing || Easing.linear;
 
         var animationFrame = function () {
             currentStep++;
-            var stepDecimal = currentStep / totalSteps;
-            var easeDecimal = easingFunction(stepDecimal);
 
-            callback.call(chartInstance, easeDecimal, stepDecimal, currentStep);
-            onProgress.call(chartInstance, easeDecimal, stepDecimal);
-            if (currentStep < totalSteps) {
-                try {
-                    chartInstance.animationFrame = requestAnimFrame(animationFrame);
-                } catch (e) {
-                    console.log(e);
+            var step = currentStep / totalStep,
+                ease = easingFunction(step);
+
+            onAnimation.call(thisArg, ease, step, currentStep);
+
+            if (currentStep < totalStep) {
+                if(!thisArg) {
+                    requestAnimationFrame(animationFrame);
+                } else {
+                    thisArg.animationId = requestAnimationFrame(animationFrame)
                 }
             } else {
-                onComplete.apply(chartInstance);
+                if(onComplete) {
+                    onComplete.apply(thisArg);
+                }
             }
         };
-        requestAnimFrame(animationFrame);
+        requestAnimationFrame(animationFrame);
     };
 
-    if (typeof module === "undefined" || typeof module.exports === "undefined")  {
-        global.easingEffects = easingEffects;
-        global.requestAnimFrame = requestAnimFrame;
-        global.cancelAnimFrame = cancelAnimFrame;
-        global.animationLoop = animationLoop;
+    if (typeof exports === "object" && typeof module !== "undefined") {
+        module.exports.Easing = Easing;
+        module.exports.requestAnimationFrame = requestAnimationFrame;
+        module.exports.cancelAnimationFrame = cancelAnimationFrame;
+        module.exports.animation = animation;
     }
-    else{
-        module.exports.easingEffects = easingEffects;
-        module.exports.requestAnimFrame = requestAnimFrame;
-        module.exports.cancelAnimFrame = cancelAnimFrame;
-        module.exports.animationLoop = animationLoop;
+    else {
+        global.Easing = Easing;
+        global.requestAnimationFrame = requestAnimationFrame;
+        global.cancelAnimationFrame = cancelAnimationFrame;
+        global.animation = animation;
     }
-})(typeof window === "undefined" ? this : window);
+})(this);

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #FFFFFF;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>3D</title>
+</head>
+<body>
+<script type="text/javascript" src="./../../external/vendor/be.js"></script>
+<script type="text/javascript" src="./../../external/vendor/pixi.js"></script>
+<script type="text/javascript" src="./../../external/vendor/dat.gui.js"></script>
+<script type="text/javascript" src="./../../external/lib/test.common.js"></script>
+<script>
+    (function() {
+        if (navigator.userAgent.indexOf('Electron') >= 0) {
+            // Install babel hooks to the browser process
+            require('babel-core/register')();
+            require('./index');
+        }
+        else {
+            // commons 은 build 할 때 생성합니다.
+            addScriptToHeadSync('./../bundle/commons.js');
+            addScriptToBodySync('./../bundle/3d.js');
+        }
+    })();
+</script>
+
+</body>
+</html>
