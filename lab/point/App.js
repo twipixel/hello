@@ -6,6 +6,7 @@ import {
 } from './../../external/lib/animation';
 
 import Surface from './geom/Surface';
+import Rectangle from './geom/Rectangle';
 
 
 export default class App

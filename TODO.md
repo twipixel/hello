@@ -1,4 +1,4 @@
-#### 할일
+## 할일
 
 - z
   - z-index 도형 테스트
@@ -12,7 +12,7 @@
 - Orthographic
 - Perspective
 
-
+<br>
 
 - 3D
   - [Building a 3D Engine With JavaScript](https://www.sitepoint.com/building-3d-engine-javascript/)
@@ -21,6 +21,7 @@
   - [3D graphics tutorial](http://petercollingridge.appspot.com/3D-tutorial/)
   - [3D Shapes](https://www.khanacademy.org/computing/computer-programming/programming-games-visualizations/programming-3d-shapes/a/what-are-3d-shapes)
   - [How To Create 3D Graphics Using Canvas](https://msdn.microsoft.com/en-us/library/hh535759(v=vs.85).aspx)
+  - [Rotating a Vector in 3D Space](http://stackoverflow.com/questions/14607640/rotating-a-vector-in-3d-space)
   - Code
     - [3D Orthographic View](http://codepen.io/SitePoint/pen/obapXL)
     - [3D Perspective View](http://codepen.io/SitePoint/pen/VeEyvm)
