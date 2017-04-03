@@ -20,6 +20,7 @@
   - [Build your own HTML5 3D engine](http://www.creativebloq.com/3d/build-your-own-html5-3d-engine-7112935)
   - [3D graphics tutorial](http://petercollingridge.appspot.com/3D-tutorial/)
   - [3D Shapes](https://www.khanacademy.org/computing/computer-programming/programming-games-visualizations/programming-3d-shapes/a/what-are-3d-shapes)
+  - [How To Create 3D Graphics Using Canvas](https://msdn.microsoft.com/en-us/library/hh535759(v=vs.85).aspx)
   - Code
     - [3D Orthographic View](http://codepen.io/SitePoint/pen/obapXL)
     - [3D Perspective View](http://codepen.io/SitePoint/pen/VeEyvm)

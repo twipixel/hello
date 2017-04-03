@@ -38,26 +38,33 @@ class Main
     onKeyUp (e)
     {
         switch (e.keyCode) {
-            case KeyCode.BACKQUOTE:
-                break;
-
             case KeyCode.ESCAPE:
                 console.clear();
                 break;
 
             case KeyCode.SPACE:
-                break;
-
-            case KeyCode.DOWN:
+                if (this.app.gui.closed) {
+                    this.app.gui.open();
+                }
+                else {
+                    this.app.gui.close();
+                }
                 break;
 
             case KeyCode.UP:
+                this.app.surface.xRotate(-1);
+                break;
+
+            case KeyCode.DOWN:
+                this.app.surface.xRotate(1);
                 break;
 
             case KeyCode.LEFT:
+                this.app.surface.yRotate(-1);
                 break;
 
             case KeyCode.RIGHT:
+                this.app.surface.yRotate(1);
                 break;
 
             case KeyCode.BACKSPACE:
