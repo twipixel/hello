@@ -25,16 +25,20 @@ export default class App
         this.initialize();
         this.initializeGUI();
         this.tick();
+        this.addEvent();
     }
 
     initialize()
     {
         this.objects = [];
 
-        //this.createTriangle();
+        this.createTriangle();
         //this.createRectangle();
         //this.createCube();
-        this.createSurface();
+        //this.createSurface();
+        this.createCoordinate();
+
+        this.rotate('x', 90);
     }
 
     createTriangle()
@@ -103,7 +107,8 @@ export default class App
         else {
             this.coordinate = new CoordinatePlane(400, 400);
             this.coordinate.x = this.cx;
-            this.coordinate.y = this.canvas.height / 10 * 8;
+            this.coordinate.y = this.cy;
+            // this.coordinate.y = this.canvas.height / 10 * 6;
             this.coordinate.generate();
             this.coordinate.draw();
             this.stage.addChild(this.coordinate);
@@ -141,6 +146,17 @@ export default class App
         requestAnimationFrame(this.tick.bind(this));
     }
 
+    addEvent()
+    {
+        this.stage.interactive = true;
+        this.prevwheel = 0;
+        this.mousemoveListener = this.onmousemove.bind(this);
+        this.canvas.addEventListener('mousedown', this.onmousedown.bind(this));
+        this.canvas.addEventListener('mouseup', this.onmouseup.bind(this));
+        this.canvas.addEventListener('mouseout', this.onmouseup.bind(this));
+        this.canvas.addEventListener('mousewheel', this.onmousewheel.bind(this));
+    }
+
     render(ms) {}
 
     resize() {}
@@ -153,6 +169,37 @@ export default class App
             var obj = this.objects[i];
             obj[property + 'Rotate'].call(obj, sign);
         }
+    }
+
+    onmousedown(event)
+    {
+        this.prevmousex = event.clientX;
+        this.prevmousey = event.clientY;
+        this.canvas.addEventListener('mousemove', this.mousemoveListener);
+    }
+
+    onmousemove(event)
+    {
+        var x = (event.clientY - this.prevmousey) * Math.PI / 360;
+        var y = (event.clientX - this.prevmousex) * Math.PI / 360;
+        this.rotate('x', x);
+        this.rotate('y', y);
+        this.prevmousex = event.clientX;
+        this.prevmousey = event.clientY;
+    }
+
+    onmousewheel(event)
+    {
+        var e = window.event || e;
+        var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+        var z = delta * Math.PI / 360;
+        this.rotate('z', z);
+        this.prevwheel = delta;
+    }
+
+    onmouseup(event)
+    {
+        this.canvas.removeEventListener('mousemove', this.mousemoveListener);
     }
 
     get cx()

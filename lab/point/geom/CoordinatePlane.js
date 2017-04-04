@@ -66,10 +66,21 @@ export default class CoordinatePlane extends PIXI.Graphics
         var yAxis = new Edge(v[0], this.yVertex);
         var zAxis = new Edge(v[0], v[z]);
 
-        this.edges = [xAxis, yAxis, zAxis];
+        var cxVertex0 = new Vertex(0, 0, this.zMin);
+        var cxVertex1 = new Vertex(0, 0, this.zMax);
+        var czVertex0 = new Vertex(this.xMin, 0, 0);
+        var czVertex1 = new Vertex(this.xMax, 0, 0);
+        var cxAxis = new Edge(cxVertex0, cxVertex1);
+        var czAxis = new Edge(czVertex0, czVertex1);
+
+        this.edges = [xAxis, yAxis, zAxis, cxAxis, czAxis];
 
         // yVertex 도 업데이트 시켜야합니다.
         this.vertices.push(this.yVertex);
+        this.vertices.push(cxVertex0);
+        this.vertices.push(cxVertex1);
+        this.vertices.push(czVertex0);
+        this.vertices.push(czVertex1);
 
         console.log(`(${n}) ${w} x ${h} Grid`);
         console.log(`x: ${this.xMin} -> ${this.xMax}, z; ${this.zMin} -> ${this.zMax}`);
@@ -107,9 +118,13 @@ export default class CoordinatePlane extends PIXI.Graphics
                 // y-axis
                 this.lineStyle(1, 0xE91E63);
             }
-            else {
+            else if (i == 2) {
                 // z-axis
                 this.lineStyle(1, 0x8BC34A);
+            }
+            else {
+                // cx, cz
+                this.lineStyle(1, 0xE91E63);
             }
 
             var edge = this.edges[i];

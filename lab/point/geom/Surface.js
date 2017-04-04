@@ -38,7 +38,6 @@ export default class Surface extends PIXI.Graphics
 
     color()
     {
-        console.log('color(), this:', this, this.vertices);
         var z; // The z-coordinate for a given surface point (x, y, z).
 
         this.zMin = this.zMax = this.vertices[0].z; // A starting value. Note that zMin and zMax are custom properties that could possibly be useful if this code is extended later.
