@@ -1,4 +1,4 @@
-import Point from './Point';
+import Vertex from './Vertex';
 import {constants, X, Y, Z} from '../const';
 
 
@@ -7,7 +7,7 @@ export default class Surface extends PIXI.Graphics
     constructor()
     {
         super();
-        this.points = [];
+        this.vertices = [];
     }
 
     /*
@@ -30,7 +30,7 @@ export default class Surface extends PIXI.Graphics
 
         for (var x = constants.xMin; x <= constants.xMax; x += constants.xDelta) {
             for (var y = constants.yMin; y <= constants.yMax; y += constants.yDelta) {
-                this.points[i] = new Point(x, y, this.equation(x, y)); // Store a surface point (in vector format) into the list of surface points.
+                this.vertices[i] = new Vertex(x, y, this.equation(x, y)); // Store a surface point (in vector format) into the list of surface points.
                 ++i;
             }
         }
@@ -38,19 +38,20 @@ export default class Surface extends PIXI.Graphics
 
     color()
     {
+        console.log('color(), this:', this, this.vertices);
         var z; // The z-coordinate for a given surface point (x, y, z).
 
-        this.zMin = this.zMax = this.points[0].z; // A starting value. Note that zMin and zMax are custom properties that could possibly be useful if this code is extended later.
-        for (var i = 0; i < this.points.length; i++) {
-            z = this.points[i].z;
+        this.zMin = this.zMax = this.vertices[0].z; // A starting value. Note that zMin and zMax are custom properties that could possibly be useful if this code is extended later.
+        for (var i = 0; i < this.vertices.length; i++) {
+            z = this.vertices[i].z;
             if (z < this.zMin) { this.zMin = z; }
             if (z > this.zMax) { this.zMax = z; }
         }
 
         var zDelta = Math.abs(this.zMax - this.zMin) / constants.colorMap.length;
 
-        for (var i = 0; i < this.points.length; i++) {
-            this.points[i].color = constants.colorMap[Math.floor((this.points[i].z - this.zMin) / zDelta)];
+        for (var i = 0; i < this.vertices.length; i++) {
+            this.vertices[i].color = constants.colorMap[Math.floor((this.vertices[i].z - this.zMin) / zDelta)];
         }
     }
 
@@ -62,11 +63,11 @@ export default class Surface extends PIXI.Graphics
     draw()
     {
         this.clear();
-        this.points = this.points.sort(this.sortByZIndex); // Sort the set of points based on relative z-axis position. If the points are visibly small, you can sort of get away with removing this step.
+        this.vertices = this.vertices.sort(this.sortByZIndex); // Sort the set of points based on relative z-axis position. If the points are visibly small, you can sort of get away with removing this step.
 
-        for (var i = 0; i < this.points.length; i++) {
-            this.beginFill(this.points[i].color);
-            this.drawRect(this.points[i].x * constants.surfaceScale, this.points[i].y * constants.surfaceScale, constants.pointWidth, constants.pointWidth);
+        for (var i = 0; i < this.vertices.length; i++) {
+            this.beginFill(this.vertices[i].color);
+            this.drawRect(this.vertices[i].x * constants.surfaceScale, this.vertices[i].y * constants.surfaceScale, constants.pointWidth, constants.pointWidth);
         }
         this.endFill();
     }
@@ -76,25 +77,25 @@ export default class Surface extends PIXI.Graphics
      */
     multi(R)
     {
-        var Px = 0, Py = 0, Pz = 0; // Variables to hold temporary results.
-        var P = this.points; // P is a pointer to the set of surface points (i.e., the set of 3 x 1 vectors).
+        var Vx = 0, Vy = 0, Vz = 0; // Variables to hold temporary results.
+        var V = this.vertices; // P is a pointer to the set of surface points (i.e., the set of 3 x 1 vectors).
         var sum; // The sum for each row/column matrix product.
 
-        for (var V = 0; V < P.length; V++) // For all 3 x 1 vectors in the point list.
+        for (var i = 0; i < V.length; i++) // For all 3 x 1 vectors in the point list.
         {
-            Px = P[V].x, Py = P[V].y, Pz = P[V].z;
+            Vx = V[i].x, Vy = V[i].y, Vz = V[i].z;
             for (var Rrow = 0; Rrow < 3; Rrow++) // For each row in the R matrix.
             {
-                sum = (R[Rrow][X] * Px) + (R[Rrow][Y] * Py) + (R[Rrow][Z] * Pz);
+                sum = (R[Rrow][X] * Vx) + (R[Rrow][Y] * Vy) + (R[Rrow][Z] * Vz);
 
                 if (Rrow === 0) {
-                    P[V].x = sum;
+                    V[i].x = sum;
                 }
                 else if (Rrow === 1) {
-                    P[V].y = sum;
+                    V[i].y = sum;
                 }
                 else {
-                    P[V].z = sum;
+                    V[i].z = sum;
                 }
             }
         }

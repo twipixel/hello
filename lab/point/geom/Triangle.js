@@ -4,17 +4,15 @@ import Vertex from './Vertex';
 import {constants, X, Y, Z} from '../const';
 
 
-export default class Rectangle extends PIXI.Graphics
+export default class Triangle extends PIXI.Graphics
 {
-    constructor(width = 10, height = 10)
+    constructor(size = 10)
     {
         super();
 
         this._z = 0;
-        this.rectWidth = width;
-        this.rectHeight = height;
-        this.rectHalfWidth = this.rectWidth / 2;
-        this.rectHalfHeight = this.rectHeight / 2;
+        this.size = size;
+        this.halfSize = this.size / 2;
 
         this.fontSize = 9;
         this.halfFontSize = this.fontSize / 2;
@@ -31,21 +29,18 @@ export default class Rectangle extends PIXI.Graphics
      */
     generate()
     {
-        var w = this.rectHalfWidth;
-        var h = this.rectHalfHeight;
+        var h = this.halfSize;
 
         var v = this.vertices = [
-            new Vertex(-w, -h, this.z),
-            new Vertex(-w, h, this.z),
-            new Vertex(w, h, this.z),
-            new Vertex(w, -h, this.z)
+            new Vertex(0, -h, this.z),
+            new Vertex(-h, h, this.z),
+            new Vertex(h, h, this.z)
         ];
 
         this.edges = [
             new Edge(v[0], v[1]),
             new Edge(v[1], v[2]),
-            new Edge(v[2], v[3]),
-            new Edge(v[3], v[0])
+            new Edge(v[2], v[0])
         ];
 
         var textStyle = new PIXI.TextStyle({
@@ -80,7 +75,6 @@ export default class Rectangle extends PIXI.Graphics
                 this.drawRect(this.vertices[i].x, this.vertices[i].y, this.vertexSize, this.vertexSize);
             }
         }
-
 
         var h = this.vertexHalfSize;
         var halfFontSize = this.halfFontSize;

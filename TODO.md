@@ -1,5 +1,9 @@
 ## 할일
 
+- 직선 그리기
+- 삼각형 그리기
+- 사각형 그리기
+- 큐브 그리기
 - z
   - z-index 도형 테스트
   - 도형 z 축 이동
@@ -7,10 +11,12 @@
   - x 축 회전
   - y 축 회전
   - z 축 회전 
+  - orbit 회전 구현
 - 원형통 triangles  만들기
 - triangles 로 원형 스티커 만들기
 - Orthographic
 - Perspective
+- Camera
 
 <br>
 

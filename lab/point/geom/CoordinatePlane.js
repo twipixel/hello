@@ -1,29 +1,32 @@
-import Num from './Num';
 import Edge from './Edge';
 import Vertex from './Vertex';
 import {constants, X, Y, Z} from '../const';
 
 
-export default class Rectangle extends PIXI.Graphics
+export default class CoordinatePlane extends PIXI.Graphics
 {
-    constructor(width = 10, height = 10)
+    constructor(width = 400, height = 400)
     {
         super();
 
-        this._z = 0;
-        this.rectWidth = width;
-        this.rectHeight = height;
-        this.rectHalfWidth = this.rectWidth / 2;
-        this.rectHalfHeight = this.rectHeight / 2;
-
-        this.fontSize = 9;
-        this.halfFontSize = this.fontSize / 2;
-
+        this.w = width;
+        this.h = height;
+        this.hw = width / 2;
+        this.hh = height / 2;
+        this.xMin = -this.hw;
+        this.xMax = this.hw;
+        this.zMin = -this.hh;
+        this.zMax = this.hh;
+        this.xDelta = 10;
+        this.zDelta = 10;
         this.vertices = [];
-        this.vertexSize = 4;
-        this.vertexHalfSize = this.vertexSize / 2;
+        this.vertexSize = 1;
+    }
 
-        this.isShowNum = false;
+    equation(x, y)
+    {
+        var d = Math.sqrt(x * x + y * y);
+        return 4 * (Math.sin(d) / d);
     }
 
     /**
@@ -31,34 +34,45 @@ export default class Rectangle extends PIXI.Graphics
      */
     generate()
     {
-        var w = this.rectHalfWidth;
-        var h = this.rectHalfHeight;
+        var i = 0, col = 0, row = 0, w = 0, h = 0, n = 0, idx = 0, v = this.vertices;
 
-        var v = this.vertices = [
-            new Vertex(-w, -h, this.z),
-            new Vertex(-w, h, this.z),
-            new Vertex(w, h, this.z),
-            new Vertex(w, -h, this.z)
-        ];
-
-        this.edges = [
-            new Edge(v[0], v[1]),
-            new Edge(v[1], v[2]),
-            new Edge(v[2], v[3]),
-            new Edge(v[3], v[0])
-        ];
-
-        var textStyle = new PIXI.TextStyle({
-            fontSize: this.fontSize, fill: 0x19B5FE
-        });
-
-        this.nums = [];
-        for(var i = 0; i < this.edges.length; i++) {
-            var num = new Num(i, textStyle);
-            num.visible = this.isShowNum;
-            this.nums.push(num);
-            this.addChild(num);
+        for (var x = this.xMin; x <= this.xMax; x += this.xDelta) {
+            for (var z = this.zMin; z <= this.zMax; z += this.zDelta) {
+                this.vertices[i] = new Vertex(x, 0, z);
+                ++i;
+                ++col;
+            }
+            ++row;
+            h = col - 1;
+            col = 0;
         }
+        n = i - 1;
+        w = row - 1;
+        this.row = w;
+        this.col = h;
+
+        // x axis
+        var x = this.row * this.col + this.col;
+        this.moveTo(v[0].x, v[0].y);
+        this.lineTo(v[x].x, v[x].y);
+
+        // z axis
+        var z = this.col;
+        this.moveTo(v[0].x, v[0].y);
+        this.lineTo(v[z].x, v[z].y);
+
+        this.yVertex = new Vertex(v[0].x, v[0].y - this.h, v[0].z);
+        var xAxis = new Edge(v[0], v[x]);
+        var yAxis = new Edge(v[0], this.yVertex);
+        var zAxis = new Edge(v[0], v[z]);
+
+        this.edges = [xAxis, yAxis, zAxis];
+
+        // yVertex 도 업데이트 시켜야합니다.
+        this.vertices.push(this.yVertex);
+
+        console.log(`(${n}) ${w} x ${h} Grid`);
+        console.log(`x: ${this.xMin} -> ${this.xMax}, z; ${this.zMin} -> ${this.zMax}`);
     }
 
     color()
@@ -73,30 +87,34 @@ export default class Rectangle extends PIXI.Graphics
 
     draw()
     {
-        if(!this.isShowNum) {
-            this.vertices = this.vertices.sort(this.sortByZIndex);
-            for (var i = 0; i < this.vertices.length; i++) {
-                this.beginFill(0xC5EFF7);
-                this.drawRect(this.vertices[i].x, this.vertices[i].y, this.vertexSize, this.vertexSize);
-            }
+        this.clear();
+        var v = this.vertices = this.vertices.sort(this.sortByZIndex);
+        var n = v.length;
+        var size = this.vertexSize;
+        var h = this.vertexSize / 2;
+        for (var i = 0; i < n; i++) {
+            this.beginFill(0xC5EFF7);
+            this.drawRect(v[i].x, v[i].y, size, size);
         }
 
-
-        var h = this.vertexHalfSize;
-        var halfFontSize = this.halfFontSize;
-
-        this.lineStyle(1, 0x52B3D9);
-        for (var j = 0; j < this.edges.length; j++) {
-            var num = this.nums[j];
-            var edge = this.edges[j];
-            this.moveTo(edge.point0.x + h, edge.point0.y + h);
-            this.lineTo(edge.point1.x + h, edge.point1.y + h);
-
-            if(this.isShowNum) {
-                num.x = edge.point0.x + h;
-                num.y = edge.point0.y + h;
+        n = this.edges.length;
+        for (var i = 0; i < n; i++) {
+            if (i == 0) {
+                // x-axis
+                this.lineStyle(1, 0x03A9F4);
             }
-            num.visible = this.isShowNum;
+            else if (i == 1) {
+                // y-axis
+                this.lineStyle(1, 0xE91E63);
+            }
+            else {
+                // z-axis
+                this.lineStyle(1, 0x8BC34A);
+            }
+
+            var edge = this.edges[i];
+            this.moveTo(edge.point0.x, edge.point0.y);
+            this.lineTo(edge.point1.x, edge.point1.y);
         }
         this.endFill();
     }

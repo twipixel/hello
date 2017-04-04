@@ -70,7 +70,7 @@ Surface.prototype.generate = function()
 
     for (var x = constants.xMin; x <= constants.xMax; x += constants.xDelta)
     {
-        for (var y = constants.yMin; y <= constants.yMax; y += constants.yDelta)
+        for (var y = constants.zMin; y <= constants.zMax; y += constants.zDelta)
         {
             this.points[i] = point(x, y, this.equation(x, y)); // Store a surface point (in vector format) into the list of surface points.
             ++i;

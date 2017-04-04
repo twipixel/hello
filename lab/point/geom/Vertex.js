@@ -1,4 +1,4 @@
-export default class Point
+export default class Vertex
 {
     constructor(x, y, z)
     {

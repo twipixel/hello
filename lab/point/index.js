@@ -16,7 +16,7 @@ class Main
     {
         this.init();
         this.addEvent();
-        this.onResize();
+        this.onresize();
     }
 
     init()
@@ -26,18 +26,69 @@ class Main
 
     addEvent()
     {
-        window.onresize = this.onResize.bind(this);
-        window.addEventListener('keyup', this.onKeyUp.bind(this));
+        window.onresize = this.onresize.bind(this);
+        window.addEventListener('keyup', this.onkeyup.bind(this));
+        window.addEventListener('keydown', this.onkeydown.bind(this));
     }
 
-    onResize()
+    onresize()
     {
         this.app.resize();
     }
 
-    onKeyUp (e)
+    /**
+     *
+     * @param func {Function}
+     * @param params
+     * @returns {intervalFunc}
+     */
+    getIntervalFunction (theArg, func, ...params)
     {
-        switch (e.keyCode) {
+        function intervalFunc() {
+            func.apply(theArg, params);
+            clearTimeout(this.keyIntervalId);
+            this.keyIntervalId = setTimeout(intervalFunc.bind(this), 200);
+        }
+        return intervalFunc.bind(this);
+    }
+
+    clearInterFunction()
+    {
+        clearTimeout(this.keyIntervalId);
+    }
+
+    onkeydown (event)
+    {
+        switch (event.keyCode) {
+            case KeyCode.UP:
+                this.getIntervalFunction(this.app, this.app.rotate, 'x', -1)();
+                break;
+
+            case KeyCode.DOWN:
+                this.getIntervalFunction(this.app, this.app.rotate, 'x', 1)();
+                break;
+
+            case KeyCode.LEFT:
+                this.getIntervalFunction(this.app, this.app.rotate, 'y', -1)();
+                break;
+
+            case KeyCode.RIGHT:
+                this.getIntervalFunction(this.app, this.app.rotate, 'y', 1)();
+                break;
+
+            case KeyCode.PAGE_UP:
+                this.getIntervalFunction(this.app, this.app.rotate, 'z', 1)();
+                break;
+
+            case KeyCode.PAGE_DOWN:
+                this.getIntervalFunction(this.app, this.app.rotate, 'z', -1)();
+                break;
+        }
+    }
+
+    onkeyup (event)
+    {
+        switch (event.keyCode) {
             case KeyCode.ESCAPE:
                 console.clear();
                 break;
@@ -52,19 +103,12 @@ class Main
                 break;
 
             case KeyCode.UP:
-                this.app.surface.xRotate(-1);
-                break;
-
             case KeyCode.DOWN:
-                this.app.surface.xRotate(1);
-                break;
-
             case KeyCode.LEFT:
-                this.app.surface.yRotate(-1);
-                break;
-
             case KeyCode.RIGHT:
-                this.app.surface.yRotate(1);
+            case KeyCode.PAGE_UP:
+            case KeyCode.PAGE_DOWN:
+                this.clearInterFunction();
                 break;
 
             case KeyCode.BACKSPACE:

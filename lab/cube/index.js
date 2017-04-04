@@ -3,8 +3,7 @@ import App from './App';
 import KeyCode from '../../src/consts/KeyCode';
 
 
-(function ()
-{
+(function () {
     window.onload = function () {
         var main = new Main();
     }
@@ -16,7 +15,7 @@ class Main
     {
         this.init();
         this.addEvent();
-        this.onResize();
+        this.onresize();
     }
 
     init()
@@ -26,18 +25,18 @@ class Main
 
     addEvent()
     {
-        window.onresize = this.onResize.bind(this);
-        window.addEventListener('keyup', this.onKeyUp.bind(this));
+        window.onresize = this.onresize.bind(this);
+        window.addEventListener('keyup', this.onkeyup.bind(this));
     }
 
-    onResize()
+    onresize()
     {
         this.app.resize();
     }
 
-    onKeyUp (e)
+    onkeyup(event)
     {
-        switch (e.keyCode) {
+        switch (event.keyCode) {
             case KeyCode.ESCAPE:
                 console.clear();
                 break;
