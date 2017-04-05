@@ -2,8 +2,7 @@ import Vertex from './Vertex';
 import {constants, X, Y, Z} from '../const';
 
 
-export default class Surface extends PIXI.Graphics
-{
+export default class Surface extends PIXI.Graphics {
     constructor()
     {
         super();
@@ -43,8 +42,12 @@ export default class Surface extends PIXI.Graphics
         this.zMin = this.zMax = this.vertices[0].z; // A starting value. Note that zMin and zMax are custom properties that could possibly be useful if this code is extended later.
         for (var i = 0; i < this.vertices.length; i++) {
             z = this.vertices[i].z;
-            if (z < this.zMin) { this.zMin = z; }
-            if (z > this.zMax) { this.zMax = z; }
+            if (z < this.zMin) {
+                this.zMin = z;
+            }
+            if (z > this.zMax) {
+                this.zMax = z;
+            }
         }
 
         var zDelta = Math.abs(this.zMax - this.zMin) / constants.colorMap.length;
@@ -113,17 +116,17 @@ export default class Surface extends PIXI.Graphics
         var Rx = [
             [0, 0, 0],
             [0, 0, 0],
-            [0, 0, 0] ]; // Create an initialized 3 x 3 rotation matrix.
+            [0, 0, 0]]; // Create an initialized 3 x 3 rotation matrix.
 
         Rx[0][0] = 1;
         Rx[0][1] = 0; // Redundant but helps with clarity.
         Rx[0][2] = 0;
         Rx[1][0] = 0;
-        Rx[1][1] = Math.cos( sign*constants.dTheta );
-        Rx[1][2] = -Math.sin( sign*constants.dTheta );
+        Rx[1][1] = Math.cos(sign * constants.dTheta);
+        Rx[1][2] = -Math.sin(sign * constants.dTheta);
         Rx[2][0] = 0;
-        Rx[2][1] = Math.sin( sign*constants.dTheta );
-        Rx[2][2] = Math.cos( sign*constants.dTheta );
+        Rx[2][1] = Math.sin(sign * constants.dTheta);
+        Rx[2][2] = Math.cos(sign * constants.dTheta);
 
         this.multi(Rx); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -138,17 +141,17 @@ export default class Surface extends PIXI.Graphics
         var Ry = [
             [0, 0, 0],
             [0, 0, 0],
-            [0, 0, 0] ]; // Create an initialized 3 x 3 rotation matrix.
+            [0, 0, 0]]; // Create an initialized 3 x 3 rotation matrix.
 
-        Ry[0][0] = Math.cos( sign*constants.dTheta );
+        Ry[0][0] = Math.cos(sign * constants.dTheta);
         Ry[0][1] = 0; // Redundant but helps with clarity.
-        Ry[0][2] = Math.sin( sign*constants.dTheta );
+        Ry[0][2] = Math.sin(sign * constants.dTheta);
         Ry[1][0] = 0;
         Ry[1][1] = 1;
         Ry[1][2] = 0;
-        Ry[2][0] = -Math.sin( sign*constants.dTheta );
+        Ry[2][0] = -Math.sin(sign * constants.dTheta);
         Ry[2][1] = 0;
-        Ry[2][2] = Math.cos( sign*constants.dTheta );
+        Ry[2][2] = Math.cos(sign * constants.dTheta);
 
         this.multi(Ry); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -163,13 +166,13 @@ export default class Surface extends PIXI.Graphics
         var Rz = [
             [0, 0, 0],
             [0, 0, 0],
-            [0, 0, 0] ]; // Create an initialized 3 x 3 rotation matrix.
+            [0, 0, 0]]; // Create an initialized 3 x 3 rotation matrix.
 
-        Rz[0][0] = Math.cos( sign*constants.dTheta );
-        Rz[0][1] = -Math.sin( sign*constants.dTheta );
+        Rz[0][0] = Math.cos(sign * constants.dTheta);
+        Rz[0][1] = -Math.sin(sign * constants.dTheta);
         Rz[0][2] = 0; // Redundant but helps with clarity.
-        Rz[1][0] = Math.sin( sign*constants.dTheta );
-        Rz[1][1] = Math.cos( sign*constants.dTheta );
+        Rz[1][0] = Math.sin(sign * constants.dTheta);
+        Rz[1][1] = Math.cos(sign * constants.dTheta);
         Rz[1][2] = 0;
         Rz[2][0] = 0;
         Rz[2][1] = 0;

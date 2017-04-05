@@ -118,13 +118,14 @@ export default class Cube extends PIXI.Graphics
      * Rx = 0  cos0  -sin0
      *      0  sin0   cos0
      */
-    xRotate(sign)
+    xRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Rx = mat3.create();
-        Rx[4] = Math.cos(sign * constants.dTheta);
-        Rx[5] = -Math.sin(sign * constants.dTheta);
-        Rx[7] = Math.sin(sign * constants.dTheta);
-        Rx[8] = Math.cos(sign * constants.dTheta);
+        Rx[4] = Math.cos(radians);
+        Rx[5] = -Math.sin(radians);
+        Rx[7] = Math.sin(radians);
+        Rx[8] = Math.cos(radians);
 
         this.multi(Rx); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -138,13 +139,14 @@ export default class Cube extends PIXI.Graphics
      *     -sin0   0   cos0
      *
      */
-    yRotate(sign)
+    yRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Ry = mat3.create();
-        Ry[0] = Math.cos(sign * constants.dTheta);
-        Ry[2] = Math.sin(sign * constants.dTheta);
-        Ry[6] = -Math.sin(sign * constants.dTheta);
-        Ry[8] = Math.cos(sign * constants.dTheta);
+        Ry[0] = Math.cos(radians);
+        Ry[2] = Math.sin(radians);
+        Ry[6] = -Math.sin(radians);
+        Ry[8] = Math.cos(radians);
 
         this.multi(Ry); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -157,13 +159,14 @@ export default class Cube extends PIXI.Graphics
      * Rz = sin0     cos0    0
      *       0        0      1
      */
-    zRotate(sign)
+    zRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Rz = mat3.create();
-        Rz[0] = Math.cos(sign * constants.dTheta);
-        Rz[1] = -Math.sin(sign * constants.dTheta);
-        Rz[3] = Math.sin(sign * constants.dTheta);
-        Rz[4] = Math.cos(sign * constants.dTheta);
+        Rz[0] = Math.cos(radians);
+        Rz[1] = -Math.sin(radians);
+        Rz[3] = Math.sin(radians);
+        Rz[4] = Math.cos(radians);
 
         this.multi(Rz); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.

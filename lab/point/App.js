@@ -37,8 +37,6 @@ export default class App
         //this.createCube();
         //this.createSurface();
         this.createCoordinate();
-
-        this.rotate('x', 90);
     }
 
     createTriangle()
@@ -51,6 +49,8 @@ export default class App
         this.triangle.draw();
         this.stage.addChild(this.triangle);
         this.objects.push(this.triangle);
+
+        //this.rotateWithMotion(this.triangle, {rx:90, ry:0, rz:0}, 3, Sine.easeOut, 2);
     }
 
     createRectangle()
@@ -63,14 +63,6 @@ export default class App
         this.rectangle.draw();
         this.stage.addChild(this.rectangle);
         this.objects.push(this.rectangle);
-
-        /*var tween = Be.to(this.rectangle, {z:200}, 2, Sine.easeOut);
-         tween.onUpdate = () => {
-         this.rectangle.draw();
-
-         console.log('update(), z:', this.rectangle.z);
-         };
-         tween.play();*/
     }
 
     createCube()
@@ -114,6 +106,8 @@ export default class App
             this.stage.addChild(this.coordinate);
             this.objects.push(this.coordinate);
         }
+
+        //this.rotateWithMotion(this.coordinate, {rx:90, ry:0, rz:0}, 3, Sine.easeOut, 2);
     }
 
     removeAll()
@@ -132,12 +126,18 @@ export default class App
         this.config.createCube = this.createCube.bind(this);
         this.config.createSurface = this.createSurface.bind(this);
         this.config.createCoordinate = this.createCoordinate.bind(this);
+        this.config.rotateX = this.rotateX.bind(this);
+        this.config.rotateY = this.rotateY.bind(this);
+        this.config.rotateZ = this.rotateZ.bind(this);
 
         this.gui.add(this.config, 'createTriangle');
         this.gui.add(this.config, 'createRectangle');
         this.gui.add(this.config, 'createCube');
         this.gui.add(this.config, 'createSurface');
         this.gui.add(this.config, 'createCoordinate');
+        this.gui.add(this.config, 'rotateX');
+        this.gui.add(this.config, 'rotateY');
+        this.gui.add(this.config, 'rotateZ');
     }
 
     tick(ms)
@@ -171,6 +171,95 @@ export default class App
         }
     }
 
+    /**
+     *
+     * @param target
+     * @param to {Object} {rx:90, ry:90, rz:90}
+     * @param time {Number}
+     * @param easing {IEasing}
+     * @param delay {Number}
+     */
+    rotateWithMotion(target, to, time = 3, easing = Sine.easeOut, delay = 0)
+    {
+        target._to = to;
+
+        for (var prop in to) {
+            target[prop] = 0;
+            target['p' + prop] = target[prop];
+        }
+
+        var tween = Be.to(target, to, time, easing, delay);
+
+        tween.onUpdate = () => {
+            var to = target._to;
+            for (var prop in to) {
+                var value = target[prop];
+                var pvalue = target['p' + prop];
+                var d = value - pvalue;
+
+                if (prop.indexOf('x') > -1) {
+                    target.xRotate(d);
+                }
+                else if (prop.indexOf('y') > -1) {
+                    target.yRotate(d);
+                }
+                else {
+                    target.zRotate(d);
+                }
+
+                target['p' + prop] = value;
+            }
+        };
+
+        if (delay === 0) {
+            tween.play();
+        }
+        else {
+            var delay = Be.delay(tween, delay);
+            delay.play();
+        }
+    }
+
+    rotateX()
+    {
+        this.rotateObjects('x');
+    }
+
+    rotateY()
+    {
+        this.rotateObjects('y');
+    }
+
+    rotateZ()
+    {
+        this.rotateObjects('z');
+    }
+
+    rotateObjects(property, degrees = 90)
+    {
+        console.log('rotateObject(', property, ',', degrees, ')');
+        var to = {};
+
+        if (property === 'x') {
+            to.rx = degrees;
+        }
+        else if (property === 'y') {
+            to.ry = degrees;
+        }
+        else {
+            to.rz = degrees;
+        }
+
+        var n = this.objects.length;
+
+        for(var i = 0; i < n; i++) {
+            var obj = this.objects[i];
+            this.rotateWithMotion(obj, to);
+        }
+
+        this.rotateWithMotion(this.coordinate, to);
+    }
+
     onmousedown(event)
     {
         this.prevmousex = event.clientX;
@@ -180,10 +269,10 @@ export default class App
 
     onmousemove(event)
     {
-        var x = (event.clientY - this.prevmousey) * Math.PI / 360;
-        var y = (event.clientX - this.prevmousex) * Math.PI / 360;
-        this.rotate('x', x);
-        this.rotate('y', y);
+        var dx = event.clientY - this.prevmousey;
+        var dy = event.clientX - this.prevmousex;
+        this.rotate('x', dx / 4);
+        this.rotate('y', dy / 4);
         this.prevmousex = event.clientX;
         this.prevmousey = event.clientY;
     }
@@ -192,8 +281,7 @@ export default class App
     {
         var e = window.event || e;
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-        var z = delta * Math.PI / 360;
-        this.rotate('z', z);
+        this.rotate('z', delta / 4);
         this.prevwheel = delta;
     }
 
