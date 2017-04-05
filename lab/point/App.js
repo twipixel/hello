@@ -237,7 +237,6 @@ export default class App
 
     rotateObjects(property, degrees = 90)
     {
-        console.log('rotateObject(', property, ',', degrees, ')');
         var to = {};
 
         if (property === 'x') {
