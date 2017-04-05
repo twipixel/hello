@@ -12,7 +12,7 @@ export default class Matrix
     }
 
     /**
-     * 왼손 좌표계 뷰 행렬 반환
+     * 왼손 좌표계 뷰 행렬로 반환 (카메라 객체를 넘겨도 될 것 같다)
      * @param camPosition 카메라의 위치
      * @param camTarget 카메라의 주시점
      * @param upVector 월드의 윗쪽
@@ -41,8 +41,8 @@ export default class Matrix
      * 투영 변환 설정
      * @param fov {Radians} Field Of View
      * @param aspect {number} 가로 세로 비율 (폭 / 높이)
-     * @param znear 카메라에 가까운 뷰면의 클리핑 z
-     * @param zfar 카마라에서 먼 뷰면의 z
+     * @param znear 카메라에 가까운 뷰면의 클리핑 z (0 에서 1사이의 값, UV 맵)
+     * @param zfar 카마라에서 먼 뷰면의 z (0 에서 1사이의 값, UV 맵)
      * @returns {Matrix}
      */
     static perspectiveFovLH(fov, aspect, znear, zfar)
@@ -88,6 +88,11 @@ export default class Matrix
         return Matrix.rotateZ(roll).multiply(Matrix.rotateX(pitch)).multiply(Matrix.rotateY(yaw));
     }
 
+    /**
+     * X축 회전
+     * @param theta
+     * @returns {Matrix}
+     */
     static rotateX(theta)
     {
         let result = new Matrix();
@@ -101,6 +106,11 @@ export default class Matrix
         return result;
     }
 
+    /**
+     * Y축 회전
+     * @param theta
+     * @returns {Matrix}
+     */
     static rotateY(theta)
     {
         let result = new Matrix();
@@ -114,6 +124,11 @@ export default class Matrix
         return result;
     };
 
+    /**
+     * Z축 회전
+     * @param theta
+     * @returns {Matrix}
+     */
     static rotateZ(theta)
     {
         let result = new Matrix();

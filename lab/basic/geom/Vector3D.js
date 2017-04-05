@@ -33,9 +33,9 @@ export default class Vector3D
     }
 
     /**
-     * 좌표 변환
-     * @param point
-     * @param transform
+     * 변환된 좌표 반환
+     * @param point {Vector3D} 버텍스
+     * @param transform {Matrix} 최종 변환 메트릭스
      * @returns {Vector3D}
      */
     static transformCoordinates(point, transform)

@@ -111,8 +111,9 @@ export default class Surface extends PIXI.Graphics {
     /*
      Assumes "sign" is either 1 or -1, which is used to rotate the surface "clockwise" or "counterclockwise".
      */
-    xRotate(sign)
+    xRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Rx = [
             [0, 0, 0],
             [0, 0, 0],
@@ -122,11 +123,11 @@ export default class Surface extends PIXI.Graphics {
         Rx[0][1] = 0; // Redundant but helps with clarity.
         Rx[0][2] = 0;
         Rx[1][0] = 0;
-        Rx[1][1] = Math.cos(sign * constants.dTheta);
-        Rx[1][2] = -Math.sin(sign * constants.dTheta);
+        Rx[1][1] = Math.cos(radians);
+        Rx[1][2] = -Math.sin(radians);
         Rx[2][0] = 0;
-        Rx[2][1] = Math.sin(sign * constants.dTheta);
-        Rx[2][2] = Math.cos(sign * constants.dTheta);
+        Rx[2][1] = Math.sin(radians);
+        Rx[2][2] = Math.cos(radians);
 
         this.multi(Rx); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -136,22 +137,23 @@ export default class Surface extends PIXI.Graphics {
     /*
      Assumes "sign" is either 1 or -1, which is used to rotate the surface "clockwise" or "counterclockwise".
      */
-    yRotate(sign)
+    yRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Ry = [
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]]; // Create an initialized 3 x 3 rotation matrix.
 
-        Ry[0][0] = Math.cos(sign * constants.dTheta);
+        Ry[0][0] = Math.cos(radians);
         Ry[0][1] = 0; // Redundant but helps with clarity.
-        Ry[0][2] = Math.sin(sign * constants.dTheta);
+        Ry[0][2] = Math.sin(radians);
         Ry[1][0] = 0;
         Ry[1][1] = 1;
         Ry[1][2] = 0;
-        Ry[2][0] = -Math.sin(sign * constants.dTheta);
+        Ry[2][0] = -Math.sin(radians);
         Ry[2][1] = 0;
-        Ry[2][2] = Math.cos(sign * constants.dTheta);
+        Ry[2][2] = Math.cos(radians);
 
         this.multi(Ry); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
@@ -161,18 +163,19 @@ export default class Surface extends PIXI.Graphics {
     /*
      Assumes "sign" is either 1 or -1, which is used to rotate the surface "clockwise" or "counterclockwise".
      */
-    zRotate(sign)
+    zRotate(degree)
     {
+        var radians = Math.toRadians(degree);
         var Rz = [
             [0, 0, 0],
             [0, 0, 0],
             [0, 0, 0]]; // Create an initialized 3 x 3 rotation matrix.
 
-        Rz[0][0] = Math.cos(sign * constants.dTheta);
-        Rz[0][1] = -Math.sin(sign * constants.dTheta);
+        Rz[0][0] = Math.cos(radians);
+        Rz[0][1] = -Math.sin(radians);
         Rz[0][2] = 0; // Redundant but helps with clarity.
-        Rz[1][0] = Math.sin(sign * constants.dTheta);
-        Rz[1][1] = Math.cos(sign * constants.dTheta);
+        Rz[1][0] = Math.sin(radians);
+        Rz[1][1] = Math.cos(radians);
         Rz[1][2] = 0;
         Rz[2][0] = 0;
         Rz[2][1] = 0;

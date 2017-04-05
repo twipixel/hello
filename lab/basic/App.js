@@ -35,8 +35,7 @@ export default class App
         this.meshes = [];
         this.camera = new Camera();
         this.device = new Device(this.canvas.width, this.canvas.height);
-        //this.device.x = this.camera.width / 2;
-        //this.device.y = this.canvas.height / 2;
+        this.stage.addChild(this.device);
 
         var shape0 = new TriakisIcosahedron();
         var shape1 = new Octahedron();
@@ -44,17 +43,35 @@ export default class App
         var shape3 = new Octahedron();
         var shape4 = new Octahedron();
 
-        var mesh0 = new Mesh(shape0);
-        var mesh1 = new Mesh(shape1);
-        var mesh2 = new Mesh(shape2);
-        var mesh3 = new Mesh(shape3);
-        var mesh4 = new Mesh(shape4);
+        var mesh0 = this.mesh0 = new Mesh(shape0);
+        var mesh1 = this.mesh1 = new Mesh(shape1);
+        var mesh2 = this.mesh2 = new Mesh(shape2);
+        var mesh3 = this.mesh3 = new Mesh(shape3);
+        var mesh4 = this.mesh4 = new Mesh(shape4);
 
         this.meshes.push(mesh0);
         this.meshes.push(mesh1);
         this.meshes.push(mesh2);
         this.meshes.push(mesh3);
         this.meshes.push(mesh4);
+
+        mesh0.position.x =1;
+        mesh0.position.z = -20;
+
+        mesh1.position.x =5;
+        mesh1.position.y = 10;
+        mesh1.position.z = -20;
+
+        mesh2.position.y = 4;
+        mesh2.position.z =-10;
+
+        mesh3.position.x =-2;
+        mesh3.position.y =-2;
+        mesh3.position.z =-2;
+
+        mesh4.position.x =5;
+        mesh4.position.y =5;
+        mesh4.position.z =-10;
     }
 
     initializeGUI()
@@ -82,6 +99,19 @@ export default class App
 
     render(ms)
     {
+        this.mesh0.rotation.x += 0.01;
+        this.mesh0.rotation.z += 0.01;
+
+        this.mesh1.rotation.y += 0.01;
+        this.mesh2.rotation.y += 0.01;
+        this.mesh3.rotation.y += 0.01;
+        this.mesh4.rotation.y += 0.01;
+
+        this.mesh1.rotation.z += 0.01;
+        this.mesh2.rotation.x += 0.01;
+        this.mesh3.rotation.z += 0.01;
+        this.mesh4.rotation.x += 0.01;
+
         this.device.render(this.camera, this.meshes);
     }
 

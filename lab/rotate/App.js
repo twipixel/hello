@@ -92,20 +92,19 @@ export default class App
 
     createCoordinate()
     {
-        if(this.coordinate) {
+        if (this.coordinate) {
             this.stage.removeChild(this.coordinate);
             this.coordinate = null;
         }
-        else {
-            this.coordinate = new CoordinatePlane(400, 400);
-            this.coordinate.x = this.cx;
-            this.coordinate.y = this.cy;
-            // this.coordinate.y = this.canvas.height / 10 * 6;
-            this.coordinate.generate();
-            this.coordinate.draw();
-            this.stage.addChild(this.coordinate);
-            this.objects.push(this.coordinate);
-        }
+
+        this.coordinate = new CoordinatePlane(400, 400);
+        this.coordinate.x = this.cx;
+        this.coordinate.y = this.cy;
+        // this.coordinate.y = this.canvas.height / 10 * 6;
+        this.coordinate.generate();
+        this.coordinate.draw();
+        this.stage.addChild(this.coordinate);
+        this.objects.push(this.coordinate);
 
         //this.rotateWithMotion(this.coordinate, {rx:90, ry:0, rz:0}, 3, Sine.easeOut, 2);
     }
