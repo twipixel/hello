@@ -11,6 +11,7 @@
   - y 축 회전
   - z 축 회전 
   - orbit 회전 구현
+- mesh triangle 만들기
 - 원형통 triangles  만들기
 - triangles 로 원형 스티커 만들기
 - Orthographic
