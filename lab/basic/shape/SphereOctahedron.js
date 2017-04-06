@@ -70,25 +70,45 @@ export default class SphereOctahedron {
         ];
     }
 
-    subdivide() {
-
-        /*var faces = [];
+    subdivide()
+    {
+        var faces = [];
         var n = this.faces.length;
 
         for (var i = 0; i < n; i++) {
+            faces = faces.concat(this.faces[i]);
+        }
 
-            faces = faces.concat();
-            var v0 = this.vertices[f.A];
-            var v1 = this.vertices[f.B];
-            var v2 = this.vertices[f.C];
-            var v3 = normalize(0.5 * (v0 + v1));
-            var v4 = normalize(0.5 * (v1 + v2));
-            var v5 = normalize(0.5 * (v2 + v0));
-            output_mesh.add_face(v0, v3, v5)
-            output_mesh.add_face(v3, v1, v4)
-            output_mesh.add_face(v5, v2, v5)
-            output_mesh.add_face(v3, v4, v5)
-        }*/
+        this.faces = faces;
+    }
+
+    sub(face)
+    {
+       var v0 = this.vertices[face.A].clone();
+       var v1 = this.vertices[face.B].clone();
+       var v2 = this.vertices[face.C].clone();
+       var v3 = new Vector3D();
+       var v4 = new Vector3D();
+       var v5 = new Vector3D();
+       v3.normalize()
+
+        for (var i = 0; i < 3; i++) {
+            var p = prop[i];
+            v12[p] = face[p] + face[p];
+            v23[p] = face[p] + face[p];
+            v31[p] = face[p] + face[p];
+        }
+
+        v12.normalize().multiply(this.scale);
+        v23.normalize().multiply(this.scale);
+        v31.normalize().multiply(this.scale);
+
+        return [
+            new Triangle(this.pos1, v12, v31, this.scale),
+            new Triangle(this.pos2, v23, v12, this.scale),
+            new Triangle(this.pos3, v31, v23, this.scale),
+            new Triangle(v12, v23, v31, this.scale)
+        ];
     }
 }
 

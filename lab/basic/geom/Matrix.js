@@ -171,4 +171,13 @@ export default class Matrix
         result.m[15] = this.m[12] * other.m[3] + this.m[13] * other.m[7] + this.m[14] * other.m[11] + this.m[15] * other.m[15];
         return result;
     }
+
+    multiplyVector(vec)
+    {
+        let x = vec.x * transform.m[0] + vec.y * transform.m[4] + vec.z * transform.m[8] + transform.m[12];
+        let y = vec.x * transform.m[1] + vec.y * transform.m[5] + vec.z * transform.m[9] + transform.m[13];
+        let z = vec.x * transform.m[2] + vec.y * transform.m[6] + vec.z * transform.m[10] + transform.m[14];
+        let w = vec.x * transform.m[3] + vec.y * transform.m[7] + vec.z * transform.m[11] + transform.m[15];
+        return new Vector3D(x / w, y / w, z / w);
+    }
 }
