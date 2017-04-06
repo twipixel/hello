@@ -45,21 +45,38 @@ export default class Device extends PIXI.Graphics
 
     drawTriangle(vertex1, vertex2, vertex3)
     {
-        this.lineStyle(1, 0xFF3300, 0.7);
-        this.moveTo(Math.round(vertex1.x), Math.round(vertex1.y));
-        this.lineTo(Math.round(vertex2.x), Math.round(vertex2.y));
-        this.lineTo(Math.round(vertex3.x), Math.round(vertex3.y));
+        this.lineStyle(1, 0x0A9464);
+        this.moveTo(vertex1.x, vertex1.y);
+        this.lineTo(vertex2.x, vertex2.y);
+        this.lineTo(vertex3.x, vertex3.y);
+        this.closePath();
     }
 
     render(camera, meshes)
     {
         this.clear();
 
+        let cameraPosition = camera.position;
+
+        /**
+         * 카메라 rotation 테스트
+         * @type {Vector3D}
+         */
+        /*let cameraRotationX = Matrix.rotateX(camera.rotation.x);
+        let cameraRotationY = Matrix.rotateY(camera.rotation.y);
+        let cameraRotationZ = Matrix.rotateZ(camera.rotation.z);
+        let cameraRotation = cameraRotationX.multiply(cameraRotationY).multiply(cameraRotationZ);
+        cameraPosition = Vector3D.transformCoordinates(cameraPosition, cameraRotation);*/
+
+        // yaw, roll. pitch 테스트
+        //let cameraRotation = Matrix.rotationYPR(camera.yaw, camera.pitch, camera.roll);
+        //cameraPosition = Vector3D.transformCoordinates(cameraPosition, cameraRotation);
+
         /**
          * 뷰 행렬
          * @type {Matrix}
          */
-        let viewMatrix = Matrix.lookAtLH(camera.position, camera.target, camera.up);
+        let viewMatrix = Matrix.lookAtLH(cameraPosition, camera.target, camera.up);
 
         /**
          * 투영 행렬

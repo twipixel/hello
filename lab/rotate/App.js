@@ -16,7 +16,7 @@ export default class App
 {
     constructor()
     {
-        this.app = new PIXI.Application(800, 600, {backgroundColor:0x000000});
+        this.app = new PIXI.Application(800, 600, {backgroundColor:0x191919});
         document.body.appendChild(this.app.view);
 
         this.canvas = this.app.renderer.view;

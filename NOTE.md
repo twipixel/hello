@@ -84,6 +84,12 @@
 
 - [3D icosahedron with pure JS](https://codepen.io/mcdorli/pen/LkdoZo)
 - [JS 3D System II](https://codepen.io/ploom/pen/jVLbJM)
+- Sphere
+  - Canvas
+    - [Canvas Sphere](https://codepen.io/jaburns/pen/nEpjA)
+    - [Patchwork sphere](https://codepen.io/enxaneta/pen/rLmKOL)
+  - THREE
+    - [3D Earth](https://codepen.io/bartuc/pen/yMMyav) (텍스처 굿)
 
 <br>
 
