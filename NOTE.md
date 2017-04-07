@@ -22,7 +22,7 @@
   - 투영 (Projection)
     - Orthographic
     - Perspective
-- Sphere 생성
+- [Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
 - Texture 적용
 - Orbit 회전 구현
 - 3D Object 만들기
@@ -34,9 +34,12 @@
 #### 용어
 
 - Shape
-  - icosahedron
+  - icosahedron (20면체)
     - [Triakis icosahedron](https://en.wikipedia.org/wiki/Triakis_icosahedron)
     - [Regular icosahedron](https://en.wikipedia.org/wiki/Regular_icosahedron)
+  - Sphere
+    - UV Sphere
+    - [Icosphere](https://github.com/hughsk/icosphere)
 - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
 - [투영 (Projection)](http://egloos.zum.com/EireneHue/v/985792)
   - Near (0)
@@ -68,6 +71,12 @@
 - [polygon mesh](https://en.wikipedia.org/wiki/Polygon_mesh)
 - [plane triangulation](https://github.com/r3mi/poly2tri.js)
 - [Four Ways to Create a Mesh for a Sphere](https://gamedevdaily.io/four-ways-to-create-a-mesh-for-a-sphere-d7956b825db4)
+- [Creating an icosphere mesh in code](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
+- [Icosphere generator C#](http://disq.us/url?url=http%3A%2F%2Fcodescrib.blogspot.com%2F%3AGTwU4dcq96lIEIpJc8INii4ptuY&cuid=104353)
+- [Sphere Mesh Creation](http://sol.gfxile.net/sphere/index.html)
+- [Planet Texture Maps](http://planetpixelemporium.com/earth.html)
+- [The icosahedron-based geodesic sphere](http://donhavey.com/blog/tutorials/tutorial-3-the-icosahedron-sphere/)
+- [Geodesic polyhedron](https://en.wikipedia.org/wiki/Geodesic_polyhedron)
 
 <br>
 

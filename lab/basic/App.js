@@ -9,11 +9,11 @@ import Camera from './core/Camera';
 import Device from './core/Device';
 import Matrix from './geom/Matrix';
 import Mesh from './geom/Mesh';
-import Vector3D from './geom/Vector3D';
 import Arrow from './shape/Arrow';
+import Icosphere from './shape/Icosphere';
+import Vector3D from './geom/Vector3D';
 import Octahedron from './shape/Octahedron';
 import TriakisIcosahedron from './shape/TriakisIcosahedron';
-import SphereOctahedron from './shape/SphereOctahedron';
 
 
 export default class App
@@ -52,7 +52,7 @@ export default class App
         var shape2 = new Octahedron();
         var shape3 = new Octahedron();
         var shape4 = new TriakisIcosahedron();
-        var shape5 = new SphereOctahedron();
+        var shape5 = new Icosphere(1);
 
         var mesh0 = this.mesh0 = new Mesh(shape0);
         var mesh1 = this.mesh1 = new Mesh(shape1);
@@ -92,9 +92,9 @@ export default class App
         mesh4.position.y = 20;
         mesh4.position.z = -80;
 
-        mesh5.x = 0;
-        mesh5.y = 0;
-        mesh5.z = 0;
+        //mesh5.x = 0;
+        //mesh5.y = 0;
+        //mesh5.z = 0;
     }
 
     initializeGUI()

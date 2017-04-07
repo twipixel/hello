@@ -1,8 +1,12 @@
+import Face from '../geom/Face';
 import Vector3D from '../geom/Vector3D';
 
 
 export default class Octahedron
 {
+    /**
+     * 8면체
+     */
     constructor()
     {
         let C0 = Math.sqrt(2) / 2;
@@ -17,14 +21,14 @@ export default class Octahedron
         ];
 
         this.faces = [
-            { A:0, B:2, C:4 },
-            { A:0, B:4, C:3 },
-            { A:0, B:3, C:5 },
-            { A:0, B:5, C:2 },
-            { A:1, B:2, C:5 },
-            { A:1, B:5, C:3 },
-            { A:1, B:3, C:4 },
-            { A:1, B:4, C:2 },
+            new Face(0, 2, 4 ),
+            new Face(0, 4, 3 ),
+            new Face(0, 3, 5 ),
+            new Face(0, 5, 2 ),
+            new Face(1, 2, 5 ),
+            new Face(1, 5, 3 ),
+            new Face(1, 3, 4 ),
+            new Face(1, 4, 2 )
         ];
     }
 }

@@ -1,3 +1,4 @@
+import Face from '../geom/Face';
 import Vector3D from '../geom/Vector3D';
 
 
@@ -11,7 +12,7 @@ export default class Arrow
         ];
 
         this.faces = [
-            { A:0, B:1, C:0 }
+            new Face(0, 1, 0)
         ];
     }
 }
