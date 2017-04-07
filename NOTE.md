@@ -23,7 +23,7 @@
     - Orthographic
     - Perspective
 - (v) [Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
-- 조명 적용
+- 조명 적용 (라이팅)
 - Texture 적용
 - Orbit 회전 구현
 - 3D Object 만들기
@@ -40,7 +40,8 @@
     - [Regular icosahedron](https://en.wikipedia.org/wiki/Regular_icosahedron)
   - Sphere
     - [Icosphere](https://github.com/hughsk/icosphere)
-    - Procedural Sphere
+    - Procedural (UV)
+    - [Hammersley](http://www.cse.cuhk.edu.hk/~ttwong/papers/udpoint/udpoint.pdf)
 - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
 - [투영 (Projection)](http://egloos.zum.com/EireneHue/v/985792)
   - Near (0)
@@ -104,6 +105,9 @@
     - [Patchwork sphere](https://codepen.io/enxaneta/pen/rLmKOL)
   - THREE
     - [3D Earth](https://codepen.io/bartuc/pen/yMMyav) (텍스처 굿)
+- [Spherical UV Mapping HTML5 Canvas](https://codepen.io/jonbrennecke/pen/zqDaj/)
+- [Icosphere](https://github.com/hughsk/icosphere)
+- [UV Sphere](http://codepen.io/mcdorli/pen/NAByWV)
 
 <br>
 
