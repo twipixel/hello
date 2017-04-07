@@ -9,9 +9,10 @@ export default class Icosphere
      * Icosphere
      * https://github.com/hughsk/icosphere
      *
-     * @param subdivisions {int}
+     * @param radius {number} 반지름
+     * @param subdivisions {int} 내부분활할 카운트
      */
-    constructor(subdivisions = 0)
+    constructor(radius = 1, subdivisions = 0)
     {
         var subdivisions = subdivisions;
 
@@ -32,7 +33,16 @@ export default class Icosphere
         this.vertices = complex.vertices;
 
         for (var i = 0; i < this.vertices.length; i++) {
-            Vector3D.normalize(this.vertices[i]);
+            // 반지름을 적용하고 싶지 않다면 normalize만 하면 됩니다.
+            // Vector3D.normalize(this.vertices[i]);
+
+            // 반지름 적용을 위해 normalize 식에 최종 반지름을 추가합니다.
+            var vec = this.vertices[i];
+            var mag = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+
+            vec.x *= radius / mag;
+            vec.y *= radius / mag;
+            vec.z *= radius / mag;
         }
     }
 

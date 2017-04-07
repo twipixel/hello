@@ -53,16 +53,16 @@ export default class App
         var shape2 = new Octahedron();
         var shape3 = new Octahedron();
         var shape4 = new TriakisIcosahedron();
-        var shape5 = new Icosphere(1);
-        var shape6 = new ProceduralSphere();
+        var shape5 = new ProceduralSphere();
+        var shape6 = new Icosphere(1, 1);
 
         var mesh0 = this.mesh0 = new Mesh(shape0);
         var mesh1 = this.mesh1 = new Mesh(shape1);
         var mesh2 = this.mesh2 = new Mesh(shape2);
         var mesh3 = this.mesh3 = new Mesh(shape3);
         var mesh4 = this.mesh4 = new Mesh(shape4);
-        var mesh5 = this.mesh5 = new Mesh(shape5);
-        var mesh6 = this.mesh6 = new Mesh(shape6);
+        var mesh5 = this.mesh6 = new Mesh(shape5);
+        var mesh6 = this.mesh5 = new Mesh(shape6);
 
         this.meshes.push(xMesh);
         this.meshes.push(yMesh);

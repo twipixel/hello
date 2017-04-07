@@ -114,7 +114,7 @@ export default class Vector3D
     }
 
     /**
-     * 방향은 그대로 유지되는 길이가 1인 벡터를 반환합니다. (단위벡터)
+     * 방향은 그대로 유지되는 길이(크기)가 1인 벡터를 반환합니다. (단위벡터)
      * @returns {Vector3D}
      */
     normalize()
@@ -128,11 +128,6 @@ export default class Vector3D
     {
         var mag = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 
-        // avoid dividing by zero
-        if (mag === 0) {
-            return Array.apply(null, new Array(vec.length)).map(Number.prototype.valueOf, 0)
-        }
-
         vec.x /= mag;
         vec.y /= mag;
         vec.z /= mag;
@@ -142,6 +137,6 @@ export default class Vector3D
 
     clone ()
     {
-        return new Vector3(this.x, this.y, this.z);
+        return new Vector3D(this.x, this.y, this.z);
     }
 }
