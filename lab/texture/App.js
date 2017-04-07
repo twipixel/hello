@@ -10,10 +10,9 @@ import Device from './core/Device';
 import Matrix from './geom/Matrix';
 import Mesh from './geom/Mesh';
 import Arrow from './shape/Arrow';
+import Icosphere from './shape/Icosphere';
 import Vector3D from './geom/Vector3D';
 import Octahedron from './shape/Octahedron';
-import Icosphere from './shape/Icosphere';
-import ProceduralSphere from './shape/ProceduralSphere';
 import TriakisIcosahedron from './shape/TriakisIcosahedron';
 
 
@@ -54,7 +53,6 @@ export default class App
         var shape3 = new Octahedron();
         var shape4 = new TriakisIcosahedron();
         var shape5 = new Icosphere(1);
-        var shape6 = new ProceduralSphere();
 
         var mesh0 = this.mesh0 = new Mesh(shape0);
         var mesh1 = this.mesh1 = new Mesh(shape1);
@@ -62,7 +60,6 @@ export default class App
         var mesh3 = this.mesh3 = new Mesh(shape3);
         var mesh4 = this.mesh4 = new Mesh(shape4);
         var mesh5 = this.mesh5 = new Mesh(shape5);
-        var mesh6 = this.mesh6 = new Mesh(shape6);
 
         this.meshes.push(xMesh);
         this.meshes.push(yMesh);
@@ -74,7 +71,6 @@ export default class App
         this.meshes.push(mesh3);
         this.meshes.push(mesh4);
         this.meshes.push(mesh5);
-        this.meshes.push(mesh6);
 
         mesh0.position.x = 2;
         mesh0.position.y = 2;
@@ -93,14 +89,12 @@ export default class App
         mesh3.position.z = -40;
 
         //mesh4.position.x = 20;
-        mesh4.position.x = 20;
+        mesh4.position.y = 20;
         mesh4.position.z = -80;
 
-        mesh5.position.x = 1;
-        //mesh5.position.z = -5;
-
-        mesh6.position.x = -1;
-        //mesh6.position.z = -5;
+        //mesh5.x = 0;
+        //mesh5.y = 0;
+        //mesh5.z = 0;
     }
 
     initializeGUI()
@@ -134,7 +128,6 @@ export default class App
         this.mesh3.rotation.x += 0.01;
         this.mesh4.rotation.x += 0.01;
         this.mesh5.rotation.x += 0.01;
-        this.mesh6.rotation.x += 0.01;
 
         this.mesh0.rotation.y += 0.01;
         this.mesh1.rotation.y += 0.01;
@@ -142,7 +135,6 @@ export default class App
         this.mesh3.rotation.y += 0.01;
         this.mesh4.rotation.y += 0.01;
         this.mesh5.rotation.y += 0.01;
-        this.mesh6.rotation.y += 0.01;
 
         //this.camera.yaw += 0.01;
         //this.camera.roll += 0.01;

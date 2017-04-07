@@ -1,28 +1,29 @@
 ## 학습 로드맵
 
-- 직선 그리기
-- 삼각형 그리기
-- 사각형 그리기
-- 큐브 그리기
-- z  테스트
+- (v) 직선 그리기
+- (v) 삼각형 그리기
+- (v) 사각형 그리기
+- (v) 큐브 그리기
+- (v) z  테스트
 - 회전
-  - x 축 회전
-  - y 축 회전
-  - z 축 회전 
+  - (v) x 축 회전
+  - (v) y 축 회전
+  - (v) z 축 회전 
   - [Yaw, Pitch, Roll](http://planning.cs.uiuc.edu/node102.html)
 - 3D redener
-  - Vector3D
-  - Matrix
+  - (v) Vector3D
+  - (v) Matrix
   - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
-    - 눈의 위치 (Eye Vector)
-    - 바라보는 지점 (Look Vector)
-    - [Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)
+    - (v) 눈의 위치 (Eye Vector)
+    - (v) 바라보는 지점 (Look Vector)
+    - (v) [Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)
   - Camera
     - Camera 회전
   - 투영 (Projection)
     - Orthographic
     - Perspective
-- [Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
+- (v) [Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
+- 조명 적용
 - Texture 적용
 - Orbit 회전 구현
 - 3D Object 만들기
@@ -38,8 +39,8 @@
     - [Triakis icosahedron](https://en.wikipedia.org/wiki/Triakis_icosahedron)
     - [Regular icosahedron](https://en.wikipedia.org/wiki/Regular_icosahedron)
   - Sphere
-    - UV Sphere
     - [Icosphere](https://github.com/hughsk/icosphere)
+    - Procedural Sphere
 - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
 - [투영 (Projection)](http://egloos.zum.com/EireneHue/v/985792)
   - Near (0)
@@ -54,6 +55,7 @@
 - [폴리곤](https://en.wikipedia.org/wiki/Polygon_mesh) (Polygon)
   - ![Polygon](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Mesh_overview.svg/720px-Mesh_overview.svg.png)
 - [UV Mapping](https://en.wikipedia.org/wiki/UV_mapping)
+  - [UV Mapping Sphere](http://mft-dev.dk/uv-mapping-sphere/)
 - Wireframe
 
 <br>
@@ -77,6 +79,9 @@
 - [Planet Texture Maps](http://planetpixelemporium.com/earth.html)
 - [The icosahedron-based geodesic sphere](http://donhavey.com/blog/tutorials/tutorial-3-the-icosahedron-sphere/)
 - [Geodesic polyhedron](https://en.wikipedia.org/wiki/Geodesic_polyhedron)
+- [Procedurally Generated Sphere](http://jacksondunstan.com/articles/1904)
+- [World Building](http://pcg.wikidot.com/pcg-algorithm:world-building)
+- [Creating an Octahedron Sphere in Unity](http://www.binpress.com/tutorial/creating-an-octahedron-sphere/162)
 
 <br>
 
@@ -105,3 +110,9 @@
 #### Libraries
 
 - [PEX](https://vorg.github.io/pex/)
+
+<br>
+
+#### 좌표표시 예제
+
+- ![Like It](https://i.stack.imgur.com/rQfnu.png)
