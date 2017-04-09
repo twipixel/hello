@@ -5,11 +5,11 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Cube from './geom/Cube';
-import Surface from './geom/Surface';
-import Triangle from './geom/Triangle';
-import Rectangle from './geom/Rectangle';
-import CoordinatePlane from './geom/CoordinatePlane';
+import Cube from '../../src/basic/geom/Cube';
+import Surface from '../../src/basic/geom/Surface';
+import Triangle from '../../src/basic/geom/Triangle';
+import Rectangle from '../../src/basic/geom/Rectangle';
+import CoordinatePlane from '../../src/basic/debug/CoordinatePlane';
 
 
 export default class App

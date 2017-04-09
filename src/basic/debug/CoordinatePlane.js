@@ -1,6 +1,6 @@
-import Edge from './Edge';
-import Vertex from './Vertex';
-import {constants, X, Y, Z} from '../const';
+import Edge from '../geom/Edge';
+import Vertex from '../../../lab/rotate/geom/Vertex';
+import {constants, X, Y, Z} from '../../../lab/rotate/const';
 
 
 export default class CoordinatePlane extends PIXI.Graphics

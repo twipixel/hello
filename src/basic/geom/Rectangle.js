@@ -1,18 +1,20 @@
-import Num from './Num';
+import Num from '../debug/Num';
 import Edge from './Edge';
-import Vertex from './Vertex';
-import {constants, X, Y, Z} from '../const';
+import Vertex from '../../../lab/rotate/geom/Vertex';
+import {constants, X, Y, Z} from '../../../lab/rotate/const';
 
 
-export default class Triangle extends PIXI.Graphics
+export default class Rectangle extends PIXI.Graphics
 {
-    constructor(size = 10)
+    constructor(width = 10, height = 10)
     {
         super();
 
         this._z = 0;
-        this.size = size;
-        this.halfSize = this.size / 2;
+        this.rectWidth = width;
+        this.rectHeight = height;
+        this.rectHalfWidth = this.rectWidth / 2;
+        this.rectHalfHeight = this.rectHeight / 2;
 
         this.fontSize = 9;
         this.halfFontSize = this.fontSize / 2;
@@ -29,18 +31,21 @@ export default class Triangle extends PIXI.Graphics
      */
     generate()
     {
-        var h = this.halfSize;
+        var w = this.rectHalfWidth;
+        var h = this.rectHalfHeight;
 
         var v = this.vertices = [
-            new Vertex(0, -h, this.z),
-            new Vertex(-h, h, this.z),
-            new Vertex(h, h, this.z)
+            new Vertex(-w, -h, this.z),
+            new Vertex(-w, h, this.z),
+            new Vertex(w, h, this.z),
+            new Vertex(w, -h, this.z)
         ];
 
         this.edges = [
             new Edge(v[0], v[1]),
             new Edge(v[1], v[2]),
-            new Edge(v[2], v[0])
+            new Edge(v[2], v[3]),
+            new Edge(v[3], v[0])
         ];
 
         var textStyle = new PIXI.TextStyle({
@@ -75,6 +80,7 @@ export default class Triangle extends PIXI.Graphics
                 this.drawRect(this.vertices[i].x, this.vertices[i].y, this.vertexSize, this.vertexSize);
             }
         }
+
 
         var h = this.vertexHalfSize;
         var halfFontSize = this.halfFontSize;
