@@ -9,7 +9,7 @@ import Camera from '../../src/basic/core/Camera';
 import Device from '../../src/basic/core/Device';
 import Matrix from '../../src/basic/geom/Matrix';
 import Mesh from '../../src/basic/geom/Mesh';
-import Arrow from '../../src/basic/shape/Arrow';
+import Axis from '../../src/basic/shape/Axis';
 import Vector3D from '../../src/basic/geom/Vector3D';
 import Octahedron from '../../src/basic/shape/Octahedron';
 import Icosphere from '../../src/basic/shape/Icosphere';
@@ -41,9 +41,9 @@ export default class App
         this.device = new Device(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
-        var xAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(this.cx, 0, 0));
-        var yAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(0, this.cy, 0));
-        var zAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(0, 0, this.cx));
+        var xAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(this.cx, 0, 0));
+        var yAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(0, this.cy, 0));
+        var zAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(0, 0, this.cx));
         var xMesh = new Mesh(xAxis);
         var yMesh = new Mesh(yAxis);
         var zMesh = new Mesh(zAxis);

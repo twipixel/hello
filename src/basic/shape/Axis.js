@@ -2,10 +2,13 @@ import Face from '../geom/Face';
 import Vector3D from '../geom/Vector3D';
 
 
-export default class Arrow
+export default class Axis
 {
     constructor(from = new Vector3Dx(0, 0, 0), to = new Vector3D(0, 0, 0))
     {
+        this.to = to;
+        this.from = from;
+
         this.vertices = [
             from,
             to

@@ -3,13 +3,13 @@ import Vector3D from '../geom/Vector3D';
 
 export default class Camera
 {
-    constructor()
+    constructor(x = 0, y = 0, z = 0)
     {
         /**
          * 카메라 위치
          * @type {Vector3D}
          */
-        this.position = new Vector3D(0, 0, 10);
+        this.position = new Vector3D(x, y, z);
 
         /**
          * 카메라 주시점
@@ -23,18 +23,18 @@ export default class Camera
          */
         this.up = new Vector3D(0, 1, 0);
 
-        this._yaw = 0;
-        this._roll = 0;
-        this._pitch = 0;
-
         /**
          * 카메라 회전 추가 테스트
          * @type {Vector3D}
          */
         this.rotation = new Vector3D(0, 0, 0);
+
+        // this._yaw = 0;
+        // this._roll = 0;
+        // this._pitch = 0;
     }
 
-    set rotationX(degrees)
+    /*set rotationX(degrees)
     {
         this.rotation.x = Math.toRadians(degrees);
     }
@@ -92,5 +92,5 @@ export default class Camera
     get pitch()
     {
         return Math.toDegrees(this._pitch);
-    }
+    }*/
 }

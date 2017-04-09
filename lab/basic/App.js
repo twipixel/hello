@@ -9,13 +9,14 @@ import Camera from '../../src/basic/core/Camera';
 import Device from '../../src/basic/core/Device';
 import Matrix from '../../src/basic/geom/Matrix';
 import Mesh from '../../src/basic/geom/Mesh';
-import Arrow from '../../src/basic/shape/Arrow';
+import Axis from '../../src/basic/shape/Axis';
 import Vector3D from '../../src/basic/geom/Vector3D';
 import Octahedron from '../../src/basic/shape/Octahedron';
 import Icosphere from '../../src/basic/shape/Icosphere';
 import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
 import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
 import HammersleySphere from '../../src/basic/shape/HammersleySphere';
+import CoordinateBox from '../../src/basic/debug/CoordinateBox';
 
 
 export default class App
@@ -38,73 +39,92 @@ export default class App
     initialize()
     {
         this.meshes = [];
+        this.octahedrons = [];
         this.camera = new Camera();
+        this.camera.position.z = -10;
+
         this.device = new Device(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
-        var xAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(this.cx, 0, 0));
-        var yAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(0, this.cy, 0));
-        var zAxis = new Arrow(new Vector3D(0, 0, 0), new Vector3D(0, 0, this.cx));
-        var xMesh = new Mesh(xAxis);
-        var yMesh = new Mesh(yAxis);
-        var zMesh = new Mesh(zAxis);
+        this.createAxis();
+        this.createOctahedron(100);
 
-        var shape0 = new Octahedron();
-        var shape1 = new Octahedron();
-        var shape2 = new Octahedron();
-        var shape3 = new Octahedron();
-        var shape4 = new TriakisIcosahedron();
-        var shape5 = new ProceduralSphere();
-        var shape6 = new Icosphere(1, 1);
-        var shape7 = new HammersleySphere(1, 3000);
+        var sphereShape0 = new ProceduralSphere();
+        var sphereShape1 = new Icosphere(1, 1);
+        var sphereShape2 = new HammersleySphere(1, 3000);
+        var sphere0 = this.sphere0 = new Mesh(sphereShape0);
+        var sphere1 = this.sphere1 = new Mesh(sphereShape1);
+        var sphere2 = this.sphere2 = new Mesh(sphereShape2);
+        this.meshes.push(sphere0);
+        this.meshes.push(sphere1);
+        this.meshes.push(sphere2);
 
-        var mesh0 = this.mesh0 = new Mesh(shape0);
-        var mesh1 = this.mesh1 = new Mesh(shape1);
-        var mesh2 = this.mesh2 = new Mesh(shape2);
-        var mesh3 = this.mesh3 = new Mesh(shape3);
-        var mesh4 = this.mesh4 = new Mesh(shape4);
-        var mesh5 = this.mesh5 = new Mesh(shape5);
-        var mesh6 = this.mesh6 = new Mesh(shape6);
-        var mesh7 = this.mesh7 = new Mesh(shape7);
+        sphere0.position.x = -2;
+        sphere0.position.z = 2;
+        sphere1.position.x = 0;
+        sphere1.position.z = 2;
+        sphere2.position.x = 2;
+        sphere2.position.z = 2;
 
-        this.meshes.push(xMesh);
-        this.meshes.push(yMesh);
-        this.meshes.push(zMesh);
+        // this.createCoordinateBox();
+    }
 
-        this.meshes.push(mesh0);
-        this.meshes.push(mesh1);
-        this.meshes.push(mesh2);
-        this.meshes.push(mesh3);
-        this.meshes.push(mesh4);
-        this.meshes.push(mesh5);
-        this.meshes.push(mesh6);
-        this.meshes.push(mesh7);
+    createAxis()
+    {
+        var size = 100;
+        var xAxis = new Axis(new Vector3D(-size, 0, 0), new Vector3D(size, 0, 0));
+        var yAxis = new Axis(new Vector3D(0, -size, 0), new Vector3D(0, size, 0));
+        var zAxis = new Axis(new Vector3D(-size, -size, -size), new Vector3D(size, size, size));
+        var xAxisMesh = this.xAxisMesh = new Mesh(xAxis);
+        var yAxisMesh = this.yAxisMesh = new Mesh(yAxis);
+        var zAxisMesh = this.zAxisMesh = new Mesh(zAxis);
+        this.meshes.push(xAxisMesh);
+        this.meshes.push(yAxisMesh);
+        this.meshes.push(zAxisMesh);
+    }
 
-        mesh0.position.x = 2;
-        mesh0.position.y = 2;
-        mesh0.position.z = -10;
+    createOctahedron(num)
+    {
+        var shape, mesh, rotation = 360 / num, degrees, radians, half = num / 2, quater = num / 4;
 
-        mesh1.position.x = 4;
-        mesh1.position.y = 4;
-        mesh1.position.z = -20;
+        for (var i = 0; i < num; i++) {
+            shape = new Octahedron();
+            mesh = new Mesh(shape);
+            degrees = rotation * i;
+            radians = Math.toRadians(degrees);
+            mesh.position.x = 0 + 30 * Math.cos(radians);
+            mesh.position.y = 0 + 3 * Math.sin(radians);
+            mesh.position.z = 0 + 30 * Math.sin(radians);
 
-        mesh2.position.x = 6;
-        mesh2.position.y = 6;
-        mesh2.position.z = -30;
+            // if (i > half) {
+                this.meshes.push(mesh);
+                this.octahedrons.push(mesh);
+            // }
+        }
+    }
 
-        mesh3.position.x = 8;
-        mesh3.position.y = 8;
-        mesh3.position.z = -40;
+    rotateOctahedron()
+    {
+        var mesh, n = this.octahedrons.length;
+        for (var i = 0; i < n; i++) {
+            mesh = this.octahedrons[i];
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+        }
+    }
 
-        //mesh4.position.x = 20;
-        mesh4.position.x = 20;
-        mesh4.position.z = -80;
+    createCoordinateBox()
+    {
+        var coordinateBox = new CoordinateBox();
+        var coordinateBoxMesh = this.coordinateBoxMesh = new Mesh(coordinateBox);
+        coordinateBoxMesh.position.z = -500;
+        this.meshes.push(coordinateBoxMesh);
+    }
 
-        mesh5.position.x = 1;
-        //mesh5.position.z = -5;
-
-        mesh6.position.x = -1;
-        //mesh6.position.z = -5;
+    moveCamera(property, value)
+    {
+        this.camera.position[property] += value;
+        console.log('moveCamera(', property, value, '), position:', this.camera.position);
     }
 
     initializeGUI()
@@ -132,27 +152,25 @@ export default class App
 
     render(ms)
     {
-        this.mesh0.rotation.x += 0.01;
-        this.mesh1.rotation.x += 0.01;
-        this.mesh2.rotation.x += 0.01;
-        this.mesh3.rotation.x += 0.01;
-        this.mesh4.rotation.x += 0.01;
-        this.mesh5.rotation.x += 0.01;
-        this.mesh6.rotation.x += 0.01;
-        this.mesh7.rotation.x += 0.01;
+        this.camera.target = new Vector3D();
 
-        this.mesh0.rotation.y += 0.01;
-        this.mesh1.rotation.y += 0.01;
-        this.mesh2.rotation.y += 0.01;
-        this.mesh3.rotation.y += 0.01;
-        this.mesh4.rotation.y += 0.01;
-        this.mesh5.rotation.y += 0.01;
-        this.mesh6.rotation.y += 0.01;
-        this.mesh7.rotation.y += 0.01;
+        this.rotateOctahedron();
+
+        this.sphere0.rotation.x += 0.01;
+        this.sphere1.rotation.x += 0.01;
+        this.sphere2.rotation.x += 0.01;
+        this.sphere0.rotation.y += 0.01;
+        this.sphere1.rotation.y += 0.01;
+        this.sphere2.rotation.y += 0.01;
 
         //this.camera.yaw += 0.01;
         //this.camera.roll += 0.01;
         //this.camera.pitch += 0.01;
+
+        if (this.coordinateBoxMesh) {
+            this.coordinateBoxMesh.rotation.x += 0.01;
+            this.coordinateBoxMesh.rotation.y += 0.01;
+        }
 
         this.device.render(this.camera, this.meshes);
     }

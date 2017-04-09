@@ -61,27 +61,27 @@ class Main
     {
         switch (event.keyCode) {
             case KeyCode.UP:
-                this.getIntervalFunction(this.app, this.app.rotate, 'x', -1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'y', -1)();
                 break;
 
             case KeyCode.DOWN:
-                this.getIntervalFunction(this.app, this.app.rotate, 'x', 1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'y', 1)();
                 break;
 
             case KeyCode.LEFT:
-                this.getIntervalFunction(this.app, this.app.rotate, 'y', -1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'x', -1)();
                 break;
 
             case KeyCode.RIGHT:
-                this.getIntervalFunction(this.app, this.app.rotate, 'y', 1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'x', 1)();
                 break;
 
             case KeyCode.PAGE_UP:
-                this.getIntervalFunction(this.app, this.app.rotate, 'z', 1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'z', 1)();
                 break;
 
             case KeyCode.PAGE_DOWN:
-                this.getIntervalFunction(this.app, this.app.rotate, 'z', -1)();
+                this.getIntervalFunction(this.app, this.app.moveCamera, 'z', -1)();
                 break;
         }
     }
