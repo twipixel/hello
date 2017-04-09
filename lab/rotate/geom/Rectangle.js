@@ -1,19 +1,29 @@
+import Num from './Num';
 import Edge from './Edge';
-import Vertex from '../../../lab/rotate/geom/Vertex';
-import {constants, X, Y, Z} from '../../../lab/rotate/const';
+import Vertex from './Vertex';
+import {constants, X, Y, Z} from '../const';
 
 
-export default class Cube extends PIXI.Graphics
+export default class Rectangle extends PIXI.Graphics
 {
-    constructor()
+    constructor(width = 10, height = 10)
     {
         super();
 
-        this.cubeSize = 100;
+        this._z = 0;
+        this.rectWidth = width;
+        this.rectHeight = height;
+        this.rectHalfWidth = this.rectWidth / 2;
+        this.rectHalfHeight = this.rectHeight / 2;
+
+        this.fontSize = 9;
+        this.halfFontSize = this.fontSize / 2;
 
         this.vertices = [];
         this.vertexSize = 4;
         this.vertexHalfSize = this.vertexSize / 2;
+
+        this.isShowNum = false;
     }
 
     /**
@@ -21,33 +31,34 @@ export default class Cube extends PIXI.Graphics
      */
     generate()
     {
-        var size = this.cubeSize;
+        var w = this.rectHalfWidth;
+        var h = this.rectHalfHeight;
 
         var v = this.vertices = [
-            new Vertex(-size, -size, -size),
-            new Vertex(-size, -size, size),
-            new Vertex(size, -size, size),
-            new Vertex(size, -size, -size),
-            new Vertex(-size, size, -size),
-            new Vertex(-size, size, size),
-            new Vertex(size, size, size),
-            new Vertex(size, size, -size)
+            new Vertex(-w, -h, this.z),
+            new Vertex(-w, h, this.z),
+            new Vertex(w, h, this.z),
+            new Vertex(w, -h, this.z)
         ];
 
         this.edges = [
             new Edge(v[0], v[1]),
             new Edge(v[1], v[2]),
             new Edge(v[2], v[3]),
-            new Edge(v[3], v[0]),
-            new Edge(v[4], v[5]),
-            new Edge(v[5], v[6]),
-            new Edge(v[6], v[7]),
-            new Edge(v[7], v[4]),
-            new Edge(v[0], v[4]),
-            new Edge(v[1], v[5]),
-            new Edge(v[2], v[6]),
-            new Edge(v[3], v[7])
+            new Edge(v[3], v[0])
         ];
+
+        var textStyle = new PIXI.TextStyle({
+            fontSize: this.fontSize, fill: 0x19B5FE
+        });
+
+        this.nums = [];
+        for(var i = 0; i < this.edges.length; i++) {
+            var num = new Num(i, textStyle);
+            num.visible = this.isShowNum;
+            this.nums.push(num);
+            this.addChild(num);
+        }
     }
 
     color()
@@ -62,18 +73,30 @@ export default class Cube extends PIXI.Graphics
 
     draw()
     {
-        this.vertices = this.vertices.sort(this.sortByZIndex);
-        for (var i = 0; i < this.vertices.length; i++) {
-            this.beginFill(0xC5EFF7);
-            this.drawRect(this.vertices[i].x, this.vertices[i].y, this.vertexSize, this.vertexSize);
+        if(!this.isShowNum) {
+            this.vertices = this.vertices.sort(this.sortByZIndex);
+            for (var i = 0; i < this.vertices.length; i++) {
+                this.beginFill(0xC5EFF7);
+                this.drawRect(this.vertices[i].x, this.vertices[i].y, this.vertexSize, this.vertexSize);
+            }
         }
 
+
         var h = this.vertexHalfSize;
+        var halfFontSize = this.halfFontSize;
+
         this.lineStyle(1, 0x52B3D9);
         for (var j = 0; j < this.edges.length; j++) {
+            var num = this.nums[j];
             var edge = this.edges[j];
             this.moveTo(edge.point0.x + h, edge.point0.y + h);
             this.lineTo(edge.point1.x + h, edge.point1.y + h);
+
+            if(this.isShowNum) {
+                num.x = edge.point0.x + h;
+                num.y = edge.point0.y + h;
+            }
+            num.visible = this.isShowNum;
         }
         this.endFill();
     }
@@ -171,5 +194,20 @@ export default class Cube extends PIXI.Graphics
         this.multi(Rz); // If P is the set of surface points, then this method performs the matrix multiplcation: Rx * P
         this.erase(); // Note that one could use two canvases to speed things up, which also eliminates the need to erase.
         this.draw();
+    }
+
+    set z(value)
+    {
+        this._z = value;
+        var n = this.vertices.length;
+        for (var i = 0; i < n; i++) {
+            var v = this.vertices[i];
+            v.z = value;
+        }
+    }
+
+    get z()
+    {
+        return this._z;
     }
 }

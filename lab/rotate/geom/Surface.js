@@ -1,5 +1,5 @@
-import Vertex from '../../../lab/rotate/geom/Vertex';
-import {constants, X, Y, Z} from '../../../lab/rotate/const';
+import Vertex from './Vertex';
+import {constants, X, Y, Z} from '../const';
 
 
 export default class Surface extends PIXI.Graphics {

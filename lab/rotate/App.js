@@ -5,11 +5,11 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Cube from '../../src/basic/geom/Cube';
-import Surface from '../../src/basic/geom/Surface';
-import Triangle from '../../src/basic/geom/Triangle';
-import Rectangle from '../../src/basic/geom/Rectangle';
-import CoordinatePlane from '../../src/basic/debug/CoordinatePlane';
+import Cube from './geom/Cube';
+import Surface from './geom/Surface';
+import Triangle from './geom/Triangle';
+import Rectangle from './geom/Rectangle';
+import CoordinatePlane from './geom/CoordinatePlane';
 
 
 export default class App
@@ -45,6 +45,7 @@ export default class App
         this.triangle = new Triangle(100);
         this.triangle.x = this.cx;
         this.triangle.y = this.cy;
+        // this.triangle.isShowNum = true;
         this.triangle.generate();
         this.triangle.draw();
         this.stage.addChild(this.triangle);
@@ -59,6 +60,7 @@ export default class App
         this.rectangle = new Rectangle(100, 100);
         this.rectangle.x = this.cx;
         this.rectangle.y = this.cy;
+        // this.rectangle.isShowNum = true;
         this.rectangle.generate();
         this.rectangle.draw();
         this.stage.addChild(this.rectangle);
