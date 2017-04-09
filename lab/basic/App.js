@@ -5,16 +5,17 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Camera from './core/Camera';
-import Device from './core/Device';
-import Matrix from './geom/Matrix';
-import Mesh from './geom/Mesh';
-import Arrow from './shape/Arrow';
-import Vector3D from './geom/Vector3D';
-import Octahedron from './shape/Octahedron';
-import Icosphere from './shape/Icosphere';
-import ProceduralSphere from './shape/ProceduralSphere';
-import TriakisIcosahedron from './shape/TriakisIcosahedron';
+import Camera from '../../src/basic/core/Camera';
+import Device from '../../src/basic/core/Device';
+import Matrix from '../../src/basic/geom/Matrix';
+import Mesh from '../../src/basic/geom/Mesh';
+import Arrow from '../../src/basic/shape/Arrow';
+import Vector3D from '../../src/basic/geom/Vector3D';
+import Octahedron from '../../src/basic/shape/Octahedron';
+import Icosphere from '../../src/basic/shape/Icosphere';
+import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
+import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
+import HammersleySphere from '../../src/basic/shape/HammersleySphere';
 
 
 export default class App
@@ -55,14 +56,16 @@ export default class App
         var shape4 = new TriakisIcosahedron();
         var shape5 = new ProceduralSphere();
         var shape6 = new Icosphere(1, 1);
+        var shape7 = new HammersleySphere(1, 3000);
 
         var mesh0 = this.mesh0 = new Mesh(shape0);
         var mesh1 = this.mesh1 = new Mesh(shape1);
         var mesh2 = this.mesh2 = new Mesh(shape2);
         var mesh3 = this.mesh3 = new Mesh(shape3);
         var mesh4 = this.mesh4 = new Mesh(shape4);
-        var mesh5 = this.mesh6 = new Mesh(shape5);
-        var mesh6 = this.mesh5 = new Mesh(shape6);
+        var mesh5 = this.mesh5 = new Mesh(shape5);
+        var mesh6 = this.mesh6 = new Mesh(shape6);
+        var mesh7 = this.mesh7 = new Mesh(shape7);
 
         this.meshes.push(xMesh);
         this.meshes.push(yMesh);
@@ -75,6 +78,7 @@ export default class App
         this.meshes.push(mesh4);
         this.meshes.push(mesh5);
         this.meshes.push(mesh6);
+        this.meshes.push(mesh7);
 
         mesh0.position.x = 2;
         mesh0.position.y = 2;
@@ -135,6 +139,7 @@ export default class App
         this.mesh4.rotation.x += 0.01;
         this.mesh5.rotation.x += 0.01;
         this.mesh6.rotation.x += 0.01;
+        this.mesh7.rotation.x += 0.01;
 
         this.mesh0.rotation.y += 0.01;
         this.mesh1.rotation.y += 0.01;
@@ -143,6 +148,7 @@ export default class App
         this.mesh4.rotation.y += 0.01;
         this.mesh5.rotation.y += 0.01;
         this.mesh6.rotation.y += 0.01;
+        this.mesh7.rotation.y += 0.01;
 
         //this.camera.yaw += 0.01;
         //this.camera.roll += 0.01;

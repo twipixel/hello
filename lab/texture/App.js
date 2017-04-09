@@ -5,16 +5,16 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Camera from './core/Camera';
-import Device from './core/Device';
-import Matrix from './geom/Matrix';
-import Mesh from './geom/Mesh';
-import Arrow from './shape/Arrow';
-import Vector3D from './geom/Vector3D';
-import Octahedron from './shape/Octahedron';
-import Icosphere from './shape/Icosphere';
-import ProceduralSphere from './shape/ProceduralSphere';
-import TriakisIcosahedron from './shape/TriakisIcosahedron';
+import Camera from '../../src/basic/core/Camera';
+import Device from '../../src/basic/core/Device';
+import Matrix from '../../src/basic/geom/Matrix';
+import Mesh from '../../src/basic/geom/Mesh';
+import Arrow from '../../src/basic/shape/Arrow';
+import Vector3D from '../../src/basic/geom/Vector3D';
+import Octahedron from '../../src/basic/shape/Octahedron';
+import Icosphere from '../../src/basic/shape/Icosphere';
+import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
+import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
 
 
 export default class App
