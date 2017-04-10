@@ -25,6 +25,9 @@
 - ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
 - 조명 적용 (라이팅)
 - Texture 적용
+  - [UV맵핑, 원근투영](http://jidolstar.tistory.com/543)
+  - [Cube Map](http://jidolstar.tistory.com/574)
+  - [토성 그리기](http://jidolstar.tistory.com/547) 
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders

@@ -19,7 +19,7 @@ import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
 import HammersleySphere from '../../src/basic/shape/HammersleySphere';
 import CoordinateBox from '../../src/basic/debug/CoordinateBox';
 import Triangle from '../../src/basic/shape/Triangle';
-import Rectangle from '../../src/basic/shape/Rectangle';
+import Rectangle from '../../src/texture/shape/Rectangle';
 import Cube from '../../src/basic/shape/Cube';
 import Num from '../../src/basic/debug/Num';
 import Arrow from '../../src/basic/shape/Arrow';
@@ -56,10 +56,10 @@ export default class App
         this.world = new Mesh({faces:[], vertices:[]});
 
         //this.createTriangle(30);
-        //this.createRectangle(30, 30);
+        this.createRectangle(30, 30);
         //this.createCube(15);
         //this.createOctahedron(100);
-        this.createSphere();
+        //this.createSphere();
 
         this.createAxis(30);
         //this.createAxisLine();
