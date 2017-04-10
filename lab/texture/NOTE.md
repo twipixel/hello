@@ -4,6 +4,9 @@
 - [UV mapping](https://en.wikipedia.org/wiki/UV_mapping)
 - [UV mapping a sphere triangle mesh](https://mft-dev.dk/category/game-engine/)
 - [UV Mapping by Ken Brilliant](http://www.yoshii.com/zbrush/tutrial/tutorial01/UV%20Mapping.htm)
+- [perspective-correct texturing in <canvas>](http://tulrich.com/geekstuff/canvas/perspective.html)
+- [perspective.js](http://www.html5.jp/test/perspective_canvas/demo1_en.html)
+- [distort image](http://jsfiddle.net/rjw57/CJy24/)
 
 <br>
 
