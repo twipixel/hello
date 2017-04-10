@@ -48,6 +48,9 @@ export default class Icosphere
 
     subdivide(complex)
     {
+        var alpha = 1;
+        var color = 0xA2DED0;
+
         this.middleVertexCached = {};
 
         var faces = complex.faces;
@@ -84,10 +87,10 @@ export default class Icosphere
             var v2i = newVertices.indexOf(v2);
             if (v2i === -1) v2i = l++, newVertices.push(v2);
 
-            newFaces.push(new Face(v0i, ai, ci));
-            newFaces.push(new Face(v1i, bi, ai));
-            newFaces.push(new Face(v2i, ci, bi));
-            newFaces.push(new Face(ai, bi, ci))
+            newFaces.push(new Face(v0i, ai, ci, color, alpha));
+            newFaces.push(new Face(v1i, bi, ai, color, alpha));
+            newFaces.push(new Face(v2i, ci, bi, color, alpha));
+            newFaces.push(new Face(ai, bi, ci, color, alpha))
         }
 
         return {

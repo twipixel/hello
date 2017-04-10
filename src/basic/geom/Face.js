@@ -6,11 +6,13 @@ export default class Face
      * @param v1
      * @param v2
      */
-    constructor(v0 = 0, v1 = 0, v2 = 0)
+    constructor(v0 = 0, v1 = 0, v2 = 0, color = 0xFFFFFF, alpha = 1)
     {
         this._v0 = this.A = v0;
         this._v1 = this.B = v1;
         this._v2 = this.C = v2;
+        this.color = color;
+        this.alpha = alpha;
     }
 
     set v0(value)

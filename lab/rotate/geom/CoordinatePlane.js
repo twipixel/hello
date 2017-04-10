@@ -112,15 +112,15 @@ export default class CoordinatePlane extends PIXI.Graphics
         for (var i = 0; i < n; i++) {
             if (i == 0) {
                 // x-axis
-                this.lineStyle(1, 0x03A9F4);
+                this.lineStyle(1, 0xE91E63);
             }
             else if (i == 1) {
                 // y-axis
-                this.lineStyle(1, 0xE91E63);
+                this.lineStyle(1, 0x8BC34A);
             }
             else if (i == 2) {
                 // z-axis
-                this.lineStyle(1, 0x8BC34A);
+                this.lineStyle(1, 0x03A9F4);
             }
             else {
                 // cx, cz

@@ -52,7 +52,7 @@ export default class Device extends PIXI.Graphics
         this.closePath();
     }
 
-    render(camera, meshes)
+    render(world, camera, meshes)
     {
         this.clear();
 
@@ -71,6 +71,9 @@ export default class Device extends PIXI.Graphics
         // yaw, roll. pitch 테스트
         //let cameraRotation = Matrix.rotationYPR(camera.yaw, camera.pitch, camera.roll);
         //cameraPosition = Vector3D.transformCoordinates(cameraPosition, cameraRotation);
+
+        let stageTransfromMatrix = Matrix.translation(world.position.x, world.position.y, world.position.z);
+        let stageRotationMatrix = Matrix.rotateX(world.rotation.x).multiply(Matrix.rotateY(world.rotation.y)).multiply(Matrix.rotateZ(world.rotation.z));
 
         /**
          * 뷰 행렬
@@ -92,13 +95,13 @@ export default class Device extends PIXI.Graphics
              * 매쉬의 회전 행렬
              * @type {Matrix}
              */
-            let rotationMatrix = Matrix.rotateX(currentMesh.rotation.x).multiply(Matrix.rotateY(currentMesh.rotation.y)).multiply(Matrix.rotateZ(currentMesh.rotation.z));
+            let rotationMatrix = stageRotationMatrix.multiply(Matrix.rotateX(currentMesh.rotation.x)).multiply(Matrix.rotateY(currentMesh.rotation.y)).multiply(Matrix.rotateZ(currentMesh.rotation.z));
 
             /**
              * 월드 좌표계
              * @type {Matrix}
              */
-            let worldMatrix = rotationMatrix.multiply(Matrix.translation(currentMesh.position.x, currentMesh.position.y, currentMesh.position.z));
+            let worldMatrix = rotationMatrix.multiply(Matrix.translation(currentMesh.position.x, currentMesh.position.y, currentMesh.position.z).multiply(stageTransfromMatrix));
             // Final matrix to be applied to each vertex
 
             /**

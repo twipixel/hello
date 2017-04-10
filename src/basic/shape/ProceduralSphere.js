@@ -15,6 +15,9 @@ export default class ProceduralSphere
         var faces = this.faces = [];
         var vertices = this.vertices = [];
 
+        var alpha = 1;
+        var color = 0xA2DED0;
+
         for (var y = 0; y < longitudeCount; y++) {
             for (var x = 0; x < latitudeCount; x++) {
                 var angleX = 2 * Math.PI / latitudeCount * x;
@@ -37,7 +40,8 @@ export default class ProceduralSphere
                     new Face(
                         l + b * latitudeCount,
                         r + b * latitudeCount,
-                        l + t * latitudeCount
+                        l + t * latitudeCount,
+                        color, alpha
                     )
                 );
             }

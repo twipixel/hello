@@ -21,14 +21,14 @@ export default class Octahedron
         ];
 
         this.faces = [
-            new Face(0, 2, 4 ),
-            new Face(0, 4, 3 ),
-            new Face(0, 3, 5 ),
-            new Face(0, 5, 2 ),
-            new Face(1, 2, 5 ),
-            new Face(1, 5, 3 ),
-            new Face(1, 3, 4 ),
-            new Face(1, 4, 2 )
+            new Face(0, 2, 4, 0xA2DED0),
+            new Face(0, 4, 3, 0xA2DED0),
+            new Face(0, 3, 5, 0xA2DED0),
+            new Face(0, 5, 2, 0xA2DED0),
+            new Face(1, 2, 5, 0xA2DED0),
+            new Face(1, 5, 3, 0xA2DED0),
+            new Face(1, 3, 4, 0xA2DED0),
+            new Face(1, 4, 2, 0xA2DED0)
         ];
     }
 }

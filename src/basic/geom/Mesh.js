@@ -5,8 +5,8 @@ export default class Mesh
 {
     constructor(shape)
     {
-        this.vertices = shape.vertices;
         this.faces = shape.faces;
+        this.vertices = shape.vertices;
         this.rotation = new Vector3D(0, 0, 0);
         this.position = new Vector3D(0, 0, 0);
         this.velocity = new Vector3D(0, 0, 0);

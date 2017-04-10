@@ -63,25 +63,53 @@ class Main
             case KeyCode.UP:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'y', -1)();
                 break;
-
             case KeyCode.DOWN:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'y', 1)();
                 break;
-
             case KeyCode.LEFT:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'x', -1)();
                 break;
-
             case KeyCode.RIGHT:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'x', 1)();
                 break;
-
             case KeyCode.PAGE_UP:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'z', 1)();
                 break;
-
             case KeyCode.PAGE_DOWN:
                 this.getIntervalFunction(this.app, this.app.moveCamera, 'z', -1)();
+                break;
+            case KeyCode.NUMBER_4:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'y', -0.01)();
+                break;
+            case KeyCode.NUMBER_6:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'y', 0.01)();
+                break;
+            case KeyCode.NUMBER_8:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'x', -0.01)();
+                break;
+            case KeyCode.NUMBER_2:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'x', 0.01)();
+                break;
+            case KeyCode.NUMBER_7:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'z', -0.01)();
+                break;
+            case KeyCode.NUMBER_1:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'z', 0.01)();
+                break;
+            case KeyCode.NUMBER_9:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'z', -0.01)();
+                break;
+            case KeyCode.NUMBER_3:
+                this.getIntervalFunction(this.app, this.app.rotateWorld, 'z', 0.01)();
+                break;
+            case KeyCode.NUMPAD_ADD:
+                this.getIntervalFunction(this.app, this.app.moveWorld, 'z', 1)();
+                break;
+            case KeyCode.NUMPAD_SUBTRACT:
+                this.getIntervalFunction(this.app, this.app.moveWorld, 'z', -1)();
+                break;
+            case KeyCode.NUMBER_0:
+                this.app.reset();
                 break;
         }
     }
@@ -108,6 +136,16 @@ class Main
             case KeyCode.RIGHT:
             case KeyCode.PAGE_UP:
             case KeyCode.PAGE_DOWN:
+            case KeyCode.NUMBER_4:
+            case KeyCode.NUMBER_6:
+            case KeyCode.NUMBER_8:
+            case KeyCode.NUMBER_2:
+            case KeyCode.NUMBER_7:
+            case KeyCode.NUMBER_1:
+            case KeyCode.NUMBER_9:
+            case KeyCode.NUMBER_3:
+            case KeyCode.NUMPAD_ADD:
+            case KeyCode.NUMPAD_SUBTRACT:
                 this.clearInterFunction();
                 break;
 

@@ -12,6 +12,9 @@ export default class HammersleySphere {
         this.faces = [];
         this.vertices = [];
 
+        var alpha = 1;
+        var color = 0xA2DED0;
+
         // based on the algorithm in spherical coordinates (theta, phi) from
         // "Distributing many points on a sphere" by E.B. Saff and A.B.J. Kuijlaars,
         // Mathematical Intelligencer 19.1 (1997) 5--11.
@@ -31,7 +34,7 @@ export default class HammersleySphere {
             ));
 
             if (i != 0 && i % 3 == 0) {
-                this.faces.push(new Face(i - 2, i - 1, i));
+                this.faces.push(new Face(i - 2, i - 1, i, color, alpha));
             }
         }
     }

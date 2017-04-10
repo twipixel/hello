@@ -1,28 +1,29 @@
 ## 학습 로드맵
 
-- (v) 직선 그리기
-- (v) 삼각형 그리기
-- (v) 사각형 그리기
-- (v) 큐브 그리기
-- (v) z  테스트
+- ~~직선 그리기~~
+- ~~삼각형 그리기~~
+- ~~사각형 그리기~~
+- ~~큐브 그리기~~
+- ~~z  테스트~~
+- ~~x, y, z 좌표계 (+, - 확인)~~
 - 회전
-  - (v) x 축 회전
-  - (v) y 축 회전
-  - (v) z 축 회전 
+  - ~~x 축 회전~~
+  - ~~y 축 회전~~
+  - ~~z 축 회전~~ 
   - [Yaw, Pitch, Roll](http://planning.cs.uiuc.edu/node102.html)
 - 3D redener
-  - (v) Vector3D
-  - (v) Matrix
   - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
-    - (v) 눈의 위치 (Eye Vector)
-    - (v) 바라보는 지점 (Look Vector)
-    - (v) [Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)
+    - ~~눈의 위치 (Eye Vector)~~
+    - ~~바라보는 지점 (Look Vector)~~
+    - ~~[Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)~~
+  - ~~World 좌표 회전~~ 
   - Camera
-    - Camera 회전
+    - ~~Camera 회전~~
+  - No Camera 투영
   - 투영 (Projection)
     - Orthographic
     - Perspective
-- (v) [Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)
+- ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
 - 조명 적용 (라이팅)
 - Texture 적용
 - Orbit 회전 구현
@@ -90,6 +91,7 @@
 
 - [3D Orthographic View](http://codepen.io/SitePoint/pen/obapXL)
 - [3D Perspective View](http://codepen.io/SitePoint/pen/VeEyvm)
+- [3D Perspective Projection on Canvas](http://thecodeplayer.com/walkthrough/3d-perspective-projection-canvas-javascript)
 - [Cube rotating with user interaction](https://www.khanacademy.org/computer-programming/cube-rotating-with-user-interaction/5953495622746112)
 - [Draw 3D Sphere with HTML5](http://www.bitstorm.it/blog/en/2011/05/3d-sphere-html5-canvas/)
 
@@ -114,6 +116,7 @@
 #### Libraries
 
 - [PEX](https://vorg.github.io/pex/)
+- [Cango3D](http://www.arc.id.au/Canvas3DGraphics.html)
 
 <br>
 
