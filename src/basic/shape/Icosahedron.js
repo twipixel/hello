@@ -8,8 +8,8 @@ export default class Icosahedron {
      * http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
      */
     constructor() {
-        var alpha = 1;
-        var color = 0xA2DED0;
+        var alpha = 0.5;
+        var color = 0x87D37C;
 
         var positions = this.positions = this.vertices = [];
         var faces = this.faces = [];

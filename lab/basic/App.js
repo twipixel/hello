@@ -54,92 +54,125 @@ export default class App
         this.stage.addChild(this.device);
 
         this.world = new Mesh({faces:[], vertices:[]});
-        //this.createAxis();
-        this.createCoordinateBox(30, 30, 30);
-        this.createArrow(30);
+
         //this.createTriangle(30);
         //this.createRectangle(30, 30);
         //this.createCube(15);
         //this.createOctahedron(100);
         this.createSphere();
+
+        this.createAxis(30);
+        //this.createAxisLine();
+        this.createCoordinateBox(30, 30, 30);
     }
 
-    createAxis(size)
+    createAxis(size = 10)
     {
-        var size = 100;
-        var x = new Axis(new Vector3D(-size, 0, 0), new Vector3D(size, 0, 0));
-        var y = new Axis(new Vector3D(0, -size, 0), new Vector3D(0, size, 0));
-        var z = new Axis(new Vector3D(-size, -size, -size), new Vector3D(size, size, size));
-        var xAxis = new Mesh(x);
-        var yAxis = new Mesh(y);
-        var zAxis = new Mesh(z);
-        this.meshes.push(xAxis);
-        this.meshes.push(yAxis);
-        this.meshes.push(zAxis);
+        if (!this.xArrow) {
+            var center = new Vector3D();
+            var ax = new Arrow('x', center, new Vector3D(size, 0, 0));
+            var ay = new Arrow('y', center, new Vector3D(0, size, 0));
+            var az = new Arrow('z', center, new Vector3D(0, 0, size));
+            var xArrow = this.xArrow = new Mesh(ax);
+            var yArrow = this.yArrow = new Mesh(ay);
+            var zArrow = this.zArrow = new Mesh(az);
+        }
+
+        this.meshes.push(this.xArrow);
+        this.meshes.push(this.yArrow);
+        this.meshes.push(this.zArrow);
+    }
+
+    createAxisLine(size = 100)
+    {
+        if (!this.xAxis) {
+            var x = new Axis(new Vector3D(-size, 0, 0), new Vector3D(size, 0, 0));
+            var y = new Axis(new Vector3D(0, -size, 0), new Vector3D(0, size, 0));
+            var z = new Axis(new Vector3D(-size, -size, -size), new Vector3D(size, size, size));
+            var xAxis = this.xAxis = new Mesh(x);
+            var yAxis = this.yAxis = new Mesh(y);
+            var zAxis = this.zAxis = new Mesh(z);
+        }
+
+        this.meshes.push(this.xAxis);
+        this.meshes.push(this.yAxis);
+        this.meshes.push(this.zAxis);
     }
 
     createCoordinateBox(x = 50, y = 50, z = 50)
     {
-        var shape = new CoordinateBox(x, y, z);
-        var coordinateBox = this.coordinateBox = new Mesh(shape);
-        this.meshes.push(coordinateBox);
-    }
+        if (!this.coordinateBox) {
+            var shape = new CoordinateBox(x, y, z);
+            var coordinateBox = this.coordinateBox = new Mesh(shape);
+        }
 
-    createArrow(size = 10)
-    {
-        console.log('createArrow(', size, ')');
-
-        var center = new Vector3D();
-        var ax = new Arrow('x', center, new Vector3D(size, 0, 0));
-        var ay = new Arrow('y', center, new Vector3D(0, size, 0));
-        var az = new Arrow('z', center, new Vector3D(0, 0, size));
-        var xArrow = new Mesh(ax);
-        var yArrow = new Mesh(ay);
-        var zArrow = new Mesh(az);
-
-        this.meshes.push(xArrow);
-        this.meshes.push(yArrow);
-        this.meshes.push(zArrow);
+        this.meshes.push(this.coordinateBox);
     }
 
     createTriangle(size = 10)
     {
-        var shape = new Triangle(size);
-        var triangle = this.triangle = new Mesh(shape);
-        this.meshes.push(triangle);
+        this.removeAll();
+
+        if (!this.triangle) {
+            var shape = new Triangle(size);
+            var triangle = this.triangle = new Mesh(shape);
+        }
+
+        this.meshes.push(this.triangle);
     }
 
     createRectangle(width = 10, height = 10)
     {
-        var shape = new Rectangle(width, height);
-        var rectangle = this.rectangle = new Mesh(shape);
-        this.meshes.push(rectangle);
+        this.removeAll();
+
+        if (!this.rectangle) {
+            var shape = new Rectangle(width, height);
+            var rectangle = this.rectangle = new Mesh(shape);
+        }
+
+        this.meshes.push(this.rectangle);
     }
 
     createCube(size = 10)
     {
-        var shape = new Cube(size, size, size);
-        var cube = this.cube = new Mesh(shape);
-        this.meshes.push(cube);
+        this.removeAll();
+
+        if (!this.cube) {
+            var shape = new Cube(size, size, size);
+            var cube = this.cube = new Mesh(shape);
+        }
+
+        this.meshes.push(this.cube);
     }
 
-    createOctahedron(num)
+    createOctahedron(num = 100)
     {
+        this.removeAll();
+
         var shape, mesh, rotation = 360 / num, degrees, radians, half = num / 2, quater = num / 4;
+        if (this.octahedrons.length === 0) {
+            for (var i = 0; i < num; i++) {
+                shape = new Octahedron();
+                mesh = new Mesh(shape);
+                degrees = rotation * i;
+                radians = Math.toRadians(degrees);
+                mesh.position.x = 0 + 30 * Math.cos(radians);
+                mesh.position.y = 0 + 3 * Math.sin(radians);
+                mesh.position.z = 0 + 30 * Math.sin(radians);
 
-        for (var i = 0; i < num; i++) {
-            shape = new Octahedron();
-            mesh = new Mesh(shape);
-            degrees = rotation * i;
-            radians = Math.toRadians(degrees);
-            mesh.position.x = 0 + 30 * Math.cos(radians);
-            mesh.position.y = 0 + 3 * Math.sin(radians);
-            mesh.position.z = 0 + 30 * Math.sin(radians);
-
-            // if (i > half) {
+                // if (i > half) {
                 this.meshes.push(mesh);
                 this.octahedrons.push(mesh);
-            // }
+                // }
+            }
+        }
+        else {
+            num = this.octahedrons.length;
+            for (var i = 0; i < num; i++) {
+                // if (i > half) {
+                this.meshes.push(this.octahedrons[i]);
+                // }
+            }
         }
     }
 
@@ -167,19 +200,28 @@ export default class App
 
     createSphere()
     {
-        var sphereShape0 = new ProceduralSphere(10);
-        var sphereShape1 = new Icosphere(10, 1);
-        var sphereShape2 = new HammersleySphere(10, 3000);
-        var sphere0 = this.sphere0 = new Mesh(sphereShape0);
-        var sphere1 = this.sphere1 = new Mesh(sphereShape1);
-        var sphere2 = this.sphere2 = new Mesh(sphereShape2);
-        this.meshes.push(sphere0);
-        this.meshes.push(sphere1);
-        this.meshes.push(sphere2);
+        this.removeAll();
 
-        sphere0.position.x = -20;
-        sphere1.position.x = 0;
-        sphere2.position.x = 20;
+        if (!this.sphere0) {
+            var sphereShape0 = new ProceduralSphere(10);
+            var sphereShape1 = new Icosphere(10, 1);
+            var sphereShape2 = new HammersleySphere(10, 3000);
+            var sphere0 = this.sphere0 = new Mesh(sphereShape0);
+            var sphere1 = this.sphere1 = new Mesh(sphereShape1);
+            var sphere2 = this.sphere2 = new Mesh(sphereShape2);
+            sphere0.position.x = -20;
+            sphere1.position.x = 0;
+            sphere2.position.x = 20;
+        }
+
+        this.meshes.push(this.sphere0);
+        this.meshes.push(this.sphere1);
+        this.meshes.push(this.sphere2);
+    }
+
+    removeAll()
+    {
+        this.meshes = [];
     }
 
     moveCamera(property, value)
@@ -200,11 +242,21 @@ export default class App
         console.log('rotateWorld(', property, value, '), rotation:', this.world.rotation);
     }
 
+    zoomIn()
+    {
+        Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut).play();
+    }
+
+    zoomOut()
+    {
+        Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut).play();
+    }
+
     reset()
     {
         var wt = Be.to(this.world.position, {x:0, y:0, z:0}, 1, Quad.easeOut);
         var wr = Be.to(this.world.rotation, {x:0, y:0, z:0}, 1, Quad.easeOut);
-        var ct = Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut);
+        var ct = Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut);
 
         Be.parallel(wt, wr, ct).play();
 
@@ -214,10 +266,41 @@ export default class App
         //console.log('camera.position:', this.camera.position);
     }
 
+    clear()
+    {
+        this.removeAll();
+    }
+
     initializeGUI()
     {
         this.config = {};
         this.gui = new dat.GUI();
+
+        this.config.createTriangle = this.createTriangle.bind(this);
+        this.config.createRectangle = this.createRectangle.bind(this);
+        this.config.createCube = this.createCube.bind(this);
+        this.config.createSphere = this.createSphere.bind(this);
+        this.config.createOctahedron = this.createOctahedron.bind(this);
+        this.config.createAxis = this.createAxis.bind(this);
+        this.config.createAxisLine = this.createAxisLine.bind(this);
+        this.config.createCoordinateBox = this.createCoordinateBox.bind(this);
+        this.config.zoomIn = this.zoomIn.bind(this);
+        this.config.zoomOut = this.zoomOut.bind(this);
+        this.config.reset = this.reset.bind(this);
+        this.config.clear = this.clear.bind(this);
+
+        this.gui.add(this.config, 'createTriangle');
+        this.gui.add(this.config, 'createRectangle');
+        this.gui.add(this.config, 'createCube');
+        this.gui.add(this.config, 'createSphere');
+        this.gui.add(this.config, 'createOctahedron');
+        this.gui.add(this.config, 'createAxis');
+        this.gui.add(this.config, 'createAxisLine');
+        this.gui.add(this.config, 'createCoordinateBox');
+        this.gui.add(this.config, 'zoomIn');
+        this.gui.add(this.config, 'zoomOut');
+        this.gui.add(this.config, 'reset');
+        this.gui.add(this.config, 'clear');
     }
 
     tick(ms)

@@ -12,8 +12,8 @@ export default class HammersleySphere {
         this.faces = [];
         this.vertices = [];
 
-        var alpha = 1;
-        var color = 0xA2DED0;
+        var alpha = 0.5;
+        var color = 0x87D37C;
 
         // based on the algorithm in spherical coordinates (theta, phi) from
         // "Distributing many points on a sphere" by E.B. Saff and A.B.J. Kuijlaars,

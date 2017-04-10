@@ -7,6 +7,7 @@ import {
 
 import Camera from '../../src/basic/core/Camera';
 import Device from '../../src/basic/core/Device';
+import DeviceWithWorld from '../../src/basic/core/DeviceWithWorld';
 import Matrix from '../../src/basic/geom/Matrix';
 import Mesh from '../../src/basic/geom/Mesh';
 import Axis from '../../src/basic/shape/Axis';
@@ -15,6 +16,13 @@ import Octahedron from '../../src/basic/shape/Octahedron';
 import Icosphere from '../../src/basic/shape/Icosphere';
 import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
 import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
+import HammersleySphere from '../../src/basic/shape/HammersleySphere';
+import CoordinateBox from '../../src/basic/debug/CoordinateBox';
+import Triangle from '../../src/basic/shape/Triangle';
+import Rectangle from '../../src/basic/shape/Rectangle';
+import Cube from '../../src/basic/shape/Cube';
+import Num from '../../src/basic/debug/Num';
+import Arrow from '../../src/basic/shape/Arrow';
 
 
 export default class App
@@ -37,76 +45,262 @@ export default class App
     initialize()
     {
         this.meshes = [];
+        this.octahedrons = [];
         this.camera = new Camera();
-        this.device = new Device(this.canvas.width, this.canvas.height);
+        this.camera.position.z = -200;
+
+        //this.device = new Device(this.canvas.width, this.canvas.height);
+        this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
-        var xAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(this.cx, 0, 0));
-        var yAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(0, this.cy, 0));
-        var zAxis = new Axis(new Vector3D(0, 0, 0), new Vector3D(0, 0, this.cx));
-        var xMesh = new Mesh(xAxis);
-        var yMesh = new Mesh(yAxis);
-        var zMesh = new Mesh(zAxis);
+        this.world = new Mesh({faces:[], vertices:[]});
 
-        var shape0 = new Octahedron();
-        var shape1 = new Octahedron();
-        var shape2 = new Octahedron();
-        var shape3 = new Octahedron();
-        var shape4 = new TriakisIcosahedron();
-        var shape5 = new ProceduralSphere();
-        var shape6 = new Icosphere(1, 1);
+        //this.createTriangle(30);
+        //this.createRectangle(30, 30);
+        //this.createCube(15);
+        //this.createOctahedron(100);
+        this.createSphere();
 
-        var mesh0 = this.mesh0 = new Mesh(shape0);
-        var mesh1 = this.mesh1 = new Mesh(shape1);
-        var mesh2 = this.mesh2 = new Mesh(shape2);
-        var mesh3 = this.mesh3 = new Mesh(shape3);
-        var mesh4 = this.mesh4 = new Mesh(shape4);
-        var mesh5 = this.mesh6 = new Mesh(shape5);
-        var mesh6 = this.mesh5 = new Mesh(shape6);
+        this.createAxis(30);
+        //this.createAxisLine();
+        this.createCoordinateBox(30, 30, 30);
+    }
 
-        this.meshes.push(xMesh);
-        this.meshes.push(yMesh);
-        this.meshes.push(zMesh);
+    createAxis(size = 10)
+    {
+        if (!this.xArrow) {
+            var center = new Vector3D();
+            var ax = new Arrow('x', center, new Vector3D(size, 0, 0));
+            var ay = new Arrow('y', center, new Vector3D(0, size, 0));
+            var az = new Arrow('z', center, new Vector3D(0, 0, size));
+            var xArrow = this.xArrow = new Mesh(ax);
+            var yArrow = this.yArrow = new Mesh(ay);
+            var zArrow = this.zArrow = new Mesh(az);
+        }
 
-        this.meshes.push(mesh0);
-        this.meshes.push(mesh1);
-        this.meshes.push(mesh2);
-        this.meshes.push(mesh3);
-        this.meshes.push(mesh4);
-        this.meshes.push(mesh5);
-        this.meshes.push(mesh6);
+        this.meshes.push(this.xArrow);
+        this.meshes.push(this.yArrow);
+        this.meshes.push(this.zArrow);
+    }
 
-        mesh0.position.x = 2;
-        mesh0.position.y = 2;
-        mesh0.position.z = -10;
+    createAxisLine(size = 100)
+    {
+        if (!this.xAxis) {
+            var x = new Axis(new Vector3D(-size, 0, 0), new Vector3D(size, 0, 0));
+            var y = new Axis(new Vector3D(0, -size, 0), new Vector3D(0, size, 0));
+            var z = new Axis(new Vector3D(-size, -size, -size), new Vector3D(size, size, size));
+            var xAxis = this.xAxis = new Mesh(x);
+            var yAxis = this.yAxis = new Mesh(y);
+            var zAxis = this.zAxis = new Mesh(z);
+        }
 
-        mesh1.position.x = 4;
-        mesh1.position.y = 4;
-        mesh1.position.z = -20;
+        this.meshes.push(this.xAxis);
+        this.meshes.push(this.yAxis);
+        this.meshes.push(this.zAxis);
+    }
 
-        mesh2.position.x = 6;
-        mesh2.position.y = 6;
-        mesh2.position.z = -30;
+    createCoordinateBox(x = 50, y = 50, z = 50)
+    {
+        if (!this.coordinateBox) {
+            var shape = new CoordinateBox(x, y, z);
+            var coordinateBox = this.coordinateBox = new Mesh(shape);
+        }
 
-        mesh3.position.x = 8;
-        mesh3.position.y = 8;
-        mesh3.position.z = -40;
+        this.meshes.push(this.coordinateBox);
+    }
 
-        //mesh4.position.x = 20;
-        mesh4.position.x = 20;
-        mesh4.position.z = -80;
+    createTriangle(size = 10)
+    {
+        this.removeAll();
 
-        mesh5.position.x = 1;
-        //mesh5.position.z = -5;
+        if (!this.triangle) {
+            var shape = new Triangle(size);
+            var triangle = this.triangle = new Mesh(shape);
+        }
 
-        mesh6.position.x = -1;
-        //mesh6.position.z = -5;
+        this.meshes.push(this.triangle);
+    }
+
+    createRectangle(width = 10, height = 10)
+    {
+        this.removeAll();
+
+        if (!this.rectangle) {
+            var shape = new Rectangle(width, height);
+            var rectangle = this.rectangle = new Mesh(shape);
+        }
+
+        this.meshes.push(this.rectangle);
+    }
+
+    createCube(size = 10)
+    {
+        this.removeAll();
+
+        if (!this.cube) {
+            var shape = new Cube(size, size, size);
+            var cube = this.cube = new Mesh(shape);
+        }
+
+        this.meshes.push(this.cube);
+    }
+
+    createOctahedron(num = 100)
+    {
+        this.removeAll();
+
+        var shape, mesh, rotation = 360 / num, degrees, radians, half = num / 2, quater = num / 4;
+        if (this.octahedrons.length === 0) {
+            for (var i = 0; i < num; i++) {
+                shape = new Octahedron();
+                mesh = new Mesh(shape);
+                degrees = rotation * i;
+                radians = Math.toRadians(degrees);
+                mesh.position.x = 0 + 30 * Math.cos(radians);
+                mesh.position.y = 0 + 3 * Math.sin(radians);
+                mesh.position.z = 0 + 30 * Math.sin(radians);
+
+                // if (i > half) {
+                this.meshes.push(mesh);
+                this.octahedrons.push(mesh);
+                // }
+            }
+        }
+        else {
+            num = this.octahedrons.length;
+            for (var i = 0; i < num; i++) {
+                // if (i > half) {
+                this.meshes.push(this.octahedrons[i]);
+                // }
+            }
+        }
+    }
+
+    rotateOctahedron()
+    {
+        var mesh, n = this.octahedrons.length;
+        for (var i = 0; i < n; i++) {
+            mesh = this.octahedrons[i];
+            mesh.rotation.x += 0.01;
+            mesh.rotation.y += 0.01;
+        }
+    }
+
+    rotateSphere()
+    {
+        if (this.sphere0) {
+            this.sphere0.rotation.x += 0.01;
+            this.sphere1.rotation.x += 0.01;
+            this.sphere2.rotation.x += 0.01;
+            this.sphere0.rotation.y += 0.01;
+            this.sphere1.rotation.y += 0.01;
+            this.sphere2.rotation.y += 0.01;
+        }
+    }
+
+    createSphere()
+    {
+        this.removeAll();
+
+        if (!this.sphere0) {
+            var sphereShape0 = new ProceduralSphere(10);
+            var sphereShape1 = new Icosphere(10, 1);
+            var sphereShape2 = new HammersleySphere(10, 3000);
+            var sphere0 = this.sphere0 = new Mesh(sphereShape0);
+            var sphere1 = this.sphere1 = new Mesh(sphereShape1);
+            var sphere2 = this.sphere2 = new Mesh(sphereShape2);
+            sphere0.position.x = -20;
+            sphere1.position.x = 0;
+            sphere2.position.x = 20;
+        }
+
+        this.meshes.push(this.sphere0);
+        this.meshes.push(this.sphere1);
+        this.meshes.push(this.sphere2);
+    }
+
+    removeAll()
+    {
+        this.meshes = [];
+    }
+
+    moveCamera(property, value)
+    {
+        this.camera.position[property] += value;
+        console.log('moveCamera(', property, value, '), position:', this.camera.position);
+    }
+
+    moveWorld(property, value)
+    {
+        this.world.position[property] += value;
+        console.log('moveWorld(', property, value, '), position:', this.world.position);
+    }
+
+    rotateWorld(property, value)
+    {
+        this.world.rotation[property] += value;
+        console.log('rotateWorld(', property, value, '), rotation:', this.world.rotation);
+    }
+
+    zoomIn()
+    {
+        Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut).play();
+    }
+
+    zoomOut()
+    {
+        Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut).play();
+    }
+
+    reset()
+    {
+        var wt = Be.to(this.world.position, {x:0, y:0, z:0}, 1, Quad.easeOut);
+        var wr = Be.to(this.world.rotation, {x:0, y:0, z:0}, 1, Quad.easeOut);
+        var ct = Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut);
+
+        Be.parallel(wt, wr, ct).play();
+
+        //this.world.position = new Vector3D();
+        //this.world.rotation = new Vector3D();
+        //this.camera.position = new Vector3D(0, 0, -10);
+        //console.log('camera.position:', this.camera.position);
+    }
+
+    clear()
+    {
+        this.removeAll();
     }
 
     initializeGUI()
     {
         this.config = {};
         this.gui = new dat.GUI();
+
+        this.config.createTriangle = this.createTriangle.bind(this);
+        this.config.createRectangle = this.createRectangle.bind(this);
+        this.config.createCube = this.createCube.bind(this);
+        this.config.createSphere = this.createSphere.bind(this);
+        this.config.createOctahedron = this.createOctahedron.bind(this);
+        this.config.createAxis = this.createAxis.bind(this);
+        this.config.createAxisLine = this.createAxisLine.bind(this);
+        this.config.createCoordinateBox = this.createCoordinateBox.bind(this);
+        this.config.zoomIn = this.zoomIn.bind(this);
+        this.config.zoomOut = this.zoomOut.bind(this);
+        this.config.reset = this.reset.bind(this);
+        this.config.clear = this.clear.bind(this);
+
+        this.gui.add(this.config, 'createTriangle');
+        this.gui.add(this.config, 'createRectangle');
+        this.gui.add(this.config, 'createCube');
+        this.gui.add(this.config, 'createSphere');
+        this.gui.add(this.config, 'createOctahedron');
+        this.gui.add(this.config, 'createAxis');
+        this.gui.add(this.config, 'createAxisLine');
+        this.gui.add(this.config, 'createCoordinateBox');
+        this.gui.add(this.config, 'zoomIn');
+        this.gui.add(this.config, 'zoomOut');
+        this.gui.add(this.config, 'reset');
+        this.gui.add(this.config, 'clear');
     }
 
     tick(ms)
@@ -128,27 +322,12 @@ export default class App
 
     render(ms)
     {
-        this.mesh0.rotation.x += 0.01;
-        this.mesh1.rotation.x += 0.01;
-        this.mesh2.rotation.x += 0.01;
-        this.mesh3.rotation.x += 0.01;
-        this.mesh4.rotation.x += 0.01;
-        this.mesh5.rotation.x += 0.01;
-        this.mesh6.rotation.x += 0.01;
+        this.camera.target = new Vector3D();
 
-        this.mesh0.rotation.y += 0.01;
-        this.mesh1.rotation.y += 0.01;
-        this.mesh2.rotation.y += 0.01;
-        this.mesh3.rotation.y += 0.01;
-        this.mesh4.rotation.y += 0.01;
-        this.mesh5.rotation.y += 0.01;
-        this.mesh6.rotation.y += 0.01;
+        //this.rotateOctahedron();
+        //this.rotateSphere();
 
-        //this.camera.yaw += 0.01;
-        //this.camera.roll += 0.01;
-        //this.camera.pitch += 0.01;
-
-        this.device.render(this.camera, this.meshes);
+        this.device.render(this.world, this.camera, this.meshes);
     }
 
     resize() {}
@@ -164,8 +343,8 @@ export default class App
     {
         var dx = event.clientY - this.prevmousey;
         var dy = event.clientX - this.prevmousex;
-        //this.rotate('x', dx / 4);
-        //this.rotate('y', dy / 4);
+        this.rotateWorld('x', Math.toRadians(dx));
+        this.rotateWorld('y', Math.toRadians(dy));
         this.prevmousex = event.clientX;
         this.prevmousey = event.clientY;
     }
@@ -174,7 +353,7 @@ export default class App
     {
         var e = window.event || e;
         var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
-        //this.rotate('z', delta / 4);
+        this.moveCamera('z', delta);
         this.prevwheel = delta;
     }
 

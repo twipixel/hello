@@ -19,7 +19,6 @@
   - ~~World 좌표 회전~~ 
   - Camera
     - ~~Camera 회전~~
-  - No Camera 투영
   - 투영 (Projection)
     - Orthographic
     - Perspective

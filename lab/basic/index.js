@@ -103,10 +103,13 @@ class Main
                 this.getIntervalFunction(this.app, this.app.rotateWorld, 'z', 0.01)();
                 break;
             case KeyCode.NUMPAD_ADD:
-                this.getIntervalFunction(this.app, this.app.moveWorld, 'z', 1)();
+                this.app.zoomIn();
                 break;
             case KeyCode.NUMPAD_SUBTRACT:
-                this.getIntervalFunction(this.app, this.app.moveWorld, 'z', -1)();
+                this.app.zoomOut();
+                break;
+            case KeyCode.NUMPAD_ENTER:
+                this.app.zoomOut();
                 break;
             case KeyCode.NUMBER_0:
                 this.app.reset();

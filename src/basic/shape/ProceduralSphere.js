@@ -15,8 +15,8 @@ export default class ProceduralSphere
         var faces = this.faces = [];
         var vertices = this.vertices = [];
 
-        var alpha = 1;
-        var color = 0xA2DED0;
+        var alpha = 0.5;
+        var color = 0x87D37C;
 
         for (var y = 0; y < longitudeCount; y++) {
             for (var x = 0; x < latitudeCount; x++) {

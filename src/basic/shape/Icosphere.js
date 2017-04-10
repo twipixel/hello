@@ -48,8 +48,8 @@ export default class Icosphere
 
     subdivide(complex)
     {
-        var alpha = 1;
-        var color = 0xA2DED0;
+        var alpha = 0.5;
+        var color = 0x87D37C;
 
         this.middleVertexCached = {};
 
