@@ -5,24 +5,24 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Camera from '../../src/basic/core/Camera';
-import Device from '../../src/basic/core/Device';
-import DeviceWithWorld from '../../src/basic/core/DeviceWithWorld';
-import Matrix from '../../src/basic/geom/Matrix';
-import Mesh from '../../src/basic/geom/Mesh';
-import Axis from '../../src/basic/shape/Axis';
-import Vector3D from '../../src/basic/geom/Vector3D';
-import Octahedron from '../../src/basic/shape/Octahedron';
-import Icosphere from '../../src/basic/shape/Icosphere';
-import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
-import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
-import HammersleySphere from '../../src/basic/shape/HammersleySphere';
-import CoordinateBox from '../../src/basic/debug/CoordinateBox';
-import Triangle from '../../src/basic/shape/Triangle';
+import Camera from '../../src/texture/core/Camera';
+import Device from '../../src/texture/core/Device';
+import DeviceWithWorld from '../../src/texture/core/DeviceWithWorld';
+import Matrix from '../../src/texture/geom/Matrix';
+import Mesh from '../../src/texture/geom/Mesh';
+import Axis from '../../src/texture/shape/Axis';
+import Vector3D from '../../src/texture/geom/Vector3D';
+import Octahedron from '../../src/texture/shape/Octahedron';
+import Icosphere from '../../src/texture/shape/Icosphere';
+import ProceduralSphere from '../../src/texture/shape/ProceduralSphere';
+import TriakisIcosahedron from '../../src/texture/shape/TriakisIcosahedron';
+import HammersleySphere from '../../src/texture/shape/HammersleySphere';
+import CoordinateBox from '../../src/texture/debug/CoordinateBox';
+import Triangle from '../../src/texture/shape/Triangle';
 import Rectangle from '../../src/texture/shape/Rectangle';
-import Cube from '../../src/basic/shape/Cube';
-import Num from '../../src/basic/debug/Num';
-import Arrow from '../../src/basic/shape/Arrow';
+import Cube from '../../src/texture/shape/Cube';
+import Num from '../../src/texture/debug/Num';
+import Arrow from '../../src/texture/shape/Arrow';
 
 
 export default class App
@@ -33,8 +33,9 @@ export default class App
         document.body.appendChild(this.app.view);
 
         //this.app.renderer.roundPixels = true;
-        this.canvas = this.app.renderer.view;
-        this.stage = this.app.stage;
+        window.canvas = this.canvas = this.app.renderer.view;
+        window.ctx = this.canvas.getContext('2d');
+        window.stage = this.stage = this.app.stage;
 
         this.initialize();
         this.initializeGUI();
@@ -55,8 +56,8 @@ export default class App
 
         this.world = new Mesh({faces:[], vertices:[]});
 
-        //this.createTriangle(30);
-        this.createRectangle(30, 30);
+        this.createTriangle(30);
+        //this.createRectangle(30, 30);
         //this.createCube(15);
         //this.createOctahedron(100);
         //this.createSphere();

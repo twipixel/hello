@@ -87,6 +87,7 @@ export default class Device extends PIXI.Graphics
         // 매쉬 렌더링
         for (let i = 0; i < meshes.length; i++) {
             let currentMesh = meshes[i];
+            currentMesh.render();
 
             /**
              * 매쉬의 회전 행렬

@@ -43,7 +43,7 @@ export default class Device extends PIXI.Graphics
         this.drawRect(vertex.x, vertex.y, 2, 2);
     }
 
-    drawTriangle(vertex1, vertex2, vertex3, color = 0xFFFFFF, alpha = 1)
+    drawTriangle(vertex1, vertex2, vertex3, color = 0xFFFFFF, alpha)
     {
         this.lineStyle(1, color, alpha);
         this.moveTo(vertex1.x, vertex1.y);
@@ -52,7 +52,7 @@ export default class Device extends PIXI.Graphics
         this.closePath();
     }
 
-    render(camera, meshes)
+    render(world, camera, meshes)
     {
         this.clear();
 
@@ -72,6 +72,9 @@ export default class Device extends PIXI.Graphics
         //let cameraRotation = Matrix.rotationYPR(camera.yaw, camera.pitch, camera.roll);
         //cameraPosition = Vector3D.transformCoordinates(cameraPosition, cameraRotation);
 
+        let stageTransfromMatrix = Matrix.translation(world.position.x, world.position.y, world.position.z);
+        let stageRotationMatrix = Matrix.rotateX(world.rotation.x).multiply(Matrix.rotateY(world.rotation.y)).multiply(Matrix.rotateZ(world.rotation.z));
+
         /**
          * 뷰 행렬
          * @type {Matrix}
@@ -82,23 +85,24 @@ export default class Device extends PIXI.Graphics
          * 투영 행렬
          * @type {Matrix}
          */
-        let projectionMatrix = Matrix.perspectiveFovLH(0.78, this.stageWidth / this.stageHeight, 0.01, 1.0);
+        let projectionMatrix = Matrix.perspectiveFovLH(0.78, this.stageWidth / this.stageHeight, .01, 1.0);
 
         // 매쉬 렌더링
         for (let i = 0; i < meshes.length; i++) {
             let currentMesh = meshes[i];
+            currentMesh.render();
 
             /**
              * 매쉬의 회전 행렬
              * @type {Matrix}
              */
-            let rotationMatrix = Matrix.rotateX(currentMesh.rotation.x).multiply(Matrix.rotateY(currentMesh.rotation.y)).multiply(Matrix.rotateZ(currentMesh.rotation.z));
+            let rotationMatrix = stageRotationMatrix.multiply(Matrix.rotateX(currentMesh.rotation.x)).multiply(Matrix.rotateY(currentMesh.rotation.y)).multiply(Matrix.rotateZ(currentMesh.rotation.z));
 
             /**
              * 월드 좌표계
              * @type {Matrix}
              */
-            let worldMatrix = rotationMatrix.multiply(Matrix.translation(currentMesh.position.x, currentMesh.position.y, currentMesh.position.z));
+            let worldMatrix = rotationMatrix.multiply(Matrix.translation(currentMesh.position.x, currentMesh.position.y, currentMesh.position.z).multiply(stageTransfromMatrix));
             // Final matrix to be applied to each vertex
 
             /**

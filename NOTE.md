@@ -1,5 +1,6 @@
 ## 학습 로드맵
 
+- [3D Software Engine](https://www.davrous.com/category/3d-software-engine/)
 - ~~직선 그리기~~
 - ~~삼각형 그리기~~
 - ~~사각형 그리기~~
@@ -11,40 +12,54 @@
   - ~~y 축 회전~~
   - ~~z 축 회전~~ 
   - [Yaw, Pitch, Roll](http://planning.cs.uiuc.edu/node102.html)
-- 3D redener
-  - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
-    - ~~눈의 위치 (Eye Vector)~~
-    - ~~바라보는 지점 (Look Vector)~~
-    - ~~[Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)~~
-  - ~~World 좌표 회전~~ 
-  - Camera
-    - ~~Camera 회전~~
-  - 투영 (Projection)
-    - Orthographic
-    - Perspective
+- [뷰 행렬 (View Matrix)](http://egloos.zum.com/EireneHue/v/984622)
+  - ~~눈의 위치 (Eye Vector)~~
+  - ~~바라보는 지점 (Look Vector)~~
+  - ~~[Matrix.LookAtLH, Matrix.PerspectiveFovLH](http://blog.naver.com/tramper2/100060771566)~~
+- ~~World 좌표 회전~~ 
+- Camera
+  - ~~Camera 회전~~
+- 투영 (Projection)
+  - Orthographic
+  - Perspective
 - ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
 - 조명 적용 (라이팅)
 - Texture 적용
   - [UV맵핑, 원근투영](http://jidolstar.tistory.com/543)
   - [Cube Map](http://jidolstar.tistory.com/574)
+  - 실린더에 이미지 입히기 (UV  Map)
   - [토성 그리기](http://jidolstar.tistory.com/547) 
+  - [triangular distorting of images](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
+  - [Texturing](http://www8.cs.umu.se/kurser/TDBC07/HT04/handouts/HO-lecture11.pdf)
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders
   - 휘어진 스티커
+- 텍스쳐 관련 학습 순서
+  - [삼각형에 텍스쳐 입히기](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
+  - 사각형에 입혀서 회전 시켜 보기
+  - [실린더에 UV 맵핑하기](http://jidolstar.tistory.com/545)
+  - [지구 만들기](https://www.binpress.com/tutorial/creating-an-octahedron-sphere/162)
+    - [UV mapping a sphere triangle mesh](https://mft-dev.dk/category/game-engine/)
+    - [Blender 로 지구만들기](https://www.davrous.com/2013/06/17/tutorial-part-3-learning-how-to-write-a-3d-soft-engine-in-c-ts-or-js-loading-meshes-exported-from-blender/)
+    - [Flash 10 Drawing API](http://www.senocular.com/flash/tutorials/flash10drawingapi/)
 
 <br>
 
 #### 용어
 
+- Vertices
+  - [Generating vertices of regular n-sided polygons/polyhedra and circles/spheres](Generating vertices of regular n-sided polygons/polyhedra and circles/spheres)
 - Shape
   - icosahedron (20면체)
     - [Triakis icosahedron](https://en.wikipedia.org/wiki/Triakis_icosahedron)
     - [Regular icosahedron](https://en.wikipedia.org/wiki/Regular_icosahedron)
   - Sphere
     - [Icosphere](https://github.com/hughsk/icosphere)
+      - [The icosahedron-based geodesic sphere](http://donhavey.com/blog/tutorials/tutorial-3-the-icosahedron-sphere/)
     - Procedural (UV)
     - [Hammersley](http://www.cse.cuhk.edu.hk/~ttwong/papers/udpoint/udpoint.pdf)
+    - [Creating an Octahedron Sphere in Unity](https://www.binpress.com/tutorial/creating-an-octahedron-sphere/162)
 - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
 - [투영 (Projection)](http://egloos.zum.com/EireneHue/v/985792)
   - Near (0)
@@ -60,7 +75,15 @@
   - ![Polygon](https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Mesh_overview.svg/720px-Mesh_overview.svg.png)
 - [UV Mapping](https://en.wikipedia.org/wiki/UV_mapping)
   - [UV Mapping Sphere](http://mft-dev.dk/uv-mapping-sphere/)
+  - [UV Mapping by Ken Brilliant](http://www.yoshii.com/zbrush/tutrial/tutorial01/UV%20Mapping.htm)
 - Wireframe
+- Perspective
+  - [Demo of perspective-correct texturing in <canvas>, by adaptive triangle subdivision.](http://tulrich.com/geekstuff/canvas/perspective.html)
+  - [perspective.js](http://www.html5.jp/test/perspective_canvas/demo1_en.html)
+  - [distort image](http://jsfiddle.net/rjw57/CJy24/)
+  - [dynamic-image-distortion-html5-canvas](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
+  - [Canvas Perspective](https://fiddle.jshell.net/prafuitu/8wkvG/8/?utm_source=website&utm_medium=embed&utm_campaign=8wkvG)
+  - [Can you do an isometric perspective with HTML5 <canvas>?](http://stackoverflow.com/questions/5186013/can-you-do-an-isometric-perspective-with-html5-canvas)
 
 <br>
 
@@ -119,9 +142,25 @@
 
 - [PEX](https://vorg.github.io/pex/)
 - [Cango3D](http://www.arc.id.au/Canvas3DGraphics.html)
+- [IvanK Lib](http://lib.ivank.net/)
 
 <br>
+
+#### PIXI 기능 소개
+
+- [Mesh](http://wow.techbrood.com/fiddle/31419)
 
 #### 좌표표시 예제
 
 - ![Like It](https://i.stack.imgur.com/rQfnu.png)
+
+#### UV 맵 테스트 이미지
+
+- ![UV Diagram](https://philromeodesign.files.wordpress.com/2015/05/custom_uv_diag.png?w=400&h=400)
+- ![uvLayoutGrid](https://people.cs.clemson.edu/~tadavis/cs809/uvLayoutGrid.png)
+- [CubeMap 이미지](http://www.humus.name/index.php?page=Textures&&start=32)
+
+#### 관련 툴
+
+- [blender](https://docs.blender.org/manual/ko/dev/index.html)
+- [Blend4Web](https://www.blend4web.com/en/)
