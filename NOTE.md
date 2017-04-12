@@ -34,9 +34,9 @@
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders
-  - 휘어진 스티커
 - 텍스쳐 관련 학습 순서
   - [삼각형에 텍스쳐 입히기](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
+    - [UV Mapping Rectangle](http://jsfiddle.net/pB5A9/1/)
   - 사각형에 입혀서 회전 시켜 보기
   - [실린더에 UV 맵핑하기](http://jidolstar.tistory.com/545)
   - [지구 만들기](https://www.binpress.com/tutorial/creating-an-octahedron-sphere/162)
@@ -84,8 +84,16 @@
   - [dynamic-image-distortion-html5-canvas](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
   - [Canvas Perspective](https://fiddle.jshell.net/prafuitu/8wkvG/8/?utm_source=website&utm_medium=embed&utm_campaign=8wkvG)
   - [Can you do an isometric perspective with HTML5 <canvas>?](http://stackoverflow.com/questions/5186013/can-you-do-an-isometric-perspective-with-html5-canvas)
+- 직교 좌표계 = 데카르트 좌표계 (Cartesian Coordinates)
+- UV 좌표 = 무게 중심 좌표 (Barycentric Coordinates)
+  - [광선과 삼각형 교차](http://mycom333.blogspot.kr/2013/10/intersecting-ray-and-triangle.html)
 
 <br>
+
+#### Flash Methods
+
+- [drawTriagnles in javascript](http://lib.ivank.net/?p=demos&d=pseudo3D)
+  - ivank.net
 
 #### 참고 링크
 
@@ -135,11 +143,21 @@
 - [Spherical UV Mapping HTML5 Canvas](https://codepen.io/jonbrennecke/pen/zqDaj/)
 - [Icosphere](https://github.com/hughsk/icosphere)
 - [UV Sphere](http://codepen.io/mcdorli/pen/NAByWV)
+- [Rasterizer](http://codepen.io/tholman/pen/qLsCb)
+- [DemoSphere](http://codepen.io/tmrDevelops/pen/gabRKW)
+- [Transform Hulk from 2D to 3D](http://codepen.io/yangfan44777/pen/psvmB)
+- [Bending a texture](http://codepen.io/killroy/pen/QEoELB)
+- [Affine (Linear) Texture Mapping](http://codepen.io/neur0sys/pen/LWBWYm)
+
+#### CodePen +
+
+- [xGWqxN (THREE.js)](http://codepen.io/seyself/pen/xGWqxN)
 
 <br>
 
 #### Libraries
 
+- [poly2tri](https://github.com/r3mi/poly2tri.js)
 - [PEX](https://vorg.github.io/pex/)
 - [Cango3D](http://www.arc.id.au/Canvas3DGraphics.html)
 - [IvanK Lib](http://lib.ivank.net/)

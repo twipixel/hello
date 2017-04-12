@@ -7,4 +7,4 @@ Math.toRadians = function (degrees) {
 
 Math.toDegrees = function (radians) {
     return radians * Math.RAD_TO_DEG;
-}
+};

@@ -1,4 +1,3 @@
-
 /*
  Dynamic Image Distortion in the Browser with HTML5 Canvas (UI via KineticJS and Knockout)
  ========================================================================================
@@ -65,7 +64,7 @@ function draggable_image_layer(image_url) {
     var image_layer = new Kinetic.Layer();
 
     // Since Knockout's reactivity is push-based, one
-    // should be careful in production to check performance 
+    // should be careful in production to check performance
     // and selectively throttle "continuous" event sources
     // like a moving image. I won't bother now, though.
     image_layer.image_data = ko.observable();
@@ -74,12 +73,12 @@ function draggable_image_layer(image_url) {
         image_layer.image_data(canvas.getContext('2d').getImageData(0, 0, canvas.getWidth(), canvas.getHeight()));
     }
 
-    var image = new Kinetic.Image({ draggable: true });
+    var image = new Kinetic.Image({draggable: true});
     image_layer.add(image);
     image.on("dragmove", update_image_data);
 
     var img = new Image(); // HTML <img> "tag" to load
-    img.onload = function() {
+    img.onload = function () {
         image.setImage(img);
         image_layer.draw();
         update_image_data();
@@ -130,7 +129,8 @@ function triangular_viewport_control(named_parameters) {
         fill: 'white',
         strokeWidth: 0,
         opacity: 0.7,
-        hitFunc: function() { }
+        hitFunc: function () {
+        }
     }));
 
     // Solid red outline
@@ -141,11 +141,12 @@ function triangular_viewport_control(named_parameters) {
             viewport_triangle[2].x, viewport_triangle[2].y],
         strokeWidth: 2,
         stroke: 'red',
-        hitFunc: function() { }
+        hitFunc: function () {
+        }
     }));
 
     // Labeled corners
-    _(viewport_triangle).each(function(point, idx) {
+    _(viewport_triangle).each(function (point, idx) {
         var letter = String.fromCharCode('A'.charCodeAt(0) + idx);
         label_layer.add(circled_letter(letter, point, false));
     });
@@ -184,7 +185,11 @@ function warpable_triangle_control(named_parameters) {
     var input_image_data = named_parameters.input_image_data;
     var input_triangle = _(named_parameters.input_triangle).map(p2v); // Most handy in vector form
 
-    var stage = new Kinetic.Stage({ container: container_id, width: container_size.width, height: container_size.height });
+    var stage = new Kinetic.Stage({
+        container: container_id,
+        width: container_size.width,
+        height: container_size.height
+    });
     var control_layer = new Kinetic.Layer();
     var drawing_layer = new Kinetic.Layer();
     stage.add(drawing_layer);
@@ -194,7 +199,7 @@ function warpable_triangle_control(named_parameters) {
      The circled letters for the corners in this case will be draggable, and I have
      made their positions into KnockoutJS observables.
      */
-    var corners = _(input_triangle).map(function(xy, idx) {
+    var corners = _(input_triangle).map(function (xy, idx) {
         var letter = String.fromCharCode('A'.charCodeAt(0) + idx);
         var corner = circled_letter(letter, v2p(xy), true);
         return corner;
@@ -203,8 +208,8 @@ function warpable_triangle_control(named_parameters) {
     /*
      The warped triangle is a _computed_ observable.
      */
-    self.warped_triangle = ko.computed(function() {
-        return _(corners).map(function(corner) {
+    self.warped_triangle = ko.computed(function () {
+        return _(corners).map(function (corner) {
             return corner.position();
         });
     });
@@ -215,13 +220,15 @@ function warpable_triangle_control(named_parameters) {
      triangle.
      */
 
-    var convertPoints = function(points) {
+    var convertPoints = function (points) {
         return _.chain(self.warped_triangle())
-            .map(function(point) {
+            .map(function (point) {
                 return [point.x, point.y]
             })
             .flatten()
-            .tap(function(v) { console.log(v); })
+            .tap(function (v) {
+                console.log(v);
+            })
             .value();
     };
 
@@ -229,13 +236,16 @@ function warpable_triangle_control(named_parameters) {
         closed: true,
         points: convertPoints(self.warped_triangle),
         strokeWidth: 2, stroke: 'red',
-        hitFunc: function() { }
+        hitFunc: function () {
+        }
     })
-    ko.computed(function() {
+    ko.computed(function () {
         outline.setPoints(convertPoints(self.warped_triangle()));
     });
     control_layer.add(outline);
-    _(corners).each(function(corner) { control_layer.add(corner); }); // Javascript fails at eta-contraction
+    _(corners).each(function (corner) {
+        control_layer.add(corner);
+    }); // Javascript fails at eta-contraction
     control_layer.draw(); // Kick
 
     /*
@@ -252,7 +262,7 @@ function warpable_triangle_control(named_parameters) {
 
     var drawing_context = drawing_layer.getCanvas().getContext('2d');
 
-    ko.computed(function() {
+    ko.computed(function () {
         var warped_triangle = _(self.warped_triangle()).map(p2v); // Get in vector form
         var current_image_data = input_image_data(); // Freeze the observable here
         if (!current_image_data) {
@@ -279,8 +289,8 @@ function map_triangle(src_image_data, src_triangle, dst_image_data, dst_triangle
     var src_pixel_data = src_image_data.data;
     var dst_pixel_data = dst_image_data.data;
 
-    for(var x = 0; x < dst_image_data.width; x++) {
-        for(var y = 0; y < dst_image_data.height; y++) {
+    for (var x = 0; x < dst_image_data.width; x++) {
+        for (var y = 0; y < dst_image_data.height; y++) {
             var uv = cartesian_to_barycentric(dst_triangle, [x, y]);
 
             // Did I forget to mention this other lovely aspect of barycentric coords?
@@ -292,15 +302,15 @@ function map_triangle(src_image_data, src_triangle, dst_image_data, dst_triangle
                 src_xy = barycentric_to_cartesian(src_triangle, uv);
                 src_pixel_start = PIXEL_WIDTH * (Math.floor(src_xy[0]) + Math.floor(src_xy[1]) * src_image_data.width);
 
-                dst_pixel_data[dst_pixel_start]   = src_pixel_data[src_pixel_start];
-                dst_pixel_data[dst_pixel_start+1] = src_pixel_data[src_pixel_start+1];
-                dst_pixel_data[dst_pixel_start+2] = src_pixel_data[src_pixel_start+2];
-                dst_pixel_data[dst_pixel_start+3] = src_pixel_data[src_pixel_start+3];
+                dst_pixel_data[dst_pixel_start] = src_pixel_data[src_pixel_start];
+                dst_pixel_data[dst_pixel_start + 1] = src_pixel_data[src_pixel_start + 1];
+                dst_pixel_data[dst_pixel_start + 2] = src_pixel_data[src_pixel_start + 2];
+                dst_pixel_data[dst_pixel_start + 3] = src_pixel_data[src_pixel_start + 3];
             } else {
                 dst_pixel_data[dst_pixel_start] = 255;
-                dst_pixel_data[dst_pixel_start+1] = 255;
-                dst_pixel_data[dst_pixel_start+2] = 255;
-                dst_pixel_data[dst_pixel_start+3] = 255;
+                dst_pixel_data[dst_pixel_start + 1] = 255;
+                dst_pixel_data[dst_pixel_start + 2] = 255;
+                dst_pixel_data[dst_pixel_start + 3] = 255;
             }
         }
     }
@@ -311,21 +321,21 @@ function map_triangle(src_image_data, src_triangle, dst_image_data, dst_triangle
  * Main Glue
  */
 
-$(document).ready(function() {
+document.ready = (function () {
     var input_control = triangular_viewport_control({
         container_id: 'input-container',
-        container_size: { width: 400, height: 400 },
+        container_size: {width: 400, height: 400},
         image_url: 'ice_cream.jpg',
         viewport_triangle: [
-            { x: 100, y: 100 },
-            { x: 100, y: 300 },
-            { x: 300, y: 300 }
+            {x: 100, y: 100},
+            {x: 100, y: 300},
+            {x: 300, y: 300}
         ],
     });
 
     var warped_output = warpable_triangle_control({
         container_id: 'output-container',
-        container_size: { width: 400, height: 400 },
+        container_size: {width: 400, height: 400},
         input_triangle: input_control.viewport_triangle,
         input_image_data: input_control.image_data,
     });
@@ -334,7 +344,7 @@ $(document).ready(function() {
 
 var PIXEL_WIDTH = 4;
 
-/* 
+/*
 
  Appendix A: Barycentric coordinates
  -----------------------------------
@@ -355,12 +365,24 @@ var PIXEL_WIDTH = 4;
  */
 
 // Vector math
-function add(v0, v1) { return [v0[0] + v1[0], v0[1] + v1[1]]; }
-function sub(v0, v1) { return [v0[0] - v1[0], v0[1] - v1[1]]; }
-function dot(v0, v1) { return v0[0]*v1[0] + v0[1]*v1[1]; }
-function mul(k, v) { return [k*v[0], k*v[1]]; }
-function p2v(p) { return [p.x, p.y]; }
-function v2p(v) { return {x: v[0], y: v[1]}; }
+function add(v0, v1) {
+    return [v0[0] + v1[0], v0[1] + v1[1]];
+}
+function sub(v0, v1) {
+    return [v0[0] - v1[0], v0[1] - v1[1]];
+}
+function dot(v0, v1) {
+    return v0[0] * v1[0] + v0[1] * v1[1];
+}
+function mul(k, v) {
+    return [k * v[0], k * v[1]];
+}
+function p2v(p) {
+    return [p.x, p.y];
+}
+function v2p(v) {
+    return {x: v[0], y: v[1]};
+}
 
 function cartesian_to_barycentric(triangle, xy) {
     var a = triangle[0];
@@ -392,7 +414,7 @@ function barycentric_to_cartesian(triangle, uv) {
     var ba = sub(triangle[1], a);
     var ca = sub(triangle[2], a);
 
-    return add(a, add( mul(uv[0], ca), mul(uv[1], ba)));
+    return add(a, add(mul(uv[0], ca), mul(uv[1], ba)));
 }
 
 
@@ -402,7 +424,10 @@ function barycentric_to_cartesian(triangle, uv) {
  */
 
 function circled_letter(letter, position, draggable) {
-    var options = draggable ? {} : { hitFunc: function() { } };
+    var options = draggable ? {} : {
+        hitFunc: function () {
+        }
+    };
 
     var group = new Kinetic.Group(_({
         x: position.x, y: position.y,
@@ -431,12 +456,12 @@ function circled_letter(letter, position, draggable) {
     }
 
     group.position = ko.observable(getPosition());
-    group.on('dragmove', function() { group.position(getPosition()) });
+    group.on('dragmove', function () {
+        group.position(getPosition())
+    });
 
     return group;
 }
-
-
 
 
 /*

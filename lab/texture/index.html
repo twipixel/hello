@@ -7,7 +7,7 @@
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: auto;
             background-color: #FFFFFF;
         }
     </style>
@@ -19,6 +19,9 @@
 <script type="text/javascript" src="./../../external/vendor/gl-matrix.js"></script>
 <script type="text/javascript" src="./../../external/lib/test.common.js"></script>
 <script type="text/javascript" src="./../../external/lib/math.js"></script>
+
+<img id="source" src="../../asset/image/uv-texture.jpg" style="display: none">
+
 <script>
     (function() {
         if (navigator.userAgent.indexOf('Electron') >= 0) {
@@ -33,6 +36,6 @@
         }
     })();
 </script>
-<img id="uvTexture" src="../../asset/image/uv-texture.jpg" style="display: none">
+
 </body>
 </html>
