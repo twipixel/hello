@@ -75,6 +75,12 @@ export default class Vector3D
         return this;
     }
 
+    static add(v0, v1)
+    {
+        v0 = v0.clone();
+        return v0.add(v1);
+    }
+
     /**
      * 빼기
      * @param v2
@@ -88,12 +94,24 @@ export default class Vector3D
         return new Vector3D(this.x, this.y, this.z);
     }
 
+    static subtract(v0, v1)
+    {
+        v0 = v0.clone();
+        return v0.subtract(v1);
+    }
+
     multiply(n)
     {
         this.x *= n;
         this.y *= n;
         this.z *= n;
         return this;
+    }
+
+    static multiply(n, v)
+    {
+        v = v.clone();
+        return v.multiply(n);
     }
 
     divide(n)
