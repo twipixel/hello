@@ -82,7 +82,7 @@ export default class Device extends PIXI.Graphics
          * 투영 행렬
          * @type {Matrix}
          */
-        let projectionMatrix = Matrix.perspectiveFovLH(0.78, this.stageWidth / this.stageHeight, 0.01, 1.0);
+
 
         // 매쉬 렌더링
         for (let i = 0; i < meshes.length; i++) {

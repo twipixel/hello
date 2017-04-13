@@ -65,7 +65,7 @@ export default class App {
 
         //destinationContext.drawImage(image, 0, 0);
 
-        //this.createTriangle();
+        // this.createTriangle();
         this.createImage();
     }
 
@@ -75,8 +75,8 @@ export default class App {
 
         var sourceImageData = this.sourceContext.getImageData(0, 0, this.sourceCanvas.width, this.sourceCanvas.height);
         var s0 = new Vector3D(0, 0, 0);
-        var s1 = new Vector3D(0, blocksize, 0);
-        var s2 = new Vector3D(blocksize, blocksize, 0);
+        var s1 = new Vector3D(0, blocksize * 2, 0);
+        var s2 = new Vector3D(blocksize * 2, blocksize * 2, 0);
         var sourceTriangle = new Face(s0, s1, s2);
 
         this.drawTriangle(this.sourceContext, sourceTriangle);
@@ -87,17 +87,17 @@ export default class App {
         var d2 = new Vector3D(blocksize * 4, blocksize * 4, 0);
         var destinationTriangle = new Face(d0, d1, d2);
 
-        this.mapTriangle(sourceImageData, sourceTriangle, destinationImageData, destinationTriangle);
+        // this.mapTriangle(sourceImageData, sourceTriangle, destinationImageData, destinationTriangle);
 
-        /*this.map_triangle(sourceImageData, [
-            [sourceV0.x, sourceV0.y],
-            [sourceV1.x, sourceV1.y],
-            [sourceV2.x, sourceV2.y]
+        this.map_triangle(sourceImageData, [
+            [s0.x, s0.y],
+            [s1.x, s1.y],
+            [s2.x, s2.y]
         ], destinationImageData, [
-            [destinationV0.x, destinationV0.y],
-            [destinationV1.x, destinationV1.y],
-            [destinationV2.x, destinationV2.y]
-        ]);*/
+            [d0.x, d0.y],
+            [d1.x, d1.y],
+            [d2.x, d2.y]
+        ]);
 
         this.destinationContext.putImageData(destinationImageData, 0, 0);
     }
@@ -110,13 +110,14 @@ export default class App {
         var w = this.sourceCanvas.width - 150;
         var h = this.sourceCanvas.height - 150;
 
-        var position = new Vector3D(0, 0, 0);
+        var position = new Vector3D(50, 50, 0);
         //var rotation = new Vector3D(0, 0, 0);
-        var rotation = new Vector3D(Math.toRadians(0), Math.toRadians(80), 0);
+        var rotation = new Vector3D(Math.toRadians(0), Math.toRadians(60), Math.toRadians(0));
 
         var rotationMatrix = Matrix.rotateX(rotation.x).multiply(Matrix.rotateY(rotation.y)).multiply(Matrix.rotateZ(rotation.z));
         var transformMatrix = Matrix.translation(position.x, position.y, position.z);
-
+        // var viewMatrix = Matrix.lookAtLH(new Vector3D(0, 0, -50), new Vector3D(0, 0, 0), new Vector3D(0, 1, 0));
+        // var projectionMatrix = Matrix.perspectiveFovLH(0.78, w / h, 0.01, 1.0);
 
         // 사각형 생성
         var vertices = this.vertices = [
@@ -137,11 +138,14 @@ export default class App {
             var v = vertices[i];
             v = Vector3D.transformCoordinates(v, rotationMatrix);
             v = Vector3D.transformCoordinates(v, transformMatrix);
+            // v = Vector3D.transformCoordinates(v, viewMatrix);
+            // v = Vector3D.transformCoordinates(v, projectionMatrix);
+            // let x = v.x * w + w / 2;
+            // let y = -v.y * h + h / 2;
+            // let z = v.z;
+            // v = new Vector3D(x, y, z);
             vertices[i] = v;
         }
-
-        //this.drawTriangle(this.destinationContext, new Face(vertices[0], vertices[1], vertices[2]));
-        //this.drawTriangle(this.destinationContext, new Face(vertices[0], vertices[2], vertices[3]));
 
         var sourceImageData = this.sourceContext.getImageData(0, 0, w, h);
         var s0 = new Vector3D(0, 0, 0);
@@ -164,14 +168,35 @@ export default class App {
         var d2 = new Vector3D(w, h, 0);
         //var dleft = new Face(d0, d1, d2);
         var dleft = new Face(vertices[0], vertices[1], vertices[2]);
-        this.mapTriangle(sourceImageData, left, destinationImageData, dleft);
+        // this.mapTriangle(sourceImageData, left, destinationImageData, dleft);
+
+        this.map_triangle(sourceImageData, [
+            [s0.x, s0.y],
+            [s1.x, s1.y],
+            [s2.x, s2.y]
+        ], destinationImageData, [
+            [vertices[0].x, vertices[0].y],
+            [vertices[1].x, vertices[1].y],
+            [vertices[2].x, vertices[2].y]
+        ]);
 
         var d3 = new Vector3D(0, 0, 0);
-        var d4 = new Vector3D(w, 0, 0);
-        var d5 = new Vector3D(w, h, 0);
+        var d4 = new Vector3D(w, h, 0);
+        var d5 = new Vector3D(w, 0, 0);
+
         //var dright = new Face(d3, d4, d5);
         var dright = new Face(vertices[0], vertices[2], vertices[3]);
-        this.mapTriangle(sourceImageData, right, destinationImageData, dright);
+        // this.mapTriangle(sourceImageData, right, destinationImageData, dright);
+
+        this.map_triangle(sourceImageData, [
+            [s3.x, s3.y],
+            [s4.x, s4.y],
+            [s5.x, s5.y]
+        ], destinationImageData, [
+            [vertices[0].x, vertices[0].y],
+            [vertices[2].x, vertices[2].y],
+            [vertices[3].x, vertices[3].y]
+        ]);
 
         this.destinationContext.putImageData(destinationImageData, 0, 0);
         this.drawPoint(this.destinationContext, vertices);
@@ -307,10 +332,10 @@ export default class App {
                     dst_pixel_data[dst_pixel_start + 2] = src_pixel_data[src_pixel_start + 2];
                     dst_pixel_data[dst_pixel_start + 3] = src_pixel_data[src_pixel_start + 3];
                 } else {
-                    dst_pixel_data[dst_pixel_start] = 255;
-                    dst_pixel_data[dst_pixel_start + 1] = 255;
-                    dst_pixel_data[dst_pixel_start + 2] = 255;
-                    dst_pixel_data[dst_pixel_start + 3] = 255;
+                    // dst_pixel_data[dst_pixel_start] = 255;
+                    // dst_pixel_data[dst_pixel_start + 1] = 255;
+                    // dst_pixel_data[dst_pixel_start + 2] = 255;
+                    // dst_pixel_data[dst_pixel_start + 3] = 255;
                 }
             }
         }
