@@ -6,21 +6,21 @@ import Vector3D from './geom/Vector3D';
 
 export default class App {
     constructor() {
-        //this.app = new PIXI.Application(800, 600, {backgroundColor: 0x191919}, true);
-        //document.body.appendChild(this.app.view);
+        /*this.app = new PIXI.Application(800, 600, {backgroundColor: 0x191919}, true);
+        document.body.appendChild(this.app.view);
 
-        ////this.app.renderer.roundPixels = true;
-        //window.canvas = this.canvas = this.app.renderer.view;
-        //window.ctx = this.canvas.getContext('2d');
-        //window.stage = this.stage = this.app.stage;
+        //this.app.renderer.roundPixels = true;
+        window.canvas = this.canvas = this.app.renderer.view;
+        window.ctx = this.canvas.getContext('2d');
+        window.stage = this.stage = this.app.stage;*/
 
         this.initialize();
         this.initializeGUI();
         this.addEvent();
     }
 
-    initialize() {
-
+    initialize()
+    {
         if (this.stage) {
             var graphics = this.graphics = this.g = new PIXI.Graphics();
             graphics.x = this.cx;

@@ -5,24 +5,24 @@ import {
     Easing
 } from './../../external/lib/animation';
 
-import Camera from '../../src/basic/core/Camera';
-import Device from '../../src/basic/core/Device';
-import DeviceWithWorld from '../../src/basic/core/DeviceWithWorld';
-import Matrix from '../../src/basic/geom/Matrix';
-import Mesh from '../../src/basic/geom/Mesh';
-import Axis from '../../src/basic/shape/Axis';
-import Vector3D from '../../src/basic/geom/Vector3D';
-import Octahedron from '../../src/basic/shape/Octahedron';
-import Icosphere from '../../src/basic/shape/Icosphere';
-import ProceduralSphere from '../../src/basic/shape/ProceduralSphere';
-import TriakisIcosahedron from '../../src/basic/shape/TriakisIcosahedron';
-import HammersleySphere from '../../src/basic/shape/HammersleySphere';
-import CoordinateBox from '../../src/basic/debug/CoordinateBox';
-import Triangle from '../../src/basic/shape/Triangle';
-import Rectangle from '../../src/basic/shape/Rectangle';
-import Cube from '../../src/basic/shape/Cube';
-import Num from '../../src/basic/debug/Num';
-import Arrow from '../../src/basic/shape/Arrow';
+import Camera from './core/Camera';
+import Device from './core/Device';
+import DeviceWithWorld from './core/DeviceWithWorld';
+import Matrix from './geom/Matrix';
+import Mesh from './geom/Mesh';
+import Axis from './shape/Axis';
+import Vector3D from './geom/Vector3D';
+import Octahedron from './shape/Octahedron';
+import Icosphere from './shape/Icosphere';
+import ProceduralSphere from './shape/ProceduralSphere';
+import TriakisIcosahedron from './shape/TriakisIcosahedron';
+import HammersleySphere from './shape/HammersleySphere';
+import CoordinateBox from './debug/CoordinateBox';
+import Triangle from './shape/Triangle';
+import Rectangle from './shape/Rectangle';
+import Cube from './shape/Cube';
+import Num from './debug/Num';
+import Arrow from './shape/Arrow';
 
 
 export default class App

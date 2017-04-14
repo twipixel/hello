@@ -1,5 +1,5 @@
-import Face from './../geom/Face';
-import Vector3D from './../geom/Vector3D';
+import Face from '../geom/Face';
+import Vector3D from '../geom/Vector3D';
 
 
 export default class CoordinateBox
