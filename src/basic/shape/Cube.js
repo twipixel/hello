@@ -25,7 +25,7 @@ export default class Cube
             new Vector3D(-x, y, -z),    // 4 (좌하단) -> 반시계
             new Vector3D(-x, y, z),     // 5
             new Vector3D(x, y, z),      // 6
-            new Vector3D(x, y, -z),      // 7
+            new Vector3D(x, y, -z),     // 7
         ];
 
         this.faces = [
