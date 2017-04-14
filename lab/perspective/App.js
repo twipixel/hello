@@ -52,16 +52,72 @@ export default class App
         this.device.clear();
         var meshes = this.device.projection(this.world, this.camera, this.meshes);
 
-        /*
-        for (var i = 0; i < meshes.length; i++) {
-            var mesh = meshes[i];
+        /*for (var i = 0; i < meshes.length; i++) {
+         var mesh = meshes[i];
 
-            for (var j = 0; j < mesh.faces.length; j++) {
-                var face = mesh.faces[j];
-                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+         for (var j = 0; j < mesh.faces.length; j++) {
+         var face = mesh.faces[j];
+         this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+         }
+         }*/
+
+        var depth = 10;
+        var mesh = meshes[0];
+        var vertices = mesh.vertices;
+
+        this.drawPerspectiveTri(vertices[0], vertices[1], vertices[2], depth);
+        this.drawPerspectiveTri(vertices[3], vertices[4], vertices[5], depth);
+    }
+
+    drawPerspectiveTri(v0, v1, v2, depth_count)
+    {
+        const MIN_Z = 0.05;
+
+        var clip = ((v0.z < MIN_Z) ? 1 : 0) +
+            ((v1.z < MIN_Z) ? 2 : 0) +
+            ((v2.z < MIN_Z) ? 4 : 0);
+
+        this.drawPerspectiveTriUnclipped(v0, v1, v2, depth_count);
+    }
+
+    drawPerspectiveTriUnclipped(v0, v1, v2, depth_count)
+    {
+        this.drawPerspectiveTriUnclippedSub(v0, v1, v2, depth_count);
+    }
+
+    drawPerspectiveTriUnclippedSub(tv0, tv1, tv2, depth_count)
+    {
+        var edgelen01 =
+            Math.abs(tv0.x - tv1.x) +
+            Math.abs(tv0.y - tv1.y);
+        var edgelen12 =
+            Math.abs(tv1.x - tv2.x) +
+            Math.abs(tv1.y - tv2.y);
+        var edgelen20 =
+            Math.abs(tv2.x - tv0.x) +
+            Math.abs(tv2.y - tv0.y);
+        var zdepth01 =
+            Math.abs(tv0.z - tv1.z);
+        var zdepth12 =
+            Math.abs(tv1.z - tv2.z);
+        var zdepth20 =
+            Math.abs(tv2.z - tv0.z);
+
+        const subdivide = 10;
+        var subdiv = ((edgelen01 * zdepth01 > subdivide) ? 1 : 0) +
+            ((edgelen12 * zdepth12 > subdivide) ? 2 : 0) +
+            ((edgelen20 * zdepth20 > subdivide) ? 4 : 0);
+
+        if (depth_count) {
+            depth_count--;
+            if (depth_count == 0) {
+                subdiv = 0;
+            } else {
+                subdiv = 7;
             }
         }
-        */
+
+        this.device.drawTriangle(tv0, tv1, tv2)
     }
 
     initializeGUI()
