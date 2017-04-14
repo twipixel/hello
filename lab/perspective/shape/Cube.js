@@ -18,18 +18,14 @@ export default class Cube
         this.z = z;
         this.color = color;
 
-        var grids = this.grids = [];
-        var faces = this.faces = [];
-        var vertices = this.vertices = [];
-
-        var v0 = new Vector3D(-x, -y, -z);  // 0 (좌상단) -> 반시계
-        var v1 = new Vector3D(x, -y, z);    // 1
-        var v2 = new Vector3D(x, -y, z);    // 2
-        var v3 = new Vector3D(x, -y, -z);   // 3
-        var v4 = new Vector3D(-x, y, -z);   // 4 (좌하단) -> 반시계
-        var v5 = new Vector3D(-x, y, z);    // 5
-        var v6 = new Vector3D(x, y, z);     // 6
-        var v7 = new Vector3D(x, y, -z);    // 7
+        var v0 = new Vector3D(-x, -y, -z);      // 0 (좌상단) -> 반시계
+        var v1 = new Vector3D(-x, -y, z);       // 1
+        var v2 = new Vector3D(x, -y, z);        // 2
+        var v3 = new Vector3D(x, -y, -z);       // 3
+        var v4 = new Vector3D(-x, y, -z);       // 4 (좌하단) -> 반시계
+        var v5 = new Vector3D(-x, y, z);        // 5
+        var v6 = new Vector3D(x, y, z);         // 6
+        var v7 = new Vector3D(x, y, -z);        // 7
 
         // top-top: 0, 2, 3
         var tt0 = this.tt0 = v0.clone();
@@ -116,7 +112,7 @@ export default class Cube
         lt2.v = 1;
 
         // left-bottom: 1, 5, 4
-        lb0.u = 1;
+        lb0.u = 0;
         lb0.v = 0;
         lb1.u = 1;
         lb1.v = 1;
@@ -144,8 +140,8 @@ export default class Cube
         rt0.v = 0;
         rt1.u = 1;
         rt1.v = 1;
-        rt2.u = 0;
-        rt2.v = 1;
+        rt2.u = 1;
+        rt2.v = 0;
 
         // right-bttom: 2, 6, 7
         rb0.u = 0;
@@ -166,10 +162,10 @@ export default class Cube
         // backward-bttom: 0, 4, 7
         eb0.u = 0;
         eb0.v = 0;
-        eb1.u = 1;
+        eb1.u = 0;
         eb1.v = 1;
         eb2.u = 1;
-        eb2.v = 0;
+        eb2.v = 1;
 
         // bottom-top: 4, 6, 7
         bt0.u = 0;
@@ -182,12 +178,12 @@ export default class Cube
         // bottom-bottom: 4, 5, 6
         bb0.u = 0;
         bb0.v = 0;
-        bb1.u = 1;
+        bb1.u = 0;
         bb1.v = 1;
         bb2.u = 1;
-        bb2.v = 0;
+        bb2.v = 1;
 
-        var v = this.vertices = [
+        this.vertices = [
             tt0, tt1, tt2, tb0, tb1, tb2,
             lt0, lt1, lt2, lb0, lb1, lb2,
             ft0, ft1, ft2, fb0, fb1, fb2,
@@ -211,12 +207,23 @@ export default class Cube
             new Face(2, 2, 6, 0xA2DED0),
             new Face(3, 3, 7, 0xA2DED0)
         ];
-
-
     }
 
     clone()
     {
         return new Cube(this.x, this.y, this.z, this.color);
     }
+
+    /*clone()
+    {
+        var vertices = [];
+
+        for (var i = 0; i < this.vertices; i++) {
+            vertices[i] = this.vertices[i].clone();
+        }
+
+        var cube = new Cube(this.x, this.y, this.z, this.color);
+        cube.vertices = vertices;
+        return cube;
+    }*/
 }

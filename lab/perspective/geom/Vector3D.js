@@ -139,6 +139,6 @@ export default class Vector3D
 
     clone ()
     {
-        return new Vector3D(this.x, this.y, this.z);
+        return new Vector3D(this.x, this.y, this.z, this.u, this.v);
     }
 }

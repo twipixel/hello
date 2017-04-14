@@ -19,6 +19,7 @@ export default class App
         this.app = new PIXI.Application(800, 600, {backgroundColor: 0x191919}, true);
         document.body.appendChild(this.app.view);
 
+        this.ctx = this.app.view.getContext('2d');
         this.canvas = this.app.renderer.view;
         this.stage = this.app.stage;
 
@@ -42,10 +43,15 @@ export default class App
         var shape = new Cube(size, size, size);
         var cube = this.cube = new Mesh(shape);
         this.meshes.push(cube);
+
+
+        var size = 100;
+        this.drawTriangle(this.ctx, this.img, 0, 0, size, size, size, 0, 0, 0, 1, 1, 1, 0);
     }
 
     render(ms)
     {
+        return;
         this.camera.target = new Vector3D();
         //this.device.render(this.world, this.camera, this.meshes);
 
@@ -65,8 +71,9 @@ export default class App
         var mesh = meshes[0];
         var vertices = mesh.vertices;
 
-        this.drawPerspectiveTri(vertices[0], vertices[1], vertices[2], depth);
-        this.drawPerspectiveTri(vertices[3], vertices[4], vertices[5], depth);
+        for (var i = 0; i < vertices.length; i+=3) {
+            this.drawPerspectiveTri(vertices[i], vertices[i + 1], vertices[i + 2], depth);
+        }
     }
 
     drawPerspectiveTri(v0, v1, v2, depth_count)
@@ -117,7 +124,85 @@ export default class App
             }
         }
 
-        this.device.drawTriangle(tv0, tv1, tv2)
+        // this.device.drawTriangle(tv0, tv1, tv2);
+        this.drawTriangle(this.ctx, this.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u, tv0.v, tv1.u, tv1.v, tv2.u, tv2.v);
+    }
+
+    drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
+    {
+        ctx.save();
+
+        // Clip the output to the on-screen triangle boundaries.
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.closePath();
+        //ctx.stroke();//xxxxxxx for wireframe
+        ctx.clip();
+
+        /*
+         ctx.transform(m11, m12, m21, m22, dx, dy) sets the context transform matrix.
+
+         The context matrix is:
+
+         [ m11 m21 dx ]
+         [ m12 m22 dy ]
+         [  0   0   1 ]
+
+         Coords are column vectors with a 1 in the z coord, so the transform is:
+         x_out = m11 * x + m21 * y + dx;
+         y_out = m12 * x + m22 * y + dy;
+
+         From Maxima, these are the transform values that map the source
+         coords to the dest coords:
+
+         sy0 (x2 - x1) - sy1 x2 + sy2 x1 + (sy1 - sy2) x0
+         [m11 = - -----------------------------------------------------,
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+
+         sy1 y2 + sy0 (y1 - y2) - sy2 y1 + (sy2 - sy1) y0
+         m12 = -----------------------------------------------------,
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+
+         sx0 (x2 - x1) - sx1 x2 + sx2 x1 + (sx1 - sx2) x0
+         m21 = -----------------------------------------------------,
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+
+         sx1 y2 + sx0 (y1 - y2) - sx2 y1 + (sx2 - sx1) y0
+         m22 = - -----------------------------------------------------,
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+
+         sx0 (sy2 x1 - sy1 x2) + sy0 (sx1 x2 - sx2 x1) + (sx2 sy1 - sx1 sy2) x0
+         dx = ----------------------------------------------------------------------,
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+
+         sx0 (sy2 y1 - sy1 y2) + sy0 (sx1 y2 - sx2 y1) + (sx2 sy1 - sx1 sy2) y0
+         dy = ----------------------------------------------------------------------]
+         sx0 (sy2 - sy1) - sx1 sy2 + sx2 sy1 + (sx1 - sx2) sy0
+         */
+
+        // TODO: eliminate common subexpressions.
+        var denom = sx0 * (sy2 - sy1) - sx1 * sy2 + sx2 * sy1 + (sx1 - sx2) * sy0;
+        if (denom == 0) {
+            return;
+        }
+        var m11 = -(sy0 * (x2 - x1) - sy1 * x2 + sy2 * x1 + (sy1 - sy2) * x0) / denom;
+        var m12 = (sy1 * y2 + sy0 * (y1 - y2) - sy2 * y1 + (sy2 - sy1) * y0) / denom;
+        var m21 = (sx0 * (x2 - x1) - sx1 * x2 + sx2 * x1 + (sx1 - sx2) * x0) / denom;
+        var m22 = -(sx1 * y2 + sx0 * (y1 - y2) - sx2 * y1 + (sx2 - sx1) * y0) / denom;
+        var dx = (sx0 * (sy2 * x1 - sy1 * x2) + sy0 * (sx1 * x2 - sx2 * x1) + (sx2 * sy1 - sx1 * sy2) * x0) / denom;
+        var dy = (sx0 * (sy2 * y1 - sy1 * y2) + sy0 * (sx1 * y2 - sx2 * y1) + (sx2 * sy1 - sx1 * sy2) * y0) / denom;
+
+        ctx.transform(m11, m12, m21, m22, dx, dy);
+
+        // Draw the whole image.  Transform and clip will map it onto the
+        // correct output triangle.
+        //
+        // TODO: figure out if drawImage goes faster if we specify the rectangle that
+        // bounds the source coords.
+        ctx.drawImage(im, 0, 0);
+        ctx.restore();
     }
 
     initializeGUI()

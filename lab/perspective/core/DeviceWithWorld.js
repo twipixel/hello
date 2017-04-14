@@ -33,7 +33,9 @@ export default class Device extends PIXI.Graphics
         let x = projected.x * this.stageWidth + this.stageWidth / 2;
         let y = -projected.y * this.stageHeight + this.stageHeight / 2;
         let z = point.z;
-        return new Vector3D(x, y, z);
+        let u = point.u || 0;
+        let v = point.v || 0;
+        return new Vector3D(x, y, z, u, v);
     }
 
     drawPoint(vertex, color = 0xFFFFFF)
