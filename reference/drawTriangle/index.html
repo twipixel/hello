@@ -138,6 +138,9 @@
         }
     }
 
+    /**
+     * u, v 는 넓이와 높이 픽셀 값입니다.
+     */
     var calculateGeometry = function () {
         // clear triangles out
         triangles = [];
@@ -203,7 +206,7 @@
                 var v1 = curRow * imgH;
                 var v2 = nextRow * imgH;
 
-                console.log('curCol', curCol, 'u1', u1, 'nextCol', nextCol, 'u2', u2, 'curRow', curRow, 'v1', v1, 'nextRow', nextRow, 'v2', v2);
+                //console.log('curCol', curCol, 'u1', u1, 'nextCol', nextCol, 'u2', u2, 'curRow', curRow, 'v1', v1, 'nextRow', nextRow, 'v2', v2);
 
                 var triangle1 = new Triangle(
                     new Point(p1x, p1y),

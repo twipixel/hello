@@ -56,73 +56,35 @@ export default class App
         var meshes = this.device.projection(this.world, this.camera, this.meshes);
 
         /*for (var i = 0; i < meshes.length; i++) {
-         var mesh = meshes[i];
+            var mesh = meshes[i];
 
-         for (var j = 0; j < mesh.faces.length; j++) {
-         var face = mesh.faces[j];
-         this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
-         }
-         }*/
+            for (var j = 0; j < mesh.faces.length; j++) {
+                var face = mesh.faces[j];
+                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+            }
+        }*/
 
         var depth = 10;
         var mesh = meshes[0];
         var vertices = mesh.vertices;
 
+        // face를 연속적으로 처리하도록 되어 있기 때문에 정렬하면 그려지지 않습니다.
+        // z 정렬하고 z가 카메라보다 뒤에 있으면 안그려지도록 처리를 할 수 있습니다.
+        // var vertices = mesh.vertices.sort(this.sortByZIndex);
+
         for (var i = 0; i < vertices.length; i+=3) {
-            this.drawPerspectiveTri(vertices[i], vertices[i + 1], vertices[i + 2], depth);
+            var tv0 = vertices[i],
+                tv1 = vertices[i + 1],
+                tv2 = vertices[i + 2],
+                w = this.w, h = this.h;
+
+            this.drawTriangle(this.ctx, this.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u * w, tv0.v * h, tv1.u * w, tv1.v * h, tv2.u * w, tv2.v * h);
         }
     }
 
-    drawPerspectiveTri(v0, v1, v2, depth_count)
+    sortByZIndex(a, b)
     {
-        const MIN_Z = 0.05;
-
-        var clip = ((v0.z < MIN_Z) ? 1 : 0) +
-            ((v1.z < MIN_Z) ? 2 : 0) +
-            ((v2.z < MIN_Z) ? 4 : 0);
-
-        this.drawPerspectiveTriUnclipped(v0, v1, v2, depth_count);
-    }
-
-    drawPerspectiveTriUnclipped(v0, v1, v2, depth_count)
-    {
-        this.drawPerspectiveTriUnclippedSub(v0, v1, v2, depth_count);
-    }
-
-    drawPerspectiveTriUnclippedSub(tv0, tv1, tv2, depth_count)
-    {
-        var edgelen01 =
-            Math.abs(tv0.x - tv1.x) +
-            Math.abs(tv0.y - tv1.y);
-        var edgelen12 =
-            Math.abs(tv1.x - tv2.x) +
-            Math.abs(tv1.y - tv2.y);
-        var edgelen20 =
-            Math.abs(tv2.x - tv0.x) +
-            Math.abs(tv2.y - tv0.y);
-        var zdepth01 =
-            Math.abs(tv0.z - tv1.z);
-        var zdepth12 =
-            Math.abs(tv1.z - tv2.z);
-        var zdepth20 =
-            Math.abs(tv2.z - tv0.z);
-
-        const subdivide = 10;
-        var subdiv = ((edgelen01 * zdepth01 > subdivide) ? 1 : 0) +
-            ((edgelen12 * zdepth12 > subdivide) ? 2 : 0) +
-            ((edgelen20 * zdepth20 > subdivide) ? 4 : 0);
-
-        if (depth_count) {
-            depth_count--;
-            if (depth_count == 0) {
-                subdiv = 0;
-            } else {
-                subdiv = 7;
-            }
-        }
-
-        // this.device.drawTriangle(tv0, tv1, tv2);
-        this.drawTriangle(this.ctx, this.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u, tv0.v, tv1.u, tv1.v, tv2.u, tv2.v);
+        return a.z - b.z;
     }
 
     drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
@@ -300,22 +262,6 @@ export default class App
         //this.camera.position = new Vector3D(0, 0, -10);
         //console.log('camera.position:', this.camera.position);
     }
-
-    /*get canvas()
-    {
-        if (!this._canvas) {
-            this._canvas = document.createElement('canvas');
-        }
-        return this._canvas;
-    }
-
-    get ctx()
-    {
-        if (!this._context) {
-            this._context = this.canvas.getContext('2d');
-        }
-        return this._context;
-    }*/
 
     get w()
     {
