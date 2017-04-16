@@ -37,7 +37,7 @@ export default class App
 
         var size = 10;
         this.camera = new Camera();
-        this.camera.position.z = -200;
+        this.camera.position.z = -100;
         this.world = new Mesh({faces:[], vertices:[]});
         this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);

@@ -37,15 +37,15 @@ export default class Cube
         var tb1 = this.tb1 = v1.clone();
         var tb2 = this.tb2 = v2.clone();
 
-        // left-top: 0, 1, 4
-        var lt0 = this.lt0 = v0.clone();
-        var lt1 = this.lt1 = v1.clone();
+        // left-top: 1, 0, 4
+        var lt0 = this.lt0 = v1.clone();
+        var lt1 = this.lt1 = v0.clone();
         var lt2 = this.lt2 = v4.clone();
 
-        // left-bottom: 1, 5, 4
+        // left-bottom: 1, 4, 5
         var lb0 = this.lb0 = v1.clone();
-        var lb1 = this.lb1 = v5.clone();
-        var lb2 = this.lb2 = v4.clone();
+        var lb1 = this.lb1 = v4.clone();
+        var lb2 = this.lb2 = v5.clone();
 
         // front-top: 1, 6, 2
         var ft0 = this.ft0 = v1.clone();
@@ -103,20 +103,20 @@ export default class Cube
         tb2.u = 1;
         tb2.v = 1;
 
-        // left-top: 0, 1, 4
-        lt0.u = 0;
+        // left-top: 1, 0, 4
+        lt0.u = 1;
         lt0.v = 0;
-        lt1.u = 1;
+        lt1.u = 0;
         lt1.v = 0;
         lt2.u = 0;
         lt2.v = 1;
 
-        // left-bottom: 1, 5, 4
-        lb0.u = 0;
+        // left-bottom: 1, 4, 5
+        lb0.u = 1;
         lb0.v = 0;
-        lb1.u = 1;
+        lb1.u = 0;
         lb1.v = 1;
-        lb2.u = 0;
+        lb2.u = 1;
         lb2.v = 1;
 
         // front-top: 1, 6, 2
