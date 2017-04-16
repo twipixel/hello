@@ -25,12 +25,13 @@
 - ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
 - 조명 적용 (라이팅)
 - Texture 적용
-  - [UV맵핑, 원근투영](http://jidolstar.tistory.com/543)
+  - ~~[UV맵핑, 원근투영](http://jidolstar.tistory.com/543)~~
   - [Cube Map](http://jidolstar.tistory.com/574)
   - 실린더에 이미지 입히기 (UV  Map)
   - [토성 그리기](http://jidolstar.tistory.com/547) 
   - [triangular distorting of images](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
   - [Texturing](http://www8.cs.umu.se/kurser/TDBC07/HT04/handouts/HO-lecture11.pdf)
+  - [Spice up your postcard 3D with environment mapping](http://www.derschmale.com/2009/06/01/spice-up-your-postcard-3d-with-environment-mapping/)
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders
@@ -60,6 +61,9 @@
     - Procedural (UV)
     - [Hammersley](http://www.cse.cuhk.edu.hk/~ttwong/papers/udpoint/udpoint.pdf)
     - [Creating an Octahedron Sphere in Unity](https://www.binpress.com/tutorial/creating-an-octahedron-sphere/162)
+  - PaulBourke.net
+    - [Circle Sphere](http://paulbourke.net/geometry/circlesphere/)
+    - [Particle](http://paulbourke.net/miscellaneous/particle/)
 - [뷰 행렬](http://egloos.zum.com/EireneHue/v/984622)
 - [투영 (Projection)](http://egloos.zum.com/EireneHue/v/985792)
   - Near (0)
@@ -82,7 +86,6 @@
   - [perspective.js](http://www.html5.jp/test/perspective_canvas/demo1_en.html)
   - [distort image](http://jsfiddle.net/rjw57/CJy24/)
   - [dynamic-image-distortion-html5-canvas](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
-  - [Canvas Perspective](https://fiddle.jshell.net/prafuitu/8wkvG/8/?utm_source=website&utm_medium=embed&utm_campaign=8wkvG)
   - [Can you do an isometric perspective with HTML5 <canvas>?](http://stackoverflow.com/questions/5186013/can-you-do-an-isometric-perspective-with-html5-canvas)
 - 직교 좌표계 = 데카르트 좌표계 (Cartesian Coordinates)
 - UV 좌표 = 무게 중심 좌표 (Barycentric Coordinates)
@@ -93,7 +96,9 @@
 #### Flash Methods
 
 - [drawTriagnles in javascript](http://lib.ivank.net/?p=demos&d=pseudo3D)
-  - ivank.net
+  - [ivank.net](http://lib.ivank.net/)
+
+<br>
 
 #### 참고 링크
 
@@ -164,21 +169,22 @@
 
 <br>
 
+#### Textures
+
+- [textures.com](https://www.textures.com/)
+- [cubemap](http://www.humus.name/index.php?page=Textures)
+
+<br>
+
 #### PIXI 기능 소개
 
 - [Mesh](http://wow.techbrood.com/fiddle/31419)
 
-#### 좌표표시 예제
-
-- ![Like It](https://i.stack.imgur.com/rQfnu.png)
-
-#### UV 맵 테스트 이미지
-
-- ![UV Diagram](https://philromeodesign.files.wordpress.com/2015/05/custom_uv_diag.png?w=400&h=400)
-- ![uvLayoutGrid](https://people.cs.clemson.edu/~tadavis/cs809/uvLayoutGrid.png)
-- [CubeMap 이미지](http://www.humus.name/index.php?page=Textures&&start=32)
+<br>
 
 #### 관련 툴
 
 - [blender](https://docs.blender.org/manual/ko/dev/index.html)
 - [Blend4Web](https://www.blend4web.com/en/)
+
+<br>

@@ -289,6 +289,13 @@ export default class App
         return this._cy;
     }
 
+    /**
+     * 이미지 총 사이즈는 3072 x 512 입니다.
+     * Horizontal Strip 방식의 이미지 이며
+     * Right, Left, Top, Bottom, Front, Back 순입니다.
+     * 면당 512 사이즈 입니다.
+     * @returns {Element}
+     */
     get img()
     {
         return document.getElementById('source');
