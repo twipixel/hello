@@ -51,7 +51,8 @@
         $(image).load(function () {
             setInterval(draw, 1000 / 60);
         });
-        $(image).attr('src', 'http://media.giphy.com/media/NWb6sWXQQTqwg/giphy.gif');
+//        $(image).attr('src', 'http://media.giphy.com/media/NWb6sWXQQTqwg/giphy.gif');
+        $(image).attr('src', '../../asset/image/uv-texture.jpg');
 
         canvas = document.createElement('canvas');
         $(canvas).attr('width', 500);
@@ -142,8 +143,10 @@
         triangles = [];
 
         // generate subdivision
-        var subs = 7; // vertical subdivisions
-        var divs = 7; // horizontal subdivisions
+        /*var subs = 7; // vertical subdivisions
+        var divs = 7; // horizontal subdivisions*/
+        var subs = 1; // vertical subdivisions
+        var divs = 1; // horizontal subdivisions
 
         var p1 = new Point(parseInt($(controls[0]).css('left')) + 6, parseInt($(controls[0]).css('top')) + 6);
         var p2 = new Point(parseInt($(controls[1]).css('left')) + 6, parseInt($(controls[1]).css('top')) + 6);
@@ -199,6 +202,8 @@
                 var u2 = nextCol * imgW;
                 var v1 = curRow * imgH;
                 var v2 = nextRow * imgH;
+
+                console.log('curCol', curCol, 'u1', u1, 'nextCol', nextCol, 'u2', u2, 'curRow', curRow, 'v1', v1, 'nextRow', nextRow, 'v2', v2);
 
                 var triangle1 = new Triangle(
                     new Point(p1x, p1y),

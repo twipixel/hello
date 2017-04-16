@@ -10,9 +10,18 @@
             overflow: auto;
             background-color: #191919;
         }
+
+        canvas {
+            border-style: solid;
+            border-color: #BDC3C7;
+        }
     </style>
 </head>
 <body>
+
+<!--<img id="source" src="../../asset/image/uv-texture.jpg">-->
+<img id="source" src="../../asset/image/uv-texture.jpg" style="display: none">
+
 <script type="text/javascript" src="./../../external/vendor/be.js"></script>
 <script type="text/javascript" src="./../../external/vendor/pixi.js"></script>
 <script type="text/javascript" src="./../../external/vendor/dat.gui.js"></script>
@@ -20,9 +29,6 @@
 <script type="text/javascript" src="./../../external/vendor/gl-matrix.js"></script>
 <script type="text/javascript" src="./../../external/lib/test.common.js"></script>
 <script type="text/javascript" src="./libs/jsgl.js"></script>
-
-<!--<img id="source" src="../../asset/image/uv-texture.jpg">-->
-<img id="source" src="../../asset/image/uv-texture.jpg" style="display: none">
 
 <script>
     (function() {

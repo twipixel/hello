@@ -16,7 +16,9 @@ export default class App
 {
     constructor()
     {
-        this.app = new PIXI.Application(800, 600, {backgroundColor: 0x191919}, true);
+        var w = this.img.width;
+        var h = this.img.height;
+        this.app = new PIXI.Application(w, h, {backgroundColor: 0x191919}, true);
         document.body.appendChild(this.app.view);
 
         this.ctx = this.app.view.getContext('2d');
@@ -43,15 +45,10 @@ export default class App
         var shape = new Cube(size, size, size);
         var cube = this.cube = new Mesh(shape);
         this.meshes.push(cube);
-
-
-        var size = 100;
-        this.drawTriangle(this.ctx, this.img, 0, 0, size, size, size, 0, 0, 0, 1, 1, 1, 0);
     }
 
     render(ms)
     {
-        return;
         this.camera.target = new Vector3D();
         //this.device.render(this.world, this.camera, this.meshes);
 
@@ -194,6 +191,7 @@ export default class App
         var dx = (sx0 * (sy2 * x1 - sy1 * x2) + sy0 * (sx1 * x2 - sx2 * x1) + (sx2 * sy1 - sx1 * sy2) * x0) / denom;
         var dy = (sx0 * (sy2 * y1 - sy1 * y2) + sy0 * (sx1 * y2 - sx2 * y1) + (sx2 * sy1 - sx1 * sy2) * y0) / denom;
 
+        // console.log(m11, m12, m21, m22, dx, dy);
         ctx.transform(m11, m12, m21, m22, dx, dy);
 
         // Draw the whole image.  Transform and clip will map it onto the
