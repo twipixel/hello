@@ -33,9 +33,14 @@
   - [Texturing](http://www8.cs.umu.se/kurser/TDBC07/HT04/handouts/HO-lecture11.pdf)
   - [Spice up your postcard 3D with environment mapping](http://www.derschmale.com/2009/06/01/spice-up-your-postcard-3d-with-environment-mapping/)
 - [Culling (골라내기)](http://tip.daum.net/openknow/39042890)
-  - [Backface culling](https://github.com/moul/amiga-ball)
-  - View frustum culling
-  - Occlusion culling
+  - [Backface Culling](https://github.com/moul/amiga-ball)
+  - [Backface Culling > Scripting 3D in Flash](https://www.kirupa.com/developer/actionscript/backface_culling.htm)
+  - View frustum Culling
+  - Occlusion Culling
+- [z-buffering](http://stackoverflow.com/questions/12677218/fastest-way-to-implement-z-buffering-for-a-software-renderer)
+  - [Z-buffering algorithm not drawing 100% correctly](http://stackoverflow.com/questions/26372092/z-buffering-algorithm-not-drawing-100-correctly)
+  - [Interpolation on a 3D triangle using Normals?](http://forum.devmaster.net/t/interpolation-on-a-3d-triangle-using-normals/20610/3)
+  - [How to do z-ordering in software correctly](http://stackoverflow.com/questions/3899805/how-to-do-z-ordering-in-software-correctly)
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders
@@ -199,3 +204,8 @@
 - [Blend4Web](https://www.blend4web.com/en/)
 
 <br>
+
+#### Book
+
+- [Foundation HTML5 Animation with JavaScript](http://users.polytech.unice.fr/~strombon/camash/Foundation%20HTML5%20Animation%20with%20JavaScript/html5-animation-source-code/)
+- [Core S2 Software Solutions - 3D Tutorial](http://www.cores2.com/3D_Tutorial/)

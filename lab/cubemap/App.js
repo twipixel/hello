@@ -82,18 +82,25 @@ export default class App
 
             for (var j = 0; j < faces.length; j++) {
                 var face = faces[j];
-                var tv0 = vertices[face.A];
-                var tv1 = vertices[face.B];
-                var tv2 = vertices[face.C];
+                var A = vertices[face.A];
+                var B = vertices[face.B];
+                var C = vertices[face.C];
+
+                //https://books.google.co.kr/books?id=RmphScK8u-gC&pg=PA417&lpg=PA417&dq=z+sorting+js&source=bl&ots=FzTYVJZsKj&sig=SB7hidQnLsyBHajLxp8pe-L1S6g&hl=ko&sa=X&ved=0ahUKEwiQqLWi6avTAhULxLwKHSlmB-g4ChDoAQhJMAU#v=onepage&q=z%20sorting%20js&f=false
 
                 if (face.img) {
-                    this.drawTriangle(this.ctx, face.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u, tv0.v, tv1.u, tv1.v, tv2.u, tv2.v);
+                    this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
                 }
                 else {
                     this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
                 }
             }
         }
+    }
+
+    getZ(A, B, C)
+    {
+        return Math.min(A.z, B.z, C.z);
     }
 
     sortByZIndex(a, b)
