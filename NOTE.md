@@ -32,6 +32,10 @@
   - [triangular distorting of images](https://codeslashslashcomment.com/2012/12/12/dynamic-image-distortion-html5-canvas/)
   - [Texturing](http://www8.cs.umu.se/kurser/TDBC07/HT04/handouts/HO-lecture11.pdf)
   - [Spice up your postcard 3D with environment mapping](http://www.derschmale.com/2009/06/01/spice-up-your-postcard-3d-with-environment-mapping/)
+- [Culling (골라내기)](http://tip.daum.net/openknow/39042890)
+  - [Backface culling](https://github.com/moul/amiga-ball)
+  - View frustum culling
+  - Occlusion culling
 - Orbit 회전 구현
 - 3D Object 만들기
   - Cylinders

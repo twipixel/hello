@@ -8,8 +8,10 @@ export default class Arrow
     {
         var arrowSize = arrowSize;
 
-        this.to = to;
+        this.axis = axis;
         this.from = from;
+        this.to = to;
+        this.arrowSize = arrowSize;
 
         var faceAlpha = 0.3;
         var faceColor = (axis == 'x') ? 0xE91E63 : (axis === 'y') ? 0x8BC34A : 0x03A9F4;
@@ -22,7 +24,6 @@ export default class Arrow
         this.faces = [
             new Face(0, 1, 0, faceColor, faceAlpha)
         ];
-
 
         if (axis === 'x') {
             this.vertices.push(new Vector3D(to.x - arrowSize, to.y + arrowSize, to.z));
@@ -48,5 +49,10 @@ export default class Arrow
             this.faces.push(new Face(1, 2, 3, faceColor, faceAlpha));
             this.faces.push(new Face(1, 4, 5, faceColor, faceAlpha));
         }
+    }
+
+    clone()
+    {
+        return new Arrow(this.axis, this.from, this.to, this.arrowSize);
     }
 }

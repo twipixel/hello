@@ -19,16 +19,18 @@
 </head>
 <body>
 
-<img id="source" src="../../asset/image/cubemap-sky.jpg" style="left: 590px; position: absolute;">
-<!--<img id="source" src="../../asset/image/uv-texture.jpg" style="left: 590px; position: absolute;">-->
-<!--<img id="source" src="../../asset/image/uv-texture.jpg" style="display: none">-->
+<img id="sky-right" src="../../asset/image/texture/cubemap/sky-right.png" style="display: none; left: 590px; position: absolute;">
+<img id="sky-left" src="../../asset/image/texture/cubemap/sky-left.png" style="display: none;">
+<img id="sky-top" src="../../asset/image/texture/cubemap/sky-top.png" style="display: none;">
+<img id="sky-bottom" src="../../asset/image/texture/cubemap/sky-bottom.png" style="display: none;">
+<img id="sky-front" src="../../asset/image/texture/cubemap/sky-front.png" style="display: none;">
+<img id="sky-back" src="../../asset/image/texture/cubemap/sky-back.png" style="display: none;">
 
 <script type="text/javascript" src="./../../external/vendor/be.js"></script>
 <script type="text/javascript" src="./../../external/vendor/pixi.js"></script>
 <script type="text/javascript" src="./../../external/vendor/dat.gui.js"></script>
 <script type="text/javascript" src="./../../external/lib/math.js"></script>
 <script type="text/javascript" src="./../../external/lib/test.common.js"></script>
-<script type="text/javascript" src="./libs/jsgl.js"></script>
 
 <script>
     (function() {

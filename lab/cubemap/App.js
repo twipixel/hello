@@ -10,14 +10,15 @@ import Matrix from './geom/Matrix';
 import Mesh from './geom/Mesh';
 import Vector3D from './geom/Vector3D';
 import Cube from './shape/Cube';
+import Arrow from './shape/Arrow';
 
 
 export default class App
 {
     constructor()
     {
-        var w = this.img.width;
-        var h = this.img.height;
+        var w = 560;
+        var h = 560;
         this.app = new PIXI.Application(w, h, {backgroundColor: 0x191919}, true);
         document.body.appendChild(this.app.view);
 
@@ -35,16 +36,35 @@ export default class App
     {
         this.meshes = [];
 
-        var size = 10;
+        var size = 50;
         this.camera = new Camera();
-        this.camera.position.z = -100;
+        this.camera.position.z = -500;
         this.world = new Mesh({faces:[], vertices:[]});
         this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
+        this.createAxis(50);
+
         var shape = new Cube(size, size, size);
         var cube = this.cube = new Mesh(shape);
         this.meshes.push(cube);
+    }
+
+    createAxis(size = 50)
+    {
+        if (!this.xArrow) {
+            var center = new Vector3D();
+            var ax = new Arrow('x', center, new Vector3D(size, 0, 0));
+            var ay = new Arrow('y', center, new Vector3D(0, size, 0));
+            var az = new Arrow('z', center, new Vector3D(0, 0, size));
+            var xArrow = this.xArrow = new Mesh(ax);
+            var yArrow = this.yArrow = new Mesh(ay);
+            var zArrow = this.zArrow = new Mesh(az);
+        }
+
+        //this.meshes.push(xArrow);
+        //this.meshes.push(yArrow);
+        //this.meshes.push(zArrow);
     }
 
     render(ms)
@@ -55,30 +75,24 @@ export default class App
         this.device.clear();
         var meshes = this.device.projection(this.world, this.camera, this.meshes);
 
-        /*for (var i = 0; i < meshes.length; i++) {
+        for (var i = 0; i < meshes.length; i++) {
             var mesh = meshes[i];
+            var faces = mesh.faces;
+            var vertices = mesh.vertices;
 
-            for (var j = 0; j < mesh.faces.length; j++) {
-                var face = mesh.faces[j];
-                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+            for (var j = 0; j < faces.length; j++) {
+                var face = faces[j];
+                var tv0 = vertices[face.A];
+                var tv1 = vertices[face.B];
+                var tv2 = vertices[face.C];
+
+                if (face.img) {
+                    this.drawTriangle(this.ctx, face.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u, tv0.v, tv1.u, tv1.v, tv2.u, tv2.v);
+                }
+                else {
+                    this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+                }
             }
-        }*/
-
-        var depth = 10;
-        var mesh = meshes[0];
-        var vertices = mesh.vertices;
-
-        // face를 연속적으로 처리하도록 되어 있기 때문에 정렬하면 그려지지 않습니다.
-        // z 정렬하고 z가 카메라보다 뒤에 있으면 안그려지도록 처리를 할 수 있습니다.
-        // var vertices = mesh.vertices.sort(this.sortByZIndex);
-
-        for (var i = 0; i < vertices.length; i+=3) {
-            var tv0 = vertices[i],
-                tv1 = vertices[i + 1],
-                tv2 = vertices[i + 2],
-                w = this.w, h = this.h;
-
-            this.drawTriangle(this.ctx, this.img, tv0.x, tv0.y, tv1.x, tv1.y, tv2.x, tv2.y, tv0.u * w, tv0.v * h, tv1.u * w, tv1.v * h, tv2.u * w, tv2.v * h);
         }
     }
 
@@ -89,8 +103,10 @@ export default class App
 
     drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
     {
+        //console.log(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2);
         ctx.save();
 
+        //ctx.globalAlpha = 0.8;
         // Clip the output to the on-screen triangle boundaries.
         ctx.beginPath();
         ctx.moveTo(x0, y0);
@@ -165,10 +181,21 @@ export default class App
         ctx.restore();
     }
 
+    moveCameraToCenter()
+    {
+        var tween = Be.to(this.camera.position, {x:0, y:0, z:0}, 1, Quad.easeOut).play();
+    }
+
     initializeGUI()
     {
         this.config = {};
         this.gui = new dat.GUI();
+
+        this.config.createAxis = this.createAxis.bind(this);
+        this.config.moveCameraToCenter = this.moveCameraToCenter.bind(this);
+
+        this.gui.add(this.config, 'createAxis');
+        this.gui.add(this.config, 'moveCameraToCenter');
     }
 
     addEvent()

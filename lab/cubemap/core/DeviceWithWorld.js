@@ -144,6 +144,7 @@ export default class Device extends PIXI.Graphics
         for (let i = 0; i < meshes.length; i++) {
             let currentMesh = meshes[i].clone();
             returnMeshes.push(currentMesh);
+
             /**
              * 매쉬의 회전 행렬
              * @type {Matrix}

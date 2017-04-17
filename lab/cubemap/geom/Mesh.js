@@ -7,6 +7,7 @@ export default class Mesh
     {
         this.shape = shape;
         this.faces = shape.faces;
+        this.realFaces = shape.realFaces;
         this.vertices = shape.vertices;
         this.rotation = new Vector3D(0, 0, 0);
         this.position = new Vector3D(0, 0, 0);
