@@ -63,9 +63,9 @@ export default class App {
 
         //destinationContext.drawImage(image, 0, 0);
 
-         //this.createTriangle();
-        this.createImage();
-        //this.createCube();
+        this.createTriangle();
+        // this.createImage();
+        // this.createCube();
     }
 
     createTriangle()

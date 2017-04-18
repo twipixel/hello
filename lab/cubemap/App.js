@@ -43,7 +43,7 @@ export default class App
         this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
-        this.createAxis(50);
+        // this.createAxis(50);
 
         var shape = new Cube(size, size, size);
         var cube = this.cube = new Mesh(shape);
@@ -62,9 +62,9 @@ export default class App
             var zArrow = this.zArrow = new Mesh(az);
         }
 
-        //this.meshes.push(xArrow);
-        //this.meshes.push(yArrow);
-        //this.meshes.push(zArrow);
+        this.meshes.push(xArrow);
+        this.meshes.push(yArrow);
+        this.meshes.push(zArrow);
     }
 
     render(ms)
@@ -82,30 +82,23 @@ export default class App
 
             for (var j = 0; j < faces.length; j++) {
                 var face = faces[j];
-                var A = vertices[face.A];
-                var B = vertices[face.B];
-                var C = vertices[face.C];
-
-                //https://books.google.co.kr/books?id=RmphScK8u-gC&pg=PA417&lpg=PA417&dq=z+sorting+js&source=bl&ots=FzTYVJZsKj&sig=SB7hidQnLsyBHajLxp8pe-L1S6g&hl=ko&sa=X&ved=0ahUKEwiQqLWi6avTAhULxLwKHSlmB-g4ChDoAQhJMAU#v=onepage&q=z%20sorting%20js&f=false
 
                 if (face.img) {
-                    this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
+                    var A = vertices[face.A];
+                    var B = vertices[face.B];
+                    var C = vertices[face.C];
+
+                    // back-face culling
+                    // https://www.kirupa.com/developer/actionscript/backface_culling.htm
+                    if (((B.y-A.y)/(B.x-A.x) - (C.y-A.y)/(C.x-A.x) < 0) ^ (A.x <= B.x == A.x > C.x)){
+                        this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
+                    }
                 }
                 else {
                     this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
                 }
             }
         }
-    }
-
-    getZ(A, B, C)
-    {
-        return Math.min(A.z, B.z, C.z);
-    }
-
-    sortByZIndex(a, b)
-    {
-        return a.z - b.z;
     }
 
     drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
@@ -197,12 +190,10 @@ export default class App
     {
         this.config = {};
         this.gui = new dat.GUI();
-
-        this.config.createAxis = this.createAxis.bind(this);
-        this.config.moveCameraToCenter = this.moveCameraToCenter.bind(this);
-
-        this.gui.add(this.config, 'createAxis');
-        this.gui.add(this.config, 'moveCameraToCenter');
+        this.config.zoomIn = this.zoomIn.bind(this);
+        this.config.zoomOut = this.zoomOut.bind(this);
+        this.gui.add(this.config, 'zoomIn');
+        this.gui.add(this.config, 'zoomOut');
     }
 
     addEvent()
@@ -258,29 +249,26 @@ export default class App
     moveCamera(property, value)
     {
         this.camera.position[property] += value;
-        console.log('moveCamera(', property, value, '), position:', this.camera.position);
     }
 
     moveWorld(property, value)
     {
         this.world.position[property] += value;
-        console.log('moveWorld(', property, value, '), position:', this.world.position);
     }
 
     rotateWorld(property, value)
     {
         this.world.rotation[property] += value;
-        console.log('rotateWorld(', property, value, '), rotation:', this.world.rotation);
     }
 
     zoomIn()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut).play();
+        Be.to(this.camera.position, {x:0, y:0, z:-150}, 1, Quad.easeOut).play();
     }
 
     zoomOut()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut).play();
+        Be.to(this.camera.position, {x:0, y:0, z:-500}, 1, Quad.easeOut).play();
     }
 
     reset()
@@ -321,17 +309,5 @@ export default class App
             this._cy = this.canvas.height / 2;
         }
         return this._cy;
-    }
-
-    /**
-     * 이미지 총 사이즈는 3072 x 512 입니다.
-     * Horizontal Strip 방식의 이미지 이며
-     * Right, Left, Top, Bottom, Front, Back 순입니다.
-     * 면당 512 사이즈 입니다.
-     * @returns {Element}
-     */
-    get img()
-    {
-        return document.getElementById('source');
     }
 }

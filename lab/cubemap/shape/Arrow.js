@@ -13,7 +13,7 @@ export default class Arrow
         this.to = to;
         this.arrowSize = arrowSize;
 
-        var faceAlpha = 0.3;
+        var faceAlpha = 0.5;
         var faceColor = (axis == 'x') ? 0xE91E63 : (axis === 'y') ? 0x8BC34A : 0x03A9F4;
 
         this.vertices = [
