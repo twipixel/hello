@@ -111,6 +111,13 @@
 
 <br>
 
+#### Flash Reference
+
+- [Simple 3D Drawing in Flash CS3 And AS3](http://www.flashandmath.com/advanced/simple3d/sphere.html)
+- [Texture Mapping in ActionScript 3 and Flash CS3: a Bitmap Sphere](http://www.flashandmath.com/advanced/sphere/ideas.html)
+
+<br>
+
 #### Reference
 
 - [Starling Manual](http://manual.starling-framework.org/ko/#_메쉬_meshes)
