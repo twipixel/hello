@@ -88,9 +88,7 @@ export default class App
                     var B = vertices[face.B];
                     var C = vertices[face.C];
 
-                    // back-face culling
-                    // https://www.kirupa.com/developer/actionscript/backface_culling.htm
-                    if (((B.y-A.y)/(B.x-A.x) - (C.y-A.y)/(C.x-A.x) < 0) ^ (A.x <= B.x == A.x > C.x)){
+                    if (this.isFrontface(A, B, C) == this.backfaceCulling){
                         this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
                     }
                 }
@@ -99,6 +97,20 @@ export default class App
                 }
             }
         }
+    }
+
+    /**
+     * back-face culling
+     * https://www.kirupa.com/developer/actionscript/backface_culling.htm
+     * 여기에서 사용하는 ^ (xor)와 or 의 차이점은 참,참 일때 참이 or, 참, 참 일때 거짓이 xor 입니다.
+     * @param A
+     * @param B
+     * @param C
+     * @returns {number}
+     */
+    isFrontface(A, B, C)
+    {
+        return ((B.y-A.y)/(B.x-A.x) - (C.y-A.y)/(C.x-A.x) < 0) ^ (A.x <= B.x == A.x > C.x);
     }
 
     drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
@@ -189,11 +201,13 @@ export default class App
     initializeGUI()
     {
         this.config = {};
+        this.backfaceCulling = true;
         this.gui = new dat.GUI();
         this.config.zoomIn = this.zoomIn.bind(this);
         this.config.zoomOut = this.zoomOut.bind(this);
         this.gui.add(this.config, 'zoomIn');
         this.gui.add(this.config, 'zoomOut');
+        this.gui.add(this, 'backfaceCulling');
     }
 
     addEvent()

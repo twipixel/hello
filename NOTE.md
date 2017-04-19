@@ -24,6 +24,7 @@
   - Perspective
 - ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
 - 조명 적용 (라이팅)
+- [Cubemaps](https://scalibq.wordpress.com/2013/06/23/cubemaps/)
 - Texture 적용
   - ~~[UV맵핑, 원근투영](http://jidolstar.tistory.com/543)~~
   - [Cube Map](http://jidolstar.tistory.com/574)
@@ -35,7 +36,8 @@
 - [Culling (골라내기)](http://tip.daum.net/openknow/39042890)
   - [Backface Culling](https://github.com/moul/amiga-ball)
   - [Backface Culling > Scripting 3D in Flash](https://www.kirupa.com/developer/actionscript/backface_culling.htm)
-  - View frustum Culling
+  - [View frustum (절두체)](https://msdn.microsoft.com/ko-kr/library/ff634570.aspx)
+    - [번역 절두체 평면 추출 기법 (world * view * projetion)](http://m.blog.naver.com/swoosungi/90018432606)
   - Occlusion Culling
 - [z-buffering](http://stackoverflow.com/questions/12677218/fastest-way-to-implement-z-buffering-for-a-software-renderer)
   - [Z-buffering algorithm not drawing 100% correctly](http://stackoverflow.com/questions/26372092/z-buffering-algorithm-not-drawing-100-correctly)
