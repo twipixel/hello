@@ -75,6 +75,15 @@ export default class App
         this.device.clear();
         var meshes = this.device.projection(this.world, this.camera, this.meshes);
 
+        /*for (var i = 0; i < meshes.length; i++) {
+            var mesh = meshes[i];
+
+            for (var j = 0; j < mesh.faces.length; j++) {
+                var face = mesh.faces[j];
+                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+            }
+        }*/
+
         for (var i = 0; i < meshes.length; i++) {
             var mesh = meshes[i];
             var faces = mesh.faces;

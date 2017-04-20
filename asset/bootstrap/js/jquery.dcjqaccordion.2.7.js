@@ -16,7 +16,7 @@
 		var defaults = {
 			classParent	 : 'dcjq-parent',
 			classActive	 : 'active',
-			classArrow	 : 'dcjq-icon',
+			//classArrow	 : 'dcjq-icon',
 			classCount	 : 'dcjq-count',
 			classExpand	 : 'dcjq-current-parent',
 			eventType	 : 'click',
