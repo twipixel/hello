@@ -97,7 +97,7 @@ export default class App
                     var B = vertices[face.B];
                     var C = vertices[face.C];
 
-                    if (this.isFrontface(A, B, C) == this.backfaceCulling){
+                    if (this.isFrontface(A, B, C) == !this.backfaceCulling){
                         this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
                     }
                 }

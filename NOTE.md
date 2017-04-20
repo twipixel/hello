@@ -23,6 +23,7 @@
   - Orthographic
   - Perspective
 - ~~[Sphere 생성](http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html)~~
+- 법선 (front-face 표시)
 - 조명 적용 (라이팅)
 - [Cubemaps](https://scalibq.wordpress.com/2013/06/23/cubemaps/)
 - Texture 적용

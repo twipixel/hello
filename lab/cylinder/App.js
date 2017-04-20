@@ -105,7 +105,7 @@ export default class App
                     var C = vertices[face.C];
                     face.z = Math.min(A.z, B.z, C.z);
 
-                    if (this.isFrontface(A, B, C) == false){
+                    if (this.isFrontface(A, B, C) == false) {
                         frontFaces.push(face);
                     }
                     else {
@@ -113,7 +113,7 @@ export default class App
                     }
                 }
 
-                backFaces.sort(this.sortByZIndex).reverse();
+                backFaces.sort(this.sortByZIndex);
                 var sortedFaces = frontFaces.concat(backFaces);
 
                 for (var k = 0; k < sortedFaces.length; k++) {
@@ -136,7 +136,7 @@ export default class App
 
     sortByZIndex(a, b)
     {
-        return a.z - b.z;
+        return b.z - a.z;
     }
 
     /**

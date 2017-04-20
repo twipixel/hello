@@ -49,12 +49,7 @@ export default class Cylinder
             var i3 = indices[ i + 2 ];
             var z = Math.min( uvtData[i1 * 3 + 2], uvtData[i2 * 3 + 2], uvtData[i3 * 3 + 2]);
             var f = new Face(i1, i2, i3, 0x2196F3, 1, img);
-
-            if (z > 0) {
-                faces.push(f);
-            }
-
-            //faces.push(f);
+            faces.push(f);
         }
     }
 
