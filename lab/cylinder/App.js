@@ -95,7 +95,8 @@ export default class App
                     }
                 }
             } else {
-                var sortedFaces = [];
+                var frontFaces = [];
+                var backFaces = [];
 
                 for (var j = 0; j < faces.length; j++) {
                     var face = faces[j];
@@ -103,14 +104,17 @@ export default class App
                     var B = vertices[face.B];
                     var C = vertices[face.C];
                     face.z = Math.min(A.z, B.z, C.z);
-                    sortedFaces.push(face);
+
+                    if (this.isFrontface(A, B, C) == false){
+                        frontFaces.push(face);
+                    }
+                    else {
+                        backFaces.push(face);
+                    }
                 }
 
-                sortedFaces.sort(this.sortByZIndex).reverse();
-
-                if (window.count++ < 100) {
-                    console.log(sortedFaces);
-                }
+                backFaces.sort(this.sortByZIndex).reverse();
+                var sortedFaces = frontFaces.concat(backFaces);
 
                 for (var k = 0; k < sortedFaces.length; k++) {
                     var face = sortedFaces[k];
@@ -121,8 +125,6 @@ export default class App
                         var C = vertices[face.C];
 
                         this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
-
-                        //this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
                     }
                     else {
                         this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
