@@ -45,7 +45,8 @@ export default class App
 
         this.createAxis(20);
 
-        var shape = new Torus(50, 25, 32, 24);
+        var shape = new Torus(50, 25, 12, 8);
+        // var shape = new Torus(50, 25, 32, 24);
         var torus = this.torus = new Mesh(shape);
         this.meshes.push(torus);
     }
@@ -85,17 +86,7 @@ export default class App
                 var B = vertices[face.B];
                 var C = vertices[face.C];
                 this.device.drawTriangle(A, B, C, face.color, 0.5);
-
-                var center = new Vector3D();
-                center.x = (A.x + B.x + C.x) / 3;
-                center.y = (A.y + B.y + C.y) / 3;
-                center.z = (A.z + B.z + C.z) / 3;
-
-                var cb = new Vector3D(C.x - B.x, C.y - B.y, C.z - B.z);
-                var ba = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
-                var faceNormal = Vector3D.cross(cb, ba);
-                faceNormal = faceNormal.normalize();
-                this.device.drawNormalVector(center, faceNormal, 0x90A4AE, 0.8);
+                this.displayNormal(A, B, C);
             }
         }
         return;*/
@@ -108,6 +99,7 @@ export default class App
             var mesh = meshes[i];
             var faces = mesh.faces;
             var vertices = mesh.vertices;
+            var uvtData = mesh.uvtData;
 
             if(faces[0].img) {
                 for (var j = 0; j < faces.length; j++) {
@@ -121,15 +113,29 @@ export default class App
                     var n = Vector3D.cross(e0, e1);
                     var normalize = Vector3D.normalize(n);
                     var dotProduct = Vector3D.dot(this.camera.target, normalize);
-                    face.y = Math.min(A.y, B.y, C.y);
-                    face.z = Math.min(A.z, B.z, C.z);
 
-                    if (dotProduct > 0 && this.isFrontface(A, B, C) == true) {
+
+                    // face.z = Math.min(A.z, B.z, C.z);
+
+                    /*if (dotProduct > 0) {
                         sortFaces.push(face);
-                    }
+                    }*/
+
+                    // sortFaces.push(face);
+
+                    /*var center = new Vector3D();
+                    center.x = (A.x + B.x + C.x) / 3;
+                    center.y = (A.y + B.y + C.y) / 3;
+                    center.z = (A.z + B.z + C.z) / 3;
+                    var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
+                    var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
+                    var n = Vector3D.cross(e0, e1);
+                    var normalize = Vector3D.normalize(n);
+                    this.device.drawNormalVector(center, normalize, 0x90A4AE, 0.8);*/
                 }
 
-                sortFaces.sort(this.sortByYIndex).reverse();
+                sortFaces.sort(this.sortByZIndex);
+                sortFaces.sort(this.sortByYIndex);
 
                 if (window.count++ < 200) {
                     console.log(sortFaces);
@@ -141,6 +147,7 @@ export default class App
                     var B = vertices[face.B];
                     var C = vertices[face.C];
                     this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                    // this.displayNormal(A, B, C);
                 }
             }
             else {
@@ -164,6 +171,20 @@ export default class App
     sortByZIndex(a, b)
     {
         return b.z - a.z;
+    }
+
+    displayNormal(A, B, C)
+    {
+        var center = new Vector3D();
+        center.x = (A.x + B.x + C.x) / 3;
+        center.y = (A.y + B.y + C.y) / 3;
+        center.z = (A.z + B.z + C.z) / 3;
+
+        var cb = new Vector3D(C.x - B.x, C.y - B.y, C.z - B.z);
+        var ba = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
+        var normalize = Vector3D.cross(cb, ba);
+        normalize = normalize.normalize();
+        this.device.drawNormalVector(center, normalize, 0x90A4AE, 0.8);
     }
 
     /**
