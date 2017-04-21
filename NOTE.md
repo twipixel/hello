@@ -105,6 +105,10 @@
 
 <br>
 
+#### Shape
+
+- [Torus](http://paulbourke.net/geometry/torus/)
+
 #### Flash Methods
 
 - [drawTriagnles in javascript](http://lib.ivank.net/?p=demos&d=pseudo3D)
