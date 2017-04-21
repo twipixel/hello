@@ -43,7 +43,7 @@ export default class App
         this.device = new DeviceWithWorld(this.w, this.h);
         this.stage.addChild(this.device);
 
-        this.createAxis(50);
+        this.createAxis(20);
 
         var shape = new Torus(50, 25, 32, 24);
         var torus = this.torus = new Mesh(shape);
@@ -61,7 +61,6 @@ export default class App
             var yArrow = this.yArrow = new Mesh(ay);
             var zArrow = this.zArrow = new Mesh(az);
         }
-
         this.meshes.push(xArrow);
         this.meshes.push(yArrow);
         this.meshes.push(zArrow);
@@ -77,10 +76,26 @@ export default class App
 
         /*for (var i = 0; i < meshes.length; i++) {
             var mesh = meshes[i];
+            var faces = mesh.faces;
+            var vertices = mesh.vertices;
 
             for (var j = 0; j < mesh.faces.length; j++) {
-                var face = mesh.faces[j];
-                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+                var face = faces[j];
+                var A = vertices[face.A];
+                var B = vertices[face.B];
+                var C = vertices[face.C];
+                this.device.drawTriangle(A, B, C, face.color, 0.5);
+
+                var center = new Vector3D();
+                center.x = (A.x + B.x + C.x) / 3;
+                center.y = (A.y + B.y + C.y) / 3;
+                center.z = (A.z + B.z + C.z) / 3;
+
+                var cb = new Vector3D(C.x - B.x, C.y - B.y, C.z - B.z);
+                var ba = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
+                var faceNormal = Vector3D.cross(cb, ba);
+                faceNormal = faceNormal.normalize();
+                this.device.drawNormalVector(center, faceNormal, 0x90A4AE, 0.8);
             }
         }
         return;*/
@@ -94,86 +109,56 @@ export default class App
             var faces = mesh.faces;
             var vertices = mesh.vertices;
 
-            for (var j = 0; j < faces.length; j++) {
-                var face = faces[j];
-                var A = vertices[face.A];
-                var B = vertices[face.B];
-                var C = vertices[face.C];
-
-                var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
-                var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
-                var n = Vector3D.cross(e0, e1);
-                var normalize = Vector3D.normalize(n);
-                var dotProduct = Vector3D.dot(this.camera.target, normalize);
-                face.z = Math.min(A.z, B.z, C.z);
-                //console.log(dotProduct);
-
-                if (dotProduct >= 0) {
-                    sortFaces.push(face);
-                    //this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
-                }
-            }
-
-            sortFaces.sort(this.sortByZIndex);
-
-            if (window.count++ < 100) {
-                console.log(sortFaces);
-            }
-
-            for (var k = 0; k < sortFaces.length; k++) {
-                var face = sortFaces[k];
-
-                if (face.img) {
+            if(faces[0].img) {
+                for (var j = 0; j < faces.length; j++) {
+                    var face = faces[j];
                     var A = vertices[face.A];
                     var B = vertices[face.B];
                     var C = vertices[face.C];
 
-                    this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                    var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
+                    var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
+                    var n = Vector3D.cross(e0, e1);
+                    var normalize = Vector3D.normalize(n);
+                    var dotProduct = Vector3D.dot(this.camera.target, normalize);
+                    face.y = Math.min(A.y, B.y, C.y);
+                    face.z = Math.min(A.z, B.z, C.z);
+
+                    if (dotProduct > 0 && this.isFrontface(A, B, C) == true) {
+                        sortFaces.push(face);
+                    }
                 }
-                else {
-                    this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+
+                sortFaces.sort(this.sortByYIndex).reverse();
+
+                if (window.count++ < 200) {
+                    console.log(sortFaces);
                 }
-            }
 
-            /*for (var j = 0; j < frontFaces.length; j++) {
-                var face = frontFaces[j];
-                var A = vertices[face.A];
-                var B = vertices[face.B];
-                var C = vertices[face.C];
-
-                if (this.isFrontface(A, B, C) == false) {
-                    frontSort.push(face);
-                }
-            }
-
-            for (var j = 0; j < backFaces.length; j++) {
-                var face = backFaces[j];
-                var A = vertices[face.A];
-                var B = vertices[face.B];
-                var C = vertices[face.C];
-
-                if (this.isFrontface(A, B, C) == true) {
-                    backSort.push(face);
-                }
-            }
-
-            sortedFaces = frontSort.concat(backSort);
-
-            for (var k = 0; k < sortedFaces.length; k++) {
-                var face = sortedFaces[k];
-
-                if (face.img) {
+                for (var k = 0; k < sortFaces.length; k++) {
+                    var face = sortFaces[k];
                     var A = vertices[face.A];
                     var B = vertices[face.B];
                     var C = vertices[face.C];
-
                     this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
                 }
-                else {
+            }
+            else {
+                for (var j = 0; j < faces.length; j++) {
+                    var face = faces[j];
+                    var A = vertices[face.A];
+                    var B = vertices[face.B];
+                    var C = vertices[face.C];
                     this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
                 }
-            }*/
+            }
         }
+
+    }
+
+    sortByYIndex(a, b)
+    {
+        return b.y - a.y;
     }
 
     sortByZIndex(a, b)
@@ -199,6 +184,7 @@ export default class App
     {
         ctx.save();
 
+        ctx.globalAlpha = 1;
         // Clip the output to the on-screen triangle boundaries.
         ctx.beginPath();
         ctx.moveTo(x0, y0);

@@ -38,19 +38,37 @@ export default class Device extends PIXI.Graphics
         return new Vector3D(x, y, z, u, v);
     }
 
-    drawPoint(vertex, color = 0xFFFFFF)
+    drawPoint(vertex, color = 0xFFFFFF, alpha = 1)
     {
-        this.beginFill(color, 0.7);
-        this.drawRect(vertex.x, vertex.y, 2, 2);
+        var size = 8;
+        var half = 4;
+        this.beginFill(color, alpha);
+        this.lineStyle(1, color, alpha);
+        this.drawRect(vertex.x - half, vertex.y - half, size, size);
+        this.endFill();
     }
 
-    drawTriangle(vertex1, vertex2, vertex3, color = 0xFFFFFF, alpha)
+    drawTriangle(vertex1, vertex2, vertex3, color = 0xFFFFFF, alpha = 1)
     {
         this.lineStyle(1, color, alpha);
         this.moveTo(vertex1.x, vertex1.y);
         this.lineTo(vertex2.x, vertex2.y);
         this.lineTo(vertex3.x, vertex3.y);
         this.closePath();
+    }
+
+    drawNormalVector(center, normalVector, color = 0xFFFFFF, alpha = 1)
+    {
+        normalVector = normalVector.multiply(100);
+        normalVector = normalVector.add(center);
+
+        this.beginFill(color, 0.1);
+        this.lineStyle(1, color, alpha);
+        this.moveTo(center.x, center.y);
+        this.lineTo(normalVector.x, normalVector.y);
+        this.closePath();
+        this.drawCircle(center.x, center.y, 2, color, color);
+        this.endFill();
     }
 
     render(world, camera, meshes)
