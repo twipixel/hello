@@ -117,9 +117,9 @@ export default class App
 
                     // face.z = Math.min(A.z, B.z, C.z);
 
-                    /*if (dotProduct > 0) {
+                    if (dotProduct > 0) {
                         sortFaces.push(face);
-                    }*/
+                    }
 
                     // sortFaces.push(face);
 
@@ -134,8 +134,9 @@ export default class App
                     this.device.drawNormalVector(center, normalize, 0x90A4AE, 0.8);*/
                 }
 
-                sortFaces.sort(this.sortByZIndex);
-                sortFaces.sort(this.sortByYIndex);
+                // sortFaces.sort(this.sortByZIndex);
+                // sortFaces.sort(this.sortByYIndex);
+                sortFaces.sort(this.sortByDist);
 
                 if (window.count++ < 200) {
                     console.log(sortFaces);
@@ -161,6 +162,11 @@ export default class App
             }
         }
 
+    }
+
+    sortByDist(a, b)
+    {
+        return b.dist - a.dist;
     }
 
     sortByYIndex(a, b)

@@ -64,6 +64,11 @@ export default class Vector3D
         return Math.sqrt((this.x - v.x) * (this.x - v.x) + (this.y - v.y) * (this.y - v.y) + (this.z - v.z) * (this.z - v.z));
     }
 
+    get dist()
+    {
+        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
+    }
+
     /**
      * 더하기
      * @param v
