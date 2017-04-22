@@ -49,11 +49,6 @@ export default class Vector3D
         return new Vector3D(x / w, y / w, z / w);
     }
 
-    mag()
-    {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
-    }
-
     /**
      * 거리
      * @param v
@@ -62,11 +57,6 @@ export default class Vector3D
     distance(v)
     {
         return Math.sqrt((this.x - v.x) * (this.x - v.x) + (this.y - v.y) * (this.y - v.y) + (this.z - v.z) * (this.z - v.z));
-    }
-
-    get dist()
-    {
-        return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
     }
 
     /**
@@ -109,6 +99,16 @@ export default class Vector3D
             this.multiply(1 / n);
         }
         return this;
+    }
+
+    get dist()
+    {
+        return this.length();
+    }
+
+    mag()
+    {
+        return this.length();
     }
 
     /**

@@ -113,11 +113,12 @@ export default class App
                     var n = Vector3D.cross(e0, e1);
                     var normalize = Vector3D.normalize(n);
                     var dotProduct = Vector3D.dot(this.camera.target, normalize);
+                    face.x = Math.min(A.x, B.x, C.x);
+                    face.y = Math.min(A.y, B.y, C.y);
+                    face.z = Math.min(A.z, B.z, C.z);
+                    face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
 
-
-                    // face.z = Math.min(A.z, B.z, C.z);
-
-                    if (dotProduct > 0) {
+                    if (dotProduct >= 0) {
                         sortFaces.push(face);
                     }
 
@@ -137,10 +138,7 @@ export default class App
                 // sortFaces.sort(this.sortByZIndex);
                 // sortFaces.sort(this.sortByYIndex);
                 sortFaces.sort(this.sortByDist);
-
-                if (window.count++ < 200) {
-                    console.log(sortFaces);
-                }
+                // sortFaces.sort(this.sortByYIndex);
 
                 for (var k = 0; k < sortFaces.length; k++) {
                     var face = sortFaces[k];
@@ -149,6 +147,10 @@ export default class App
                     var C = vertices[face.C];
                     this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
                     // this.displayNormal(A, B, C);
+                }
+
+                if (window.count++ < 10) {
+                    console.log(sortFaces);
                 }
             }
             else {

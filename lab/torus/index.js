@@ -116,6 +116,10 @@ class Main
             case KeyCode.NUMBER_0:
                 this.app.reset();
                 break;
+            case KeyCode.BACKSPACE:
+                console.clear();
+                window.count = 0;
+                break;
         }
     }
 
