@@ -45,7 +45,8 @@ export default class App
 
         this.createAxis(20);
 
-        var shape = new Torus(50, 25, 12, 8);
+        var shape = new Torus(30, 20, 24, 20);
+        // var shape = new Torus(50, 25, 12, 8);
         // var shape = new Torus(50, 25, 32, 24);
         var torus = this.torus = new Mesh(shape);
         this.meshes.push(torus);
@@ -117,28 +118,18 @@ export default class App
                     face.y = Math.min(A.y, B.y, C.y);
                     face.z = Math.min(A.z, B.z, C.z);
                     face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
+                    // face.dist = Math.min(A.dist, B.dist, C.dist);
 
                     if (dotProduct >= 0) {
                         sortFaces.push(face);
                     }
 
                     // sortFaces.push(face);
-
-                    /*var center = new Vector3D();
-                    center.x = (A.x + B.x + C.x) / 3;
-                    center.y = (A.y + B.y + C.y) / 3;
-                    center.z = (A.z + B.z + C.z) / 3;
-                    var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
-                    var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
-                    var n = Vector3D.cross(e0, e1);
-                    var normalize = Vector3D.normalize(n);
-                    this.device.drawNormalVector(center, normalize, 0x90A4AE, 0.8);*/
                 }
 
                 // sortFaces.sort(this.sortByZIndex);
                 // sortFaces.sort(this.sortByYIndex);
                 sortFaces.sort(this.sortByDist);
-                // sortFaces.sort(this.sortByYIndex);
 
                 for (var k = 0; k < sortFaces.length; k++) {
                     var face = sortFaces[k];
@@ -149,7 +140,7 @@ export default class App
                     // this.displayNormal(A, B, C);
                 }
 
-                if (window.count++ < 10) {
+                if (window.count++ < 1) {
                     console.log(sortFaces);
                 }
             }
