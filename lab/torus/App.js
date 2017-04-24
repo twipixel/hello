@@ -36,6 +36,10 @@ export default class App
 
     initialize()
     {
+        this.renderCount = 0;
+        this.renderIndex = 0;
+        this.renderSize = 100;
+
         this.meshes = [];
         this.camera = new Camera();
         this.camera.position.z = -500;
@@ -70,6 +74,7 @@ export default class App
 
     render(ms)
     {
+        //if (this.renderCount++ % 10 !== 0) return;
         this.camera.target = new Vector3D();
         //this.device.render(this.world, this.camera, this.meshes);
 
@@ -108,16 +113,17 @@ export default class App
                     var A = vertices[face.A];
                     var B = vertices[face.B];
                     var C = vertices[face.C];
+                    face.vertices = vertices;
 
                     var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
                     var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
                     var n = Vector3D.cross(e0, e1);
                     var normalize = Vector3D.normalize(n);
                     var dotProduct = Vector3D.dot(this.camera.target, normalize);
-                    face.x = Math.min(A.x, B.x, C.x);
+                    /*face.x = Math.min(A.x, B.x, C.x);
                     face.y = Math.min(A.y, B.y, C.y);
                     face.z = Math.min(A.z, B.z, C.z);
-                    face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
+                    face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);*/
                     // face.dist = Math.min(A.dist, B.dist, C.dist);
 
                     if (dotProduct >= 0) {
@@ -129,7 +135,8 @@ export default class App
 
                 // sortFaces.sort(this.sortByZIndex);
                 // sortFaces.sort(this.sortByYIndex);
-                sortFaces.sort(this.sortByDist);
+                //sortFaces.sort(this.sortByDist);
+                sortFaces.sort(this.sortByDepth);
 
                 for (var k = 0; k < sortFaces.length; k++) {
                     var face = sortFaces[k];
@@ -140,8 +147,24 @@ export default class App
                     // this.displayNormal(A, B, C);
                 }
 
+
+                /*var length = this.renderIndex + this.renderSize;
+
+                for (var k = this.renderIndex; k < length; k++) {
+                    if (++this.renderIndex >= sortFaces.length) {
+                        this.renderIndex = 0;
+                    }
+
+                    var face = sortFaces[this.renderIndex];
+                    var A = vertices[face.A];
+                    var B = vertices[face.B];
+                    var C = vertices[face.C];
+                    this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                    // this.displayNormal(A, B, C);
+                }*/
+
                 if (window.count++ < 1) {
-                    console.log(sortFaces);
+                    console.log('renderIndex:', this.renderIndex);
                 }
             }
             else {
@@ -154,12 +177,28 @@ export default class App
                 }
             }
         }
-
     }
 
     sortByDist(a, b)
     {
         return b.dist - a.dist;
+    }
+
+    sortByDepth(a, b)
+    {
+        var v = a.vertices;
+        var v0 = v[a.v0];
+        var v1 = v[a.v1];
+        var v2 = v[a.v2];
+        var dA = (v0.z + v1.z + v2.z) / 3;
+
+        var v = b.vertices;
+        v0 = v[b.v0];
+        v1 = v[b.v1];
+        v2 = v[b.v2];
+        var dB = (v0.z + v1.z + v2.z) / 3;
+
+        return dB-dA; // back to front
     }
 
     sortByYIndex(a, b)
