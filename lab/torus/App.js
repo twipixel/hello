@@ -11,6 +11,7 @@ import Mesh from './geom/Mesh';
 import Vector3D from './geom/Vector3D';
 import Torus from './shape/Torus';
 import Arrow from './shape/Arrow';
+import Plane from './geom/Plane';
 
 
 export default class App
@@ -39,6 +40,14 @@ export default class App
         this.renderCount = 0;
         this.renderIndex = 0;
         this.renderSize = 100;
+
+        this.zNear = new Plane(new Vector3D(0, 0, 0),
+            new Vector3D(1, 0, 0),
+            new Vector3D(0, -1, 0));
+
+        this.zFar = new Plane(new Vector3D(0, 0, 3000),
+            new Vector3D(1, 0, 3000),
+            new Vector3D(0, -1, 3000));
 
         this.meshes = [];
         this.camera = new Camera();
@@ -99,6 +108,7 @@ export default class App
 
         var u = this.img.width;
         var v = this.img.height;
+        var focus = this.camera.target;
 
         for (var i = 0; i < meshes.length; i++) {
             var sortFaces = [];
@@ -106,6 +116,8 @@ export default class App
             var faces = mesh.faces;
             var vertices = mesh.vertices;
             var uvtData = mesh.uvtData;
+
+
 
             if(faces[0].img) {
                 for (var j = 0; j < faces.length; j++) {
@@ -120,23 +132,32 @@ export default class App
                     var n = Vector3D.cross(e0, e1);
                     var normalize = Vector3D.normalize(n);
                     var dotProduct = Vector3D.dot(this.camera.target, normalize);
-                    /*face.x = Math.min(A.x, B.x, C.x);
-                    face.y = Math.min(A.y, B.y, C.y);
-                    face.z = Math.min(A.z, B.z, C.z);
-                    face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);*/
-                    // face.dist = Math.min(A.dist, B.dist, C.dist);
 
-                    if (dotProduct >= 0) {
+                    if (dotProduct > 0) {
                         sortFaces.push(face);
                     }
 
-                    // sortFaces.push(face);
+                    /*var pl0 = this.zNear.isFront(A);
+                    var pl1 = this.zNear.isFront(B);
+                    var pl2 = this.zNear.isFront(C);
+
+                    //console.log(pl0, pl1, pl2);
+                    if (pl0 && pl1 && pl2) {
+                        sortFaces.push(face);
+                    }*/
+
+                    //sortFaces.push(face);
                 }
 
-                // sortFaces.sort(this.sortByZIndex);
-                // sortFaces.sort(this.sortByYIndex);
-                //sortFaces.sort(this.sortByDist);
-                sortFaces.sort(this.sortByDepth);
+                /*face.x = Math.min(A.x, B.x, C.x);
+                face.y = Math.min(A.y, B.y, C.y);
+                face.z = Math.min(A.z, B.z, C.z);
+                face.dist = Math.sqrt(face.x * face.x + face.y * face.y + face.z * face.z);
+                // face.dist = Math.min(A.dist, B.dist, C.dist);
+                sortFaces.sort(this.sortByDist);*/
+
+                //sortFaces.sort(this.sortByDepth);
+                sortFaces.sort(this.sortByZ);
 
                 for (var k = 0; k < sortFaces.length; k++) {
                     var face = sortFaces[k];
@@ -198,7 +219,24 @@ export default class App
         v2 = v[b.v2];
         var dB = (v0.z + v1.z + v2.z) / 3;
 
-        return dB-dA; // back to front
+        return dB - dA; // back to front
+    }
+
+    sortByZ(a, b)
+    {
+        var v = a.vertices;
+        var v0 = v[a.v0];
+        var v1 = v[a.v1];
+        var v2 = v[a.v2];
+        var dA = v0.z + v1.z + v2.z;
+
+        var v = b.vertices;
+        v0 = v[b.v0];
+        v1 = v[b.v1];
+        v2 = v[b.v2];
+        var dB = v0.z + v1.z + v2.z;
+
+        return dB - dA; // back to front
     }
 
     sortByYIndex(a, b)
