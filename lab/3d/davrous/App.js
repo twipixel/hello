@@ -38,12 +38,7 @@ export default class App
 
     initializeGUI()
     {
-        this.config = {};
-        this.useCulling = true;
-        this.backfaceCulling = true;
         this.gui = new dat.GUI();
-        this.gui.add(this, 'useCulling');
-        this.gui.add(this, 'backfaceCulling');
     }
 
     addEvent()
