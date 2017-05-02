@@ -3,7 +3,7 @@ import {
     requestAnimationFrame,
     cancelAnimationFrame,
     Easing
-} from './../../external/lib/animation';
+} from './../../../external/lib/animation';
 
 
 export default class App

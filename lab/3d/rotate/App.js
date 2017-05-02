@@ -3,7 +3,7 @@ import {
     requestAnimationFrame,
     cancelAnimationFrame,
     Easing
-} from './../../external/lib/animation';
+} from './../../../external/lib/animation';
 
 import Cube from './geom/Cube';
 import Surface from './geom/Surface';

@@ -3,21 +3,22 @@ import {
     requestAnimationFrame,
     cancelAnimationFrame,
     Easing
-} from './../../external/lib/animation';
+} from './../../../external/lib/animation';
 import Camera from './core/Camera';
 import DeviceWithWorld from './core/DeviceWithWorld';
 import Matrix from './geom/Matrix';
 import Mesh from './geom/Mesh';
 import Vector3D from './geom/Vector3D';
-import Cube from './shape/Cube';
-import Arrow from './shape/Arrow';
+import Cylinder from './shape/Cylinder';
 
 
 export default class App
 {
     constructor()
     {
-        var w = 560;
+        window.count = 0;
+
+        var w = 640;
         var h = 560;
         this.app = new PIXI.Application(w, h, {backgroundColor: 0x191919}, true);
         document.body.appendChild(this.app.view);
@@ -35,36 +36,15 @@ export default class App
     initialize()
     {
         this.meshes = [];
-
-        var size = 50;
         this.camera = new Camera();
         this.camera.position.z = -500;
         this.world = new Mesh({faces:[], vertices:[]});
-        this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
+        this.device = new DeviceWithWorld(this.w, this.h);
         this.stage.addChild(this.device);
 
-        // this.createAxis(50);
-
-        var shape = new Cube(size, size, size);
-        var cube = this.cube = new Mesh(shape);
-        this.meshes.push(cube);
-    }
-
-    createAxis(size = 50)
-    {
-        if (!this.xArrow) {
-            var center = new Vector3D();
-            var ax = new Arrow('x', center, new Vector3D(size, 0, 0));
-            var ay = new Arrow('y', center, new Vector3D(0, size, 0));
-            var az = new Arrow('z', center, new Vector3D(0, 0, size));
-            var xArrow = this.xArrow = new Mesh(ax);
-            var yArrow = this.yArrow = new Mesh(ay);
-            var zArrow = this.zArrow = new Mesh(az);
-        }
-
-        this.meshes.push(xArrow);
-        this.meshes.push(yArrow);
-        this.meshes.push(zArrow);
+        var shape = new Cylinder(50, 200, 24, 20);
+        var cylidner = this.cylidner = new Mesh(shape);
+        this.meshes.push(cylidner);
     }
 
     render(ms)
@@ -84,28 +64,79 @@ export default class App
             }
         }*/
 
+        var u = this.img.width;
+        var v = this.img.height;
+
         for (var i = 0; i < meshes.length; i++) {
             var mesh = meshes[i];
             var faces = mesh.faces;
             var vertices = mesh.vertices;
 
-            for (var j = 0; j < faces.length; j++) {
-                var face = faces[j];
+            if (this.useCulling == true) {
+                for (var j = 0; j < faces.length; j++) {
+                    var face = faces[j];
 
-                if (face.img) {
+                    if (face.img) {
+                        var A = vertices[face.A];
+                        var B = vertices[face.B];
+                        var C = vertices[face.C];
+
+                        if (this.useCulling === true) {
+                            if (this.isFrontface(A, B, C) == this.backfaceCulling){
+                                this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                            }
+                        }
+                        else {
+                            this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                        }
+                    }
+                    else {
+                        this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+                    }
+                }
+            } else {
+                var frontFaces = [];
+                var backFaces = [];
+
+                for (var j = 0; j < faces.length; j++) {
+                    var face = faces[j];
                     var A = vertices[face.A];
                     var B = vertices[face.B];
                     var C = vertices[face.C];
+                    face.z = Math.min(A.z, B.z, C.z);
 
-                    if (this.isFrontface(A, B, C) == !this.backfaceCulling){
-                        this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u, A.v, B.u, B.v, C.u, C.v);
+                    if (this.isFrontface(A, B, C) == false) {
+                        frontFaces.push(face);
+                    }
+                    else {
+                        backFaces.push(face);
                     }
                 }
-                else {
-                    this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+
+                backFaces.sort(this.sortByZIndex);
+                var sortedFaces = frontFaces.concat(backFaces);
+
+                for (var k = 0; k < sortedFaces.length; k++) {
+                    var face = sortedFaces[k];
+
+                    if (face.img) {
+                        var A = vertices[face.A];
+                        var B = vertices[face.B];
+                        var C = vertices[face.C];
+
+                        this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                    }
+                    else {
+                        this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+                    }
                 }
             }
         }
+    }
+
+    sortByZIndex(a, b)
+    {
+        return b.z - a.z;
     }
 
     /**
@@ -124,10 +155,8 @@ export default class App
 
     drawTriangle(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2)
     {
-        //console.log(ctx, im, x0, y0, x1, y1, x2, y2, sx0, sy0, sx1, sy1, sx2, sy2);
         ctx.save();
 
-        //ctx.globalAlpha = 0.8;
         // Clip the output to the on-screen triangle boundaries.
         ctx.beginPath();
         ctx.moveTo(x0, y0);
@@ -202,20 +231,13 @@ export default class App
         ctx.restore();
     }
 
-    moveCameraToCenter()
-    {
-        var tween = Be.to(this.camera.position, {x:0, y:0, z:0}, 1, Quad.easeOut).play();
-    }
-
     initializeGUI()
     {
         this.config = {};
+        this.useCulling = true;
         this.backfaceCulling = true;
         this.gui = new dat.GUI();
-        this.config.zoomIn = this.zoomIn.bind(this);
-        this.config.zoomOut = this.zoomOut.bind(this);
-        this.gui.add(this.config, 'zoomIn');
-        this.gui.add(this.config, 'zoomOut');
+        this.gui.add(this, 'useCulling');
         this.gui.add(this, 'backfaceCulling');
     }
 
@@ -286,12 +308,12 @@ export default class App
 
     zoomIn()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-150}, 1, Quad.easeOut).play();
+        Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut).play();
     }
 
     zoomOut()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-500}, 1, Quad.easeOut).play();
+        Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut).play();
     }
 
     reset()
@@ -305,7 +327,6 @@ export default class App
         //this.world.position = new Vector3D();
         //this.world.rotation = new Vector3D();
         //this.camera.position = new Vector3D(0, 0, -10);
-        //console.log('camera.position:', this.camera.position);
     }
 
     get w()
@@ -332,5 +353,10 @@ export default class App
             this._cy = this.canvas.height / 2;
         }
         return this._cy;
+    }
+
+    get img()
+    {
+        return document.getElementById('source');
     }
 }

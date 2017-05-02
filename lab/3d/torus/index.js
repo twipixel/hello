@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import App from './App';
-import KeyCode from '../../src/consts/KeyCode';
+import KeyCode from '../../../src/consts/KeyCode';
 
 
 (function ()
@@ -115,6 +115,10 @@ class Main
                 break;
             case KeyCode.NUMBER_0:
                 this.app.reset();
+                break;
+            case KeyCode.BACKSPACE:
+                console.clear();
+                window.count = 0;
                 break;
         }
     }

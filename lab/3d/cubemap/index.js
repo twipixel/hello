@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import App from './App';
-import KeyCode from '../../src/consts/KeyCode';
+import KeyCode from '../../../src/consts/KeyCode';
 
 
 (function ()

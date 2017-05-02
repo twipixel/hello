@@ -3,7 +3,7 @@ import {
     requestAnimationFrame,
     cancelAnimationFrame,
     Easing
-} from './../../external/lib/animation';
+} from './../../../external/lib/animation';
 
 import Camera from './core/Camera';
 import Device from './core/Device';
