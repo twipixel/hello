@@ -2,7 +2,7 @@ import Matrix from '../geom/Matrix';
 import Vector3D from '../geom/Vector3D';
 
 
-export default class Device extends PIXI.Graphics
+export default class DeviceWithWorld extends PIXI.Graphics
 {
     /**
      * World 객체

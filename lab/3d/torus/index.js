@@ -139,6 +139,10 @@ class Main
                 }
                 break;
 
+            case KeyCode.C:
+                this.app.isConsoleData = true;
+                break;
+
             case KeyCode.UP:
             case KeyCode.DOWN:
             case KeyCode.LEFT:

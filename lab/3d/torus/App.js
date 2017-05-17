@@ -37,6 +37,8 @@ export default class App
 
     initialize()
     {
+        this.isConsoleData = false;
+
         this.renderCount = 0;
         this.renderIndex = 0;
         this.renderSize = 100;
@@ -61,6 +63,7 @@ export default class App
         var shape = new Torus(30, 20, 24, 20);
         // var shape = new Torus(50, 25, 12, 8);
         // var shape = new Torus(50, 25, 32, 24);
+
         var torus = this.torus = new Mesh(shape);
         this.meshes.push(torus);
     }
@@ -117,7 +120,9 @@ export default class App
             var vertices = mesh.vertices;
             var uvtData = mesh.uvtData;
 
-
+            if (!this.isVerticeTrace) {
+                console.log(i, vertices);
+            }
 
             if(faces[0].img) {
                 for (var j = 0; j < faces.length; j++) {
@@ -125,7 +130,6 @@ export default class App
                     var A = vertices[face.A];
                     var B = vertices[face.B];
                     var C = vertices[face.C];
-                    face.vertices = vertices;
 
                     var e0 = new Vector3D(B.x - A.x, B.y - A.y, B.z - A.z);
                     var e1 = new Vector3D(C.x - A.x, C.y - A.y, C.z - A.z);
@@ -157,7 +161,15 @@ export default class App
                 sortFaces.sort(this.sortByDist);*/
 
                 //sortFaces.sort(this.sortByDepth);
-                sortFaces.sort(this.sortByZ);
+                //sortFaces.sort(this.sortByZ);
+                sortFaces.sort(this.sortByY);
+
+
+                if (this.isConsoleData == true) {
+                    this.isConsoleData = false;
+                    this.logSortFaces(mesh, sortFaces, vertices, 'y');
+                }
+
 
                 for (var k = 0; k < sortFaces.length; k++) {
                     var face = sortFaces[k];
@@ -167,7 +179,6 @@ export default class App
                     this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
                     // this.displayNormal(A, B, C);
                 }
-
 
                 /*var length = this.renderIndex + this.renderSize;
 
@@ -198,6 +209,29 @@ export default class App
                 }
             }
         }
+    }
+
+    logSortFaces(mesh, faces, vertices, property = '')
+    {
+        for (var i = 0; i < faces.length; i++) {
+            var face = faces[i];
+            var A = vertices[face.A];
+            var B = vertices[face.B];
+            var C = vertices[face.C];
+
+            if (property === '') {
+                console.log(
+                    i,
+                    ', A[', parseInt(A.x), parseInt(A.y), parseInt(A.z), ']',
+                    ', B[', parseInt(B.x), parseInt(B.y), parseInt(B.z), ']',
+                    ', C[', parseInt(C.x), parseInt(C.y), parseInt(C.z), ']'
+                );
+            } else {
+                console.log(i, ', A:', parseInt(A[property]), ', B:', parseInt(A[property]), ', C:', parseInt(A[property]), ', SUM:', parseInt(A[property] + B[property] + C[property]));
+            }
+        }
+
+        console.log('mesh[', mesh.position.x, mesh.position.y, mesh.position.z, ']');
     }
 
     sortByDist(a, b)
@@ -239,9 +273,28 @@ export default class App
         return dB - dA; // back to front
     }
 
+    sortByY(a, b)
+    {
+        var v = a.vertices;
+        var v0 = v[a.v0];
+        var v1 = v[a.v1];
+        var v2 = v[a.v2];
+        var dA = v0.y + v1.y + v2.y;
+
+        var v = b.vertices;
+        v0 = v[b.v0];
+        v1 = v[b.v1];
+        v2 = v[b.v2];
+        var dB = v0.y + v1.y + v2.y;
+
+        //return dA - dB;
+        return dB - dA;
+    }
+
     sortByYIndex(a, b)
     {
         return b.y - a.y;
+        //return a.y - b.y;
     }
 
     sortByZIndex(a, b)

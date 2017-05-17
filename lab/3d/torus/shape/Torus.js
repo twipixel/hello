@@ -12,8 +12,9 @@ export default class Torus
         this.tubularSegments = tubularSegments;
         this.arc = this.arc;
 
-        this.center = new Vector3D();
-        this.vertex = new Vector3D();
+        var normal;
+        var center = new Vector3D();
+        var vertex = new Vector3D();
 
         var img = document.getElementById('source');
         var vertices = this.vertices = [];
@@ -29,20 +30,21 @@ export default class Torus
                 var v = j / radialSegments * Math.PI * 2;
 
                 // vertex
+                vertex.x = ( radius + tube * Math.cos( v ) ) * Math.cos( u );
+                vertex.y = ( radius + tube * Math.cos( v ) ) * Math.sin( u );
+                vertex.z = tube * Math.sin( v );
 
-                this.vertex.x = ( radius + tube * Math.cos( v ) ) * Math.cos( u );
-                this.vertex.y = ( radius + tube * Math.cos( v ) ) * Math.sin( u );
-                this.vertex.z = tube * Math.sin( v );
-
-                var vector = new Vector3D(this.vertex.x, this.vertex.y, this.vertex.z, i / tubularSegments, j / radialSegments);
+                var vector = new Vector3D(vertex.x, vertex.y, vertex.z, i / tubularSegments, j / radialSegments);
                 vertices.push(vector);
 
                 // normal
+                center.x = radius * Math.cos( u );
+                center.y = radius * Math.sin( u );
+                normal = new Vector3D(vertex.x - center.x, vertex.y - center.y, vertex.z - center.y);
+                normal = normal.normalize();
 
-                this.center.x = radius * Math.cos( u );
-                this.center.y = radius * Math.sin( u );
-                this.normal = new Vector3D(this.vertex.x - this.center.x, this.vertex.y - this.center.y, this.vertex.z - this.center.y);
-                this.normal = this.normal.normalize();
+                // 임시 테스트를 위해 추가
+                vector.normal = normal;
             }
         }
 
@@ -51,22 +53,20 @@ export default class Torus
         for ( j = 1; j <= radialSegments; j ++ ) {
 
             for ( i = 1; i <= tubularSegments; i ++ ) {
-
                 // indices
-
                 var a = ( tubularSegments + 1 ) * j + i - 1;
                 var b = ( tubularSegments + 1 ) * ( j - 1 ) + i - 1;
                 var c = ( tubularSegments + 1 ) * ( j - 1 ) + i;
                 var d = ( tubularSegments + 1 ) * j + i;
 
                 // faces
-
                 var face1 = new Face(a, b, d, 0x2196F3, 1, img);
                 var face2 = new Face(b, c, d, 0x2196F3, 1, img);
+                face1.vertices = this.vertices;
+                face2.vertices = this.vertices;
                 faces.push(face1);
                 faces.push(face2);
             }
-
         }
     }
 
