@@ -18,8 +18,6 @@ export default class App
 {
     constructor()
     {
-        window.count = 0;
-
         var w = 640;
         var h = 560;
         this.alpha = 0.7;
@@ -47,7 +45,7 @@ export default class App
         this.stage.addChild(this.device);
 
         //var shape = new Sphere(100, 50, 24, 20);
-        var shape = new Sphere(200, 50, 24, 20);
+        var shape = new Sphere(200, 8, 8, 8);
         var sphere = this.sphere = new Mesh(shape);
         sphere.name = 'Sphere';
         sphere.useCulling = true;
@@ -67,10 +65,9 @@ export default class App
             var xArrow = this.xArrow = new Mesh(ax);
             var yArrow = this.yArrow = new Mesh(ay);
             var zArrow = this.zArrow = new Mesh(az);
-
-            xArrow.name = 'Arrow';
-            yArrow.name = 'Arrow';
-            zArrow.name = 'Arrow';
+            xArrow.name = 'xArrow';
+            yArrow.name = 'yArrow';
+            zArrow.name = 'zArrow';
             xArrow.useCulling = false;
             yArrow.useCulling = false;
             zArrow.useCulling = false;
@@ -131,6 +128,7 @@ export default class App
                     for (var j = 0; j < faces.length; j++) {
                         var face = faces[j];
 
+                        console.log('face.img', face.img);
                         if (face.img) {
                             var A = vertices[face.A];
                             var B = vertices[face.B];
@@ -297,14 +295,13 @@ export default class App
         this.backfaceCulling = true;
         this.gui = new dat.GUI();
 
+
         this.gui.add(this, 'useCulling');
         this.gui.add(this, 'backfaceCulling');
         this.gui.add(this, 'zoomIn');
         this.gui.add(this, 'zoomOut');
         this.zoomController = this.gui.add(this, 'toZoom', -2000, 2000);
-        this.alphaController = this.gui.add(this, 'alpha', 0.1, 1);
         this.zoomController.onFinishChange(this.zoom.bind(this));
-        this.alphaController.onFinishChange(this.changeAlpha.bind(this));
         this.gui.add(this, 'reset');
     }
 
@@ -407,17 +404,6 @@ export default class App
         this.zoomTween.play();
 
         console.log('zoom:', parseInt(value));
-    }
-
-    changeAlpha(value)
-    {
-        console.log('changeAlpha(', value, ')');
-
-        this.alpha = value;
-        for (var i = 0; i < this.meshes.length; i++) {
-            var mesh = this.meshes[i];
-            mesh.alpha = value;
-        }
     }
 
     reset()
