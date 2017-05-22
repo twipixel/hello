@@ -11,15 +11,19 @@ export default class CoordinateBox
      * @param z {uint} 표시할 z축 눈금 길이
      * @param color {Number} 표면 색상
      */
-    constructor(x = 50, y = 50, z = 50, color = 0xF2F2F2)
+    constructor(x = 50, y = 50, z = 50, alpha = 0.3, color = 0xF2F2F2)
     {
-        console.log('CoordinateBox(', x, y, z, ')');
-
+        this.name = 'CoordinateBox';
+        this.useCulling = false;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.color = color;
         var grids = this.grids = [];
         var faces = this.faces = [];
         var vertices = this.vertices = [];
 
-        var alpha = 0.3;
+        var alpha = this.alpha = alpha;
         var cx = 0, cy = 0, cz = 0;
         var hx = x / 2, hy = y / 2, hz = z / 2;
 
@@ -97,5 +101,13 @@ export default class CoordinateBox
             new Face(32, 32, 33, 0xC5EFF7, alpha),
             new Face(33, 33, 34, 0xC5EFF7, alpha)
         ];
+    }
+
+    clone()
+    {
+        var clone = new CoordinateBox(this.x, this.y, this.z, this.alpha, this.color);
+        clone.name = this.name;
+        clone.useCulling = this.useCulling;
+        return clone;
     }
 }

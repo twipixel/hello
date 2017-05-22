@@ -22,6 +22,10 @@ export default class Mesh
         cloneMesh.position = this.position.clone();
         cloneMesh.velocity = this.velocity.clone();
         cloneMesh.acceleration = this.acceleration.clone();
+
+        // debug code
+        cloneMesh.name = this.shape.name;
+        cloneMesh.useCulling = this.shape.useCulling;
         return cloneMesh;
     }
 }

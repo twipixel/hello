@@ -4,14 +4,18 @@ import Vector3D from '../geom/Vector3D';
 
 export default class Arrow
 {
-    constructor(axis = 'x', from = new Vector3D(), to = new Vector3D(), arrowSize = 1)
+    constructor(axis = 'x', from = new Vector3D(), to = new Vector3D(), arrowSize = 1, alpha = 0.3)
     {
-        var arrowSize = arrowSize;
+        console.log('alpha:', alpha);
+        this.name = 'Arrow';
+        this.useCulling = false;
 
+        var arrowSize = this.arrowSize = arrowSize;
+        this.axis = axis;
         this.to = to;
         this.from = from;
 
-        var faceAlpha = 0.3;
+        var faceAlpha = this.alpha = alpha;
         var faceColor = (axis == 'x') ? 0xE91E63 : (axis === 'y') ? 0x8BC34A : 0x03A9F4;
 
         this.vertices = [
@@ -48,5 +52,13 @@ export default class Arrow
             this.faces.push(new Face(1, 2, 3, faceColor, faceAlpha));
             this.faces.push(new Face(1, 4, 5, faceColor, faceAlpha));
         }
+    }
+
+    clone()
+    {
+        var clone = new Arrow(this.axis, this.to, this.from, this.arrowSize, this.alpha);
+        clone.name = 'Arrow';
+        clone.useCulling = false;
+        return clone;
     }
 }

@@ -10,6 +10,8 @@ import Matrix from './geom/Matrix';
 import Mesh from './geom/Mesh';
 import Vector3D from './geom/Vector3D';
 import Sphere from './shape/Sphere';
+import CoordinateBox from './debug/CoordinateBox';
+import Arrow from './shape/Arrow';
 
 
 export default class App
@@ -37,14 +39,56 @@ export default class App
     {
         this.meshes = [];
         this.camera = new Camera();
-        this.camera.position.z = -500;
+        this.camera.position.z = -1280;
+        this.toZoom = this.camera.position.z;
         this.world = new Mesh({faces:[], vertices:[]});
         this.device = new DeviceWithWorld(this.w, this.h);
         this.stage.addChild(this.device);
 
-        var shape = new Sphere(50, 200, 24, 20);
+        //var shape = new Sphere(100, 50, 24, 20);
+        var shape = new Sphere(200, 50, 24, 20);
         var sphere = this.sphere = new Mesh(shape);
+        sphere.name = 'Sphere';
+        sphere.useCulling = true;
         this.meshes.push(sphere);
+
+        //this.createAxis(200);
+        this.createCoordinateBox(200, 200, 200);
+    }
+
+    createAxis(size = 10)
+    {
+        if (!this.xArrow) {
+            var center = new Vector3D();
+            var ax = new Arrow('x', center, new Vector3D(size, 0, 0), 1, 1);
+            var ay = new Arrow('y', center, new Vector3D(0, size, 0), 1, 1);
+            var az = new Arrow('z', center, new Vector3D(0, 0, size), 1, 1);
+            ax.name = 'Arrow';
+            ay.name = 'Arrow';
+            az.name = 'Arrow';
+            ax.useCulling = false;
+            ay.useCulling = false;
+            az.useCulling = false;
+            var xArrow = this.xArrow = new Mesh(ax);
+            var yArrow = this.yArrow = new Mesh(ay);
+            var zArrow = this.zArrow = new Mesh(az);
+        }
+
+        this.meshes.push(this.xArrow);
+        this.meshes.push(this.yArrow);
+        this.meshes.push(this.zArrow);
+    }
+
+    createCoordinateBox(x = 50, y = 50, z = 50)
+    {
+        if (!this.coordinateBox) {
+            var shape = new CoordinateBox(x, y, z, 0.9);
+            var coordinateBox = this.coordinateBox = new Mesh(shape);
+            coordinateBox.name = 'CoordinateBox';
+            coordinateBox.useCulling = false;
+        }
+
+        this.meshes.push(this.coordinateBox);
     }
 
     render(ms)
@@ -55,15 +99,6 @@ export default class App
         this.device.clear();
         var meshes = this.device.projection(this.world, this.camera, this.meshes);
 
-        /*for (var i = 0; i < meshes.length; i++) {
-            var mesh = meshes[i];
-
-            for (var j = 0; j < mesh.faces.length; j++) {
-                var face = mesh.faces[j];
-                this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
-            }
-        }*/
-
         var u = this.img.width;
         var v = this.img.height;
 
@@ -72,62 +107,80 @@ export default class App
             var faces = mesh.faces;
             var vertices = mesh.vertices;
 
-            if (this.useCulling == true) {
-                for (var j = 0; j < faces.length; j++) {
-                    var face = faces[j];
+            if (mesh.useCulling === false) {
+                for (var k = 0; k < faces.length; k++) {
+                    var face = faces[k];
+
+                    var A = vertices[face.A];
+                    var B = vertices[face.B];
+                    var C = vertices[face.C];
 
                     if (face.img) {
-                        var A = vertices[face.A];
-                        var B = vertices[face.B];
-                        var C = vertices[face.C];
+                        this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                    }
+                    else {
+                        this.device.drawTriangle(A, B, C, face.color, face.alpha);
+                    }
+                }
+            }
+            else {
+                if (this.useCulling == true) {
+                    for (var j = 0; j < faces.length; j++) {
+                        var face = faces[j];
 
-                        if (this.useCulling === true) {
-                            if (this.isFrontface(A, B, C) == this.backfaceCulling){
+                        if (face.img) {
+                            var A = vertices[face.A];
+                            var B = vertices[face.B];
+                            var C = vertices[face.C];
+
+                            if (this.useCulling === true) {
+                                if (this.isFrontface(A, B, C) == this.backfaceCulling){
+                                    this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                                }
+                            }
+                            else {
                                 this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
                             }
                         }
                         else {
-                            this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                            this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
                         }
                     }
-                    else {
-                        this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
-                    }
-                }
-            } else {
-                var frontFaces = [];
-                var backFaces = [];
+                } else {
+                    var frontFaces = [];
+                    var backFaces = [];
 
-                for (var j = 0; j < faces.length; j++) {
-                    var face = faces[j];
-                    var A = vertices[face.A];
-                    var B = vertices[face.B];
-                    var C = vertices[face.C];
-                    face.z = Math.min(A.z, B.z, C.z);
-
-                    if (this.isFrontface(A, B, C) == false) {
-                        frontFaces.push(face);
-                    }
-                    else {
-                        backFaces.push(face);
-                    }
-                }
-
-                backFaces.sort(this.sortByZIndex);
-                var sortedFaces = frontFaces.concat(backFaces);
-
-                for (var k = 0; k < sortedFaces.length; k++) {
-                    var face = sortedFaces[k];
-
-                    if (face.img) {
+                    for (var j = 0; j < faces.length; j++) {
+                        var face = faces[j];
                         var A = vertices[face.A];
                         var B = vertices[face.B];
                         var C = vertices[face.C];
+                        face.z = Math.min(A.z, B.z, C.z);
 
-                        this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                        if (this.isFrontface(A, B, C) == false) {
+                            frontFaces.push(face);
+                        }
+                        else {
+                            backFaces.push(face);
+                        }
                     }
-                    else {
-                        this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+
+                    backFaces.sort(this.sortByZIndex);
+                    var sortedFaces = frontFaces.concat(backFaces);
+
+                    for (var k = 0; k < sortedFaces.length; k++) {
+                        var face = sortedFaces[k];
+
+                        if (face.img) {
+                            var A = vertices[face.A];
+                            var B = vertices[face.B];
+                            var C = vertices[face.C];
+
+                            this.drawTriangle(this.ctx, face.img, A.x, A.y, B.x, B.y, C.x, C.y, A.u * u, A.v * v, B.u * u, B.v * v, C.u * u, C.v * v);
+                        }
+                        else {
+                            this.device.drawTriangle(mesh.vertices[face.A], mesh.vertices[face.B], mesh.vertices[face.C], face.color, face.alpha);
+                        }
                     }
                 }
             }
@@ -237,8 +290,16 @@ export default class App
         this.useCulling = true;
         this.backfaceCulling = true;
         this.gui = new dat.GUI();
+
+
         this.gui.add(this, 'useCulling');
         this.gui.add(this, 'backfaceCulling');
+        this.gui.add(this, 'zoomIn');
+        this.gui.add(this, 'zoomOut');
+        this.zoomController = this.gui.add(this, 'toZoom', -2000, 2000);
+        console.log('!! zoomController:', this.zoomController);
+        this.zoomController.onFinishChange(this.zoom.bind(this));
+        this.gui.add(this, 'reset');
     }
 
     addEvent()
@@ -308,12 +369,39 @@ export default class App
 
     zoomIn()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-50}, 1, Quad.easeOut).play();
+        if (this.zoomTween) {
+           this.zoomTween.stop();
+        }
+
+        this.zoomTween = Be.to(this.camera.position, {x:0, y:0, z:this.camera.position.z + 200}, 1, Quad.easeOut);
+        this.zoomTween.play();
+
+        console.log('zoomIn:', parseInt(this.camera.position.z + 200));
     }
 
     zoomOut()
     {
-        Be.to(this.camera.position, {x:0, y:0, z:-300}, 1, Quad.easeOut).play();
+        if (this.zoomTween) {
+            this.zoomTween.stop();
+        }
+
+        this.zoomTween = Be.to(this.camera.position, {x:0, y:0, z:this.camera.position.z - 200}, 1, Quad.easeOut);
+        this.zoomTween.play();
+
+        console.log('zoomOut:', parseInt(this.camera.position.z - 200));
+    }
+
+    zoom(value)
+    {
+        console.log('!!!!!! value:', value);
+        if (this.zoomTween) {
+            this.zoomTween.stop();
+        }
+
+        this.zoomTween = Be.to(this.camera.position, {x:0, y:0, z:value}, 1, Quad.easeOut);
+        this.zoomTween.play();
+
+        console.log('zoomOut:', parseInt(value));
     }
 
     reset()

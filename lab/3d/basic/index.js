@@ -114,6 +114,14 @@ class Main
             case KeyCode.NUMBER_0:
                 this.app.reset();
                 break;
+            case KeyCode.W:
+                break;
+            case KeyCode.S:
+                break;
+            case KeyCode.A:
+                break;
+            case KeyCode.D:
+                break;
         }
     }
 
@@ -149,6 +157,10 @@ class Main
             case KeyCode.NUMBER_3:
             case KeyCode.NUMPAD_ADD:
             case KeyCode.NUMPAD_SUBTRACT:
+            case KeyCode.W:
+            case KeyCode.S:
+            case KeyCode.A:
+            case KeyCode.D:
                 this.clearInterFunction();
                 break;
 

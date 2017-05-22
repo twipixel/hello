@@ -4,14 +4,14 @@ import Vector3D from '../geom/Vector3D';
 
 export default class Arrow
 {
-    constructor(axis = 'x', from = new Vector3D(), to = new Vector3D(), arrowSize = 1)
+    constructor(axis = 'x', from = new Vector3D(), to = new Vector3D(), arrowSize = 1, alpha = 0.3)
     {
         var arrowSize = arrowSize;
 
         this.to = to;
         this.from = from;
 
-        var faceAlpha = 0.3;
+        var faceAlpha = alpha;
         var faceColor = (axis == 'x') ? 0xE91E63 : (axis === 'y') ? 0x8BC34A : 0x03A9F4;
 
         this.vertices = [

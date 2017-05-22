@@ -133,9 +133,15 @@ export default class Device extends PIXI.Graphics
     projection(world, camera, meshes)
     {
         let cameraPosition = camera.position;
+
+        // 스테이지 (월드좌표)
         let stageTransfromMatrix = Matrix.translation(world.position.x, world.position.y, world.position.z);
         let stageRotationMatrix = Matrix.rotateX(world.rotation.x).multiply(Matrix.rotateY(world.rotation.y)).multiply(Matrix.rotateZ(world.rotation.z));
+
+        // 뷰 행렬
         let viewMatrix = Matrix.lookAtLH(cameraPosition, camera.target, camera.up);
+
+        // 투영 행렬
         let projectionMatrix = Matrix.perspectiveFovLH(0.78, this.stageWidth / this.stageHeight, .01, 1.0);
 
         let returnMeshes = [];

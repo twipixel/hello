@@ -6,6 +6,9 @@ export default class Sphere
 {
     constructor(radius = 50, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength)
     {
+        this.name = 'Sphere';
+        this.useCulling = true;
+
         widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
         heightSegments = Math.max( 2, Math.floor( heightSegments ) || 6 );
 
@@ -60,7 +63,7 @@ export default class Sphere
                 vertex.z = radius * Math.sin( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
 
 
-                var vector = new Vector3D(vertex.x, vertex.y, vertex.z, u, 1 - v);
+                var vector = new Vector3D(vertex.x, vertex.y, vertex.z, u, v);
                 vertices.push(vector);
 
                 // normal
@@ -68,7 +71,7 @@ export default class Sphere
                 //normals.push( normal.x, normal.y, normal.z );
 
                 // uv
-                uvs.push( u, 1 - v );
+                //uvs.push( u, v );
                 verticesRow.push( index ++ );
             }
 
@@ -104,6 +107,9 @@ export default class Sphere
 
     clone()
     {
-        return new Sphere(this.radius, this.widthSegments, this.heightSegments, this.phiStart, this.phiLength, this.thetaStart, this.thetaLength);
+        var clone = new Sphere(this.radius, this.widthSegments, this.heightSegments, this.phiStart, this.phiLength, this.thetaStart, this.thetaLength);
+        clone.name = this.name;
+        clone.useCulling = this.useCulling;
+        return clone;
     }
 }
