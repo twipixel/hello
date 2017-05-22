@@ -1,11 +1,15 @@
 
+
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const RemoveWebpackPlugin = require('remove-webpack-plugin');
+
 
 const regJS = /\.js$/;
+const regMD = /\.md$/;
 const regMap = /\.map$/gi;
 const regHTML = /\.html$/;
 const regDotFolder = /^\./;
@@ -13,16 +17,16 @@ const regMin = /\.min\.js/gi;
 const regModules = /modules$/i;
 const regBundle = /\.bundle\.js/gi;
 
+
 const PATH_SRC = './src/';
-const PATH_TEST = './test/';
-const PATH_DIST = './dist/';
 const PATH_ASSET = './asset/';
 const PATH_EXTERNAL = './external/';
 const PATH_LIB = PATH_EXTERNAL + 'lib/';
 const PATH_VENDOR = PATH_EXTERNAL + 'vendor/';
 const PATH_NODE_MODULES = './node_modules';
 
-
+const PATH_LAB_3D = './lab/3d/';
+const PATH_DIST_LAB = './dist/3d/';
 
 
 /**
@@ -80,7 +84,7 @@ const setRoot = list => {
 
 
 
-const setEntry = list => {
+const setEntry = (list, entryPath) => {
     console.log('\n[SetEntry Start]');
     console.log('-----------------------------------');
     console.log('setEntry, arguments:\n', list);
@@ -91,6 +95,7 @@ const setEntry = list => {
      * https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Functions/%EC%95%A0%EB%A1%9C%EC%9A%B0_%ED%8E%91%EC%85%98
      */
     list = list
+        .filter(entry => regMD.test(entry) === false)
         .filter(entry => regHTML.test(entry) === false)
         .filter(entry => regDotFolder.test(entry) === false);
 
@@ -103,7 +108,7 @@ const setEntry = list => {
      */
     var result = list.reduce((entry, app) => {
         app = app.replace(regJS, '');
-        entry[app] = PATH_TEST + app + '/index.js';
+        entry[app] = entryPath + app + '/index.js';
         return entry;
     }, {});
 
@@ -114,7 +119,7 @@ const setEntry = list => {
 
 
 
-const base = {
+const baseLab = {
     /**
      * resolve
      * require(모듈명)에서의 모듈명을 어떻게 해석할지에 대한 옵션.
@@ -148,23 +153,26 @@ const base = {
         root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
     },
 
-    entry: setEntry(fs.readdirSync(PATH_TEST, 'utf8')),
+    entry: setEntry(fs.readdirSync(PATH_LAB_3D, 'utf8'), PATH_LAB_3D),
 
     /**
      * publicPath: 웹사이트에서 해당 에셋에 접근하기 위해 필요한 경로.
      */
     output: {
-        path: PATH_DIST + 'bundle',
+        path: PATH_DIST_LAB + 'bundle',
         publicPath: PATH_ASSET,
         filename: '[name].js'
     },
 
     plugins: [
 
+        //new RemoveWebpackPlugin('./dist/'),
+
         /**
          * 공통으로 사용하는 파일을 뽑아주는 플러그인
          */
         new webpack.optimize.CommonsChunkPlugin('commons.js'),
+
         /**
          * 브라우저 환경의 전역 scope 로 미리 등록시켜주는 플러그인
          */
@@ -175,11 +183,11 @@ const base = {
 
         new CopyWebpackPlugin([
             {
-                from: PATH_TEST + 'index.html',
+                from: PATH_LAB_3D + 'index.html',
                 to: './../'
             },
             {
-                context: PATH_TEST,
+                context: PATH_LAB_3D,
                 from: '**/*',
                 to: './../',
                 transform: content =>
@@ -189,14 +197,15 @@ const base = {
         ], {
             ignore: [
                 'ui.html',
-                'asset.html'
+                'asset.html',
+                '*.md'
             ]
         })
     ]
 };
 
 
-const production = {
+const productionLab = {
     name: 'PRODUCTION',
 
     module: {
@@ -230,7 +239,7 @@ const production = {
 };
 
 
-const development = {
+const developmentLab = {
     name: 'DEVELOPMENT',
 
     module: {
@@ -268,7 +277,7 @@ const development = {
              * 브라우저에 띄울 시작 페이지
              * 예) http://localhost:3000/test/index.html
              */
-            startPath: '/dist/index.html'
+            startPath: '/dist/3d/index.html'
         })
     ],
 
@@ -318,21 +327,68 @@ const development = {
     }
  *
  * process.env.NODE_ENV !== "production"
+ *
+ * exports 를 []로 멀티로 설정할 경우
+ * BrowserSyncPlugin 플러그인이 동작하지 않습니다.
+ *
+ * BrowserSync 로 개발하고자 하는 경우 exports 설정을 한개만 등록해서 실행해야 합니다.
  */
-module.exports = (() => {
-    var plugins = base.plugins || [];
-    var cfg = development;
+module.exports =
+    [
+        (() => {
+            var plugins = baseLab.plugins || [];
+            var cfg = developmentLab;
 
-    if (process.argv.indexOf('--build') !== -1) {
-        cfg = production;
-    }
+            if (process.argv.indexOf('--build') !== -1) {
+                cfg = productionLab;
+            }
 
-    /**
-     * base 플러그인인을 build 옵션에 따라
-     * production 과 development 플로그인 합칩니다.
-     */
-    cfg.plugins = plugins.concat(cfg.plugins || []);
+            /**
+             * base 플러그인인을 build 옵션에 따라
+             * production 과 development 플로그인 합칩니다.
+             */
+            cfg.plugins = plugins.concat(cfg.plugins || []);
 
-    console.log('[WEBPACK START ' + cfg.name + ' MODE]');
-    return Object.assign(base, cfg);
-})();
+            console.log('[WEBPACK START ' + cfg.name + ' MODE]');
+            return Object.assign(baseLab, cfg);
+        })(),
+        (() => {
+            var plugins = baseLab.plugins || [];
+            var cfg = developmentLab;
+
+            if (process.argv.indexOf('--build') !== -1) {
+                cfg = productionLab;
+            }
+
+            /**
+             * base 플러그인인을 build 옵션에 따라
+             * production 과 development 플로그인 합칩니다.
+             */
+            cfg.plugins = plugins.concat(cfg.plugins || []);
+
+            console.log('[WEBPACK START ' + cfg.name + ' MODE]');
+            return Object.assign(baseLab, cfg);
+        })()
+    ];
+
+
+
+/*
+BrowserSync 를 위한 설정 예제)
+exports 를 [] 로 설정하면 multi 설정이 가능합니다.
+하지만 BrowserSync 는 동작하지 않습니다. 이유는 파악이 필요
+module.exports =
+    (() => {
+        var plugins = baseLab.plugins || [];
+        var cfg = developmentLab;
+
+        if (process.argv.indexOf('--build') !== -1) {
+            cfg = productionLab;
+        }
+
+        cfg.plugins = plugins.concat(cfg.plugins || []);
+
+        console.log('[WEBPACK START ' + cfg.name + ' MODE]');
+        return Object.assign(baseLab, cfg);
+    })()
+*/

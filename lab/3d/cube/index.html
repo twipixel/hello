@@ -8,7 +8,7 @@
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-color: #FFFFFF;
+            background-color: #191919;
         }
     </style>
 </head>
@@ -16,7 +16,6 @@
 <script type="text/javascript" src="./../../../external/vendor/be.js"></script>
 <script type="text/javascript" src="./../../../external/vendor/pixi.js"></script>
 <script type="text/javascript" src="./../../../external/vendor/dat.gui.js"></script>
-<script type="text/javascript" src="./../../../external/lib/test.common.js"></script>
 <script type="text/javascript" src="./../../../external/lib/test.common.js"></script>
 <script>
     (function() {
@@ -28,7 +27,7 @@
         else {
             // commons 은 build 할 때 생성합니다.
             addScriptToHeadSync('./../bundle/commons.js');
-            addScriptToBodySync('./../bundle/3d.js');
+            addScriptToBodySync('./../bundle/cube.js');
         }
     })();
 </script>

@@ -2,11 +2,12 @@
   "name": "hello",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/index.html",
+  "main": "./lab/3d/index.html",
   "scripts": {
     "build": "webpack --build",
-    "browser": "webpack",
-    "electron": "electron electron.js"
+    "browser-sync": "webpack",
+    "electron-lab": "electron electron-lab.js",
+    "electron-paint": "electron electron-paint.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
     "jquery": "^3.1.1",
     "path": "^0.12.7",
     "raw-loader": "^0.5.1",
+    "remove-webpack-plugin": "^1.2.2",
     "webpack": "^1.13.3",
     "webpack-core": "^0.6.9",
     "webpack-dev-server": "^1.16.2",
