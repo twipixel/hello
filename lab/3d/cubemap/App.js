@@ -43,7 +43,7 @@ export default class App
         this.device = new DeviceWithWorld(this.canvas.width, this.canvas.height);
         this.stage.addChild(this.device);
 
-        // this.createAxis(50);
+        //this.createAxis(50);
 
         var shape = new Cube(size, size, size);
         var cube = this.cube = new Mesh(shape);

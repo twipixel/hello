@@ -186,7 +186,8 @@ hr {
 }
 
 .mt {
-	margin-top: 25px;
+    margin-top: 0px;
+	/*margin-top: 25px;*/
 }
 
 .mb {
