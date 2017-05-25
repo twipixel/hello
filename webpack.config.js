@@ -522,7 +522,7 @@ const configWebGL = {
 
         new CopyWebpackPlugin([
             {
-                from: PATH_IMAGE + 'index.html',
+                from: PATH_WEBGL + 'index.html',
                 to: './../'
             },
             {
