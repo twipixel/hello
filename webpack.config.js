@@ -19,22 +19,21 @@ const regBundle = /\.bundle\.js/gi;
 
 const PATH_SRC = './src/';
 const PATH_ASSET = './asset/';
-const PATH_EXTERNAL = './external/';
-const PATH_LIB = PATH_EXTERNAL + 'lib/';
-const PATH_VENDOR = PATH_EXTERNAL + 'vendor/';
+const PATH_EXTERNAL_LIB = './external/lib/';
+const PATH_EXTERNAL_VENDOR = './external/vendor/';
 const PATH_NODE_MODULES = './node_modules';
 
 const PATH_3D = './lab/3d/';
 const PATH_DIST_3D = './dist/3d/';
 const PATH_3D_START = PATH_DIST_3D + 'index.html';
 
-const PATH_PAINT = './lab/paint/';
-const PATH_DIST_PAINT = './dist/paint/';
-const PATH_PAINT_START = PATH_DIST_PAINT + 'index.html';
+const PATH_IMAGE = './lab/image/';
+const PATH_DIST_IMAGE = './dist/image/';
+const PATH_IMAGE_START = PATH_DIST_IMAGE + 'index.html';
 
 const PATH_WEBGL = './lab/webgl/';
 const PATH_DIST_WEGBL = './dist/webgl/';
-const PATH_WEBGL_START = PATH_DIST_PAINT + 'index.html';
+const PATH_WEBGL_START = PATH_DIST_IMAGE + 'index.html';
 
 
 /**
@@ -176,7 +175,7 @@ const config3d = {
      * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
      */
     resolve: {
-        root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
+        root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
     },
 
     entry: setEntry(fs.readdirSync(PATH_3D, 'utf8'), PATH_3D),
@@ -377,7 +376,7 @@ const configPaint = {
      * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
      */
     resolve: {
-        root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
+        root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
     },
 
 
@@ -385,20 +384,20 @@ const configPaint = {
      * entry 는 string, array, object, object & array 식으로 설정할 수 있습니다.
      * https://github.com/FEDevelopers/tech.description/wiki/Webpack%EC%9D%98-%ED%98%BC%EB%9E%80%EC%8A%A4%EB%9F%B0-%EC%82%AC%ED%95%AD%EB%93%A4
      */
-    entry: setEntry(fs.readdirSync(PATH_PAINT, 'utf8'), PATH_PAINT),
+    entry: setEntry(fs.readdirSync(PATH_IMAGE, 'utf8'), PATH_IMAGE),
 
     /**
      * publicPath: 웹사이트에서 해당 에셋에 접근하기 위해 필요한 경로.
      */
     output: {
-        path: PATH_DIST_PAINT + 'bundle',
+        path: PATH_DIST_IMAGE + 'bundle',
         publicPath: PATH_ASSET,
         filename: '[name].js'
     },
 
     plugins: [
 
-        new RemoveWebpackPlugin(PATH_DIST_PAINT),
+        new RemoveWebpackPlugin(PATH_DIST_IMAGE),
 
         /**
          * 공통으로 사용하는 파일을 뽑아주는 플러그인
@@ -415,11 +414,11 @@ const configPaint = {
 
         new CopyWebpackPlugin([
             {
-                from: PATH_PAINT + 'index.html',
+                from: PATH_IMAGE + 'index.html',
                 to: './../'
             },
             {
-                context: PATH_PAINT,
+                context: PATH_IMAGE,
                 from: '**/*',
                 to: './../',
                 transform: content =>
@@ -485,7 +484,7 @@ const configWebGL = {
      * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
      */
     resolve: {
-        root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
+        root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
     },
 
 
@@ -523,7 +522,7 @@ const configWebGL = {
 
         new CopyWebpackPlugin([
             {
-                from: PATH_PAINT + 'index.html',
+                from: PATH_IMAGE + 'index.html',
                 to: './../'
             },
             {
@@ -637,7 +636,7 @@ module.exports =
                     config.plugins = plugins.concat(config.plugins || []);
                     return Object.assign(config3d, config);
 
-                case PATH_PAINT_START:
+                case PATH_IMAGE_START:
                     var plugins = configPaint.plugins || [];
                     config.plugins = plugins.concat(config.plugins || []);
                     return Object.assign(configPaint, config);
