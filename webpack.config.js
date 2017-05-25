@@ -340,12 +340,12 @@ const development = {
 
 ///////////////////////////////////////////////////////////////////////////////
 //
-//  Paint 설정
+//  Image 설정
 //
 ///////////////////////////////////////////////////////////////////////////////
 
 
-const configPaint = {
+const configImage = {
     /**
      * resolve
      * require(모듈명)에서의 모듈명을 어떻게 해석할지에 대한 옵션.
@@ -607,7 +607,7 @@ module.exports =
 
             var config = Object.assign(production);
             var lab3d = Object.assign(config3d, config);
-            var labPaint = Object.assign(configPaint, config);
+            var labPaint = Object.assign(configImage, config);
             var labWebGL = Object.assign(configWebGL, config);
 
             return [lab3d, labPaint, labWebGL];
@@ -637,9 +637,9 @@ module.exports =
                     return Object.assign(config3d, config);
 
                 case PATH_IMAGE_START:
-                    var plugins = configPaint.plugins || [];
+                    var plugins = configImage.plugins || [];
                     config.plugins = plugins.concat(config.plugins || []);
-                    return Object.assign(configPaint, config);
+                    return Object.assign(configImage, config);
 
                 case PATH_WEBGL_START:
                     var plugins = configWebGL.plugins || [];
