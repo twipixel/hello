@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="twipixel">
+    <meta name="keyword" content="Hello">
+
+    <title>Hello</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../asset/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--external css-->
+    <link href="../../asset/bootstrap/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="../../asset/bootstrap/css/style.css" rel="stylesheet">
+    <link href="../../asset/bootstrap/css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+<section id="container">
+    <!-- **********************************************************************************************************************************************************
+    TOP BAR CONTENT & NOTIFICATIONS
+    *********************************************************************************************************************************************************** -->
+    <!--header start-->
+    <header class="header black-bg">
+        <div class="sidebar-toggle-box">
+            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+        </div>
+        <!--logo start-->
+        <a href="index.html" class="logo"><b>HELLO</b></a>
+        <!--logo end-->
+
+        <div class="top-menu">
+            <ul class="nav pull-right top-menu">
+                <li><a class="github" hr
+                       ef="https://github.com/twipixel/hello.git" target="_blank">GitHub</a></li>
+            </ul>
+        </div>
+    </header>
+    <!--header end-->
+
+    <!-- **********************************************************************************************************************************************************
+    MAIN SIDEBAR MENU
+    *********************************************************************************************************************************************************** -->
+    <!--sidebar start-->
+    <aside>
+        <div id="sidebar" class="nav-collapse ">
+            <!-- sidebar menu start-->
+            <ul class="sidebar-menu" id="nav-accordion">
+
+                <!--<p class="centered"><a href="profile.html"><img src="../asset/bootstrap/img/ui-sam.jpg"
+                                                                class="img-circle" width="60"></a></p>
+                <h5 class="centered">twipixel</h5>-->
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <!--<i class="fa fa-desktop"></i>-->
+                        <span>2D</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="displayObject/index.html" target="frame">DisplayObject</a></li>
+                    </ul>
+                </li>
+
+                <!--<li class="mt">
+                    <a href="../lab/cube/index.html" target="main-content">
+                        <span>Cube</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="../lab/rotate/index.html" target="main-content">
+                        <span>Rotate</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="../lab/basic/index.html" target="main-content">
+                        <span>Basic</span>
+                    </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="../lab/triangle/index.html" target="main-content">
+                        <span>Triangle</span>
+                    </a>
+                </li>-->
+
+                <!--
+                <li class="mt">
+                    <a class="active" href="../lab/3d/index.html" target="main-content">
+                        <i class="fa fa-dashboard"></i>
+                        <span>3D</span>
+                    </a>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-desktop"></i>
+                        <span>UI Elements</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="test/create/index.html" target="row">General</a></li>
+                        <li><a href="buttons.html">Buttons</a></li>
+                        <li><a href="panels.html">Panels</a></li>
+                    </ul>
+                </li>
+                -->
+
+            </ul>
+            <!-- sidebar menu end-->
+        </div>
+    </aside>
+    <!--sidebar end-->
+
+    <!-- **********************************************************************************************************************************************************
+    MAIN CONTENT
+    *********************************************************************************************************************************************************** -->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+            <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
+        </section>
+    </section>
+
+    <!--main content end-->
+    <!--footer start-->
+    <!--<footer class="site-footer">
+        <div class="text-center">
+            2017 - twipixel
+            <a href="index.html#" class="go-top">
+                <i class="fa fa-angle-up"></i>
+            </a>
+        </div>
+    </footer>-->
+    <!--footer end-->
+</section>
+
+<!-- Electron 브라우저와 일반 브라우저에서 컨턴츠 보여줄 frame 설정 -->
+<script>
+
+    (function () {
+
+        var frame, parent = document.getElementsByClassName('wrapper')[0];
+
+        console.log('parent:', parent);
+        if (navigator.userAgent.indexOf('Electron') >= 0) {
+            frame = document.createElement('webview');
+        } else {
+            frame = document.createElement('iframe');
+        }
+
+        console.log('frame:', frame);
+        window.frame = frame;
+        frame.id = 'frame';
+        frame.name = 'frame';
+        frame.frameBorder = 0;
+        frame.scrolling = 'no';
+        parent.appendChild(frame);
+
+    }());
+
+</script>
+
+<!-- js placed at the end of the document so the pages load faster -->
+<script src="../../asset/bootstrap/js/jquery.js"></script>
+<script src="../../asset/bootstrap/js/jquery-1.8.3.min.js"></script>
+<script src="../../asset/bootstrap/js/bootstrap.min.js"></script>
+<script class="include" type="text/javascript" src="../../asset/bootstrap/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="../../asset/bootstrap/js/jquery.scrollTo.min.js"></script>
+<script src="../../asset/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="../../asset/bootstrap/js/jquery.sparkline.js"></script>
+
+<!--common script for all pages-->
+<script src="../../asset/bootstrap/js/common-scripts.js"></script>
+
+</body>
+</html>

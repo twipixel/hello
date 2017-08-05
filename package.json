@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --build",
     "browser-sync": "webpack",
-    "electron-lab": "electron electron-lab.js",
+    "electron-2d": "electron electron-2d.js",
+    "electron-3d": "electron electron-3d.js",
     "electron-paint": "electron electron-paint.js"
   },
   "repository": {

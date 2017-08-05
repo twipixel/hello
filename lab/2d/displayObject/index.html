@@ -2,31 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>David Rousset</title>
+    <title>Cube</title>
     <style type="text/css">
         body {
             margin: 0;
             padding: 0;
-            overflow: auto;
+            overflow: hidden;
             background-color: #191919;
-        }
-
-        canvas {
-            /*border-style: solid;*/
-            /*border-width: thin;*/
-            /*border-color: #BDC3C7;*/
         }
     </style>
 </head>
 <body>
-
-<script type="text/javascript" src="./libs/babylon.math.js"></script>
 <script type="text/javascript" src="./../../../external/vendor/be.js"></script>
 <script type="text/javascript" src="./../../../external/vendor/pixi.js"></script>
 <script type="text/javascript" src="./../../../external/vendor/dat.gui.js"></script>
-<script type="text/javascript" src="./../../../external/lib/math.js"></script>
 <script type="text/javascript" src="./../../../external/lib/test.common.js"></script>
-
 <script>
     (function() {
         if (navigator.userAgent.indexOf('Electron') >= 0) {
@@ -37,7 +27,7 @@
         else {
             // commons 은 build 할 때 생성합니다.
             addScriptToHeadSync('./../bundle/commons.js');
-            addScriptToBodySync('./../bundle/3d.js');
+            addScriptToBodySync('./../bundle/cube.js');
         }
     })();
 </script>
