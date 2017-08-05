@@ -31,7 +31,7 @@ class Main
 
     onresize()
     {
-        this.app.resize();
+        // this.app.resize();
     }
 
     onkeyup(event)
