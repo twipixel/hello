@@ -18,10 +18,9 @@ const PATH_SRC = './src/';
 const PATH_LAB_3D = './lab/3d/';
 const PATH_DIST = './dist/';
 const PATH_ASSET = './asset/';
-const PATH_EXTERNAL = './external/';
-const PATH_LIB = PATH_EXTERNAL + 'lib/';
-const PATH_VENDOR = PATH_EXTERNAL + 'vendor/';
-const PATH_NODE_MODULES = './node_modules';
+const PATH_EXTERNAL_LIB = './external/lib/';
+const PATH_EXTERNAL_VENDOR = './external/vendor/';
+const PATH_NODE_MODULES = './node_modules/';
 
 
 
@@ -147,7 +146,7 @@ const base = {
      * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
      */
     resolve: {
-        root: setRoot([PATH_NODE_MODULES, PATH_LIB, PATH_VENDOR])
+        root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
     },
 
     entry: setEntry(fs.readdirSync(PATH_LAB_3D, 'utf8')),

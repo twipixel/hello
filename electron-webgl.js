@@ -12,7 +12,7 @@ const BrowserWindow = electron.BrowserWindow;
  */
 app.on('ready', function () {
     const mainWindow = new BrowserWindow({width: 800, height: 600});
-    mainWindow.loadURL('file://' + __dirname + '/lab/paint/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/lab/webgl/index.html');
     //mainWindow.webContents.openDevTools();
     mainWindow.on('closed', function () {
         app.quit();
