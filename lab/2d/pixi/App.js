@@ -51,8 +51,15 @@ export default class App
     testTicker()
     {
         var ticker = new Ticker();
-
+        ticker.start();
         console.log('ticker', ticker);
+
+        function listener()
+        {
+
+        }
+
+
     }
 
 
