@@ -23,6 +23,10 @@ const PATH_EXTERNAL_LIB = './external/lib/';
 const PATH_EXTERNAL_VENDOR = './external/vendor/';
 const PATH_NODE_MODULES = './node_modules';
 
+const PATH_2D = './lab/2d/';
+const PATH_DIST_2D = './dist/2d/';
+const PATH_2D_START = PATH_DIST_2D + 'index.html';
+
 const PATH_3D = './lab/3d/';
 const PATH_DIST_3D = './dist/3d/';
 const PATH_3D_START = PATH_DIST_3D + 'index.html';
@@ -43,7 +47,7 @@ const PATH_WEBGL_START = PATH_DIST_IMAGE + 'index.html';
  * 그리고 npm run browser-sync 을 실행하면
  * 해당 모듈만 Browser Sync 가 적용 됩니다.
  */
-var developmentStartPath = PATH_3D_START;
+var developmentStartPath = PATH_2D_START;
 
 
 
@@ -142,6 +146,102 @@ const setEntry = (list, entryPath) => {
 //  Lab 설정
 //
 ///////////////////////////////////////////////////////////////////////////////
+
+
+const config2d = {
+    /**
+     * resolve
+     * require(모듈명)에서의 모듈명을 어떻게 해석할지에 대한 옵션.
+     *
+     * resolve 설정하면
+     * require('상대경로'); 를 하지 않고 바로 모듈명으로 요청 가능하고
+     * 소스 내부에서도 resolve로 잡아둔 패스를 부터 경로를 잡고 들어가면 됩니다.
+     * 예) src/es5/easejs/Triangle.js 를 import 하거나 require 할때
+     * src/es5/easejs 까지 잡아두면 바로 Triangle 을 불러올 수 있습니다.
+     *
+     * resolve.root
+     * (default: node_modules/) 모듈 탐색을 시작할 루트 경로.
+     * node의 모듈 시스템과 마찬가지로, 하위 폴더가 아닌 상위 폴더로 탐색을 진행한다.
+     * 절대 경로를 제시해야 한다는 점에 유의.
+     * 예 )
+     * root: [ path.resolve("./bower_components") ]
+     * bower_components를 root로 인식하도록 설정했습니다.
+     * 상대경로로 bower_components까지 접근해서 로드하지 않아도 됩니다.
+     *
+     * resolve.extensions
+     * 모듈명 뒤에 여기 명시된 확장자명들을 붙여보며 탐색을 수행한다.
+     * 즉, 위의 설정 파일에서처럼 extensions: ['', '.js', '.css'] 으로
+     * 설정되어 있으면 require('abc')를 resolve 하기 위해 abc, abc,js, abc.css를 탐색한다.
+     * hjlog.js를 보면 hjlog.scss를 require할 때는 확장자까지 명시했음을 볼 수 있다.
+     * 이 옵션에 'scss'가 포함되어 있지 않기 때문.
+     *
+     * extensions: ['', '.js', '.json'],
+     * require('xxx.js')가 아니라 require('xxx')로 로드할 수 있습니다.
+     */
+    resolve: {
+        root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
+    },
+
+    entry: setEntry(fs.readdirSync(PATH_2D, 'utf8'), PATH_2D),
+
+    /**
+     * publicPath: 웹사이트에서 해당 에셋에 접근하기 위해 필요한 경로.
+     */
+    output: {
+        path: PATH_DIST_2D + 'bundle',
+        publicPath: PATH_ASSET,
+        filename: '[name].js'
+    },
+
+    plugins: [
+
+        new RemoveWebpackPlugin(PATH_DIST_2D),
+
+        /**
+         * 공통으로 사용하는 파일을 뽑아주는 플러그인
+         */
+        new webpack.optimize.CommonsChunkPlugin('commons.js'),
+
+        /**
+         * 브라우저 환경의 전역 scope 로 미리 등록시켜주는 플러그인
+         */
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            ns: 'namespace'
+        }),
+
+        new CopyWebpackPlugin([
+            {
+                from: PATH_2D + 'index.html',
+                to: './../'
+            },
+            {
+                context: PATH_2D,
+                from: '**/*',
+                to: './../',
+                transform: content =>
+                    new Buffer(content).toString('utf-8').replace(regBundle, '.min.js'),
+                ignore: '*.js'
+            }
+        ], {
+            ignore: [
+                'ui.html',
+                'asset.html',
+                '*.md'
+            ]
+        }),
+
+        new webpack.optimize.UglifyJsPlugin({
+            minimize: true,
+            output: {
+                comments: false
+            },
+            compress: {
+                warnings: false
+            }
+        })
+    ]
+};
 
 
 const config3d = {
@@ -606,11 +706,12 @@ module.exports =
             console.log('');
 
             var config = Object.assign(production);
+            var lab2d = Object.assign(config2d, config);
             var lab3d = Object.assign(config3d, config);
             var labPaint = Object.assign(configImage, config);
             var labWebGL = Object.assign(configWebGL, config);
 
-            return [lab3d, labPaint, labWebGL];
+            return [lab2d, lab3d, labPaint, labWebGL];
         }
         /**
          * DEVELOPMENT 모드
@@ -631,6 +732,11 @@ module.exports =
             var config = Object.assign(development);
 
             switch (developmentStartPath) {
+                case PATH_2D_START:
+                    var plugins = config2d.plugins || [];
+                    config.plugins = plugins.concat(config.plugins || []);
+                    return Object.assign(config2d, config);
+
                 case PATH_3D_START:
                     var plugins = config3d.plugins || [];
                     config.plugins = plugins.concat(config.plugins || []);
