@@ -1,3 +1,6 @@
+import Ticker from './vendor/pixi/src/core/ticker/Ticker';
+
+
 var EventEmitter = require('eventemitter3');
 
 
@@ -15,7 +18,8 @@ export default class App
         console.log('App.initialize()');
 
 
-        this.testEventEmitter();
+        // this.testEventEmitter();
+        this.testTicker();
     }
 
 
@@ -41,6 +45,14 @@ export default class App
         event.removeAllListeners('test');
 
         event.emit('test');
+    }
+
+
+    testTicker()
+    {
+        var ticker = new Ticker();
+
+        console.log('ticker', ticker);
     }
 
 

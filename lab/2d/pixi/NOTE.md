@@ -11,9 +11,16 @@
         - 1000 / 16.66 = 60 fps
     - 링크드 리스트 만드는 과정
       - _addListener(listener)
-        - 첫 아이템의 경우
-          - listener.connnect(this._head);
-    - share 해서 사용하는 원리
+
+      - | _head |      |      |
+        | ----- | ---- | ---- |
+        | 0     |      |      |
+        |       |      |      |
+        |       |      |      |
+
+      - share 해서 사용하는 원리
+
+
       - core.ticker.shared 는 전역 변수에 Ticker 하나를 생성한 것입니다.
   - InteractionManager
     - renderer.plugins.interaction.mouse or pointer
