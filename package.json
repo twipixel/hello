@@ -8,7 +8,8 @@
     "browser-sync": "webpack",
     "electron-2d": "electron electron-2d.js",
     "electron-3d": "electron electron-3d.js",
-    "electron-paint": "electron electron-paint.js"
+    "electron-image": "electron electron-image.js",
+    "electron-webgl": "electron electron-webgl.js"
   },
   "repository": {
     "type": "git",

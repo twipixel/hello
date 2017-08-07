@@ -54,36 +54,40 @@ export default class App
         ticker.start();
         console.log('ticker', ticker);
 
-        function listener()
-        {
+        const test0 = this.test0.bind(this);
+        const test1 = this.test1.bind(this);
+        const test2 = this.test2.bind(this);
+        const test3 = this.test3.bind(this);
 
-        }
-
+        ticker.add(test0);
+        ticker.add(test1);
+        //ticker.add(test2);
+        //ticker.add(test3);
 
     }
 
 
     test0()
     {
-        console.log('test0');
+        //console.log('test0');
     }
 
 
     test1()
     {
-        console.log('test1');
+        //console.log('test1');
     }
 
 
     test2()
     {
-        console.log('test2');
+        //console.log('test2');
     }
 
 
     test3()
     {
-        console.log('test3');
+        //console.log('test3');
     }
 
     initializeGUI()

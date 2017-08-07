@@ -41,8 +41,7 @@
 
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="github" hr
-                       ef="https://github.com/twipixel/hello.git" target="_blank">GitHub</a></li>
+                <li><a class="github" href="https://github.com/twipixel/hello.git" target="_blank">GitHub</a></li>
             </ul>
         </div>
     </header>
@@ -149,14 +148,12 @@
 
         var frame, parent = document.getElementsByClassName('wrapper')[0];
 
-        console.log('parent:', parent);
         if (navigator.userAgent.indexOf('Electron') >= 0) {
             frame = document.createElement('webview');
         } else {
             frame = document.createElement('iframe');
         }
 
-        console.log('frame:', frame);
         window.frame = frame;
         frame.id = 'frame';
         frame.name = 'frame';

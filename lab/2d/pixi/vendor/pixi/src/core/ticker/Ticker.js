@@ -229,6 +229,12 @@ export default class Ticker
      */
     _addListener(listener)
     {
+        console.log('---------------------------------------------------------');
+        console.log('_addListener(', listener, ')');
+        console.log('---------------------------------------------------------');
+
+        let count = 0;
+
         // For attaching to head
         let current = this._head.next;
         let previous = this._head;
@@ -243,6 +249,7 @@ export default class Ticker
             // Go from highest to lowest priority
             while (current)
             {
+                console.log(count++);
                 if (listener.priority >= current.priority)
                 {
                     listener.connect(previous);

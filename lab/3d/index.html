@@ -41,8 +41,7 @@
 
         <div class="top-menu">
             <ul class="nav pull-right top-menu">
-                <li><a class="github" hr
-                       ef="https://github.com/twipixel/hello.git" target="_blank">GitHub</a></li>
+                <li><a class="github" href="https://github.com/twipixel/hello.git" target="_blank">GitHub</a></li>
             </ul>
         </div>
     </header>
@@ -61,9 +60,8 @@
                                                                 class="img-circle" width="60"></a></p>
                 <h5 class="centered">twipixel</h5>-->
 
-                <!--
-                <li class="sub-menu">
-                    <a href="javascript:;">
+                <li class="sub-menu dcjq-parent-li">
+                    <a href="javascript:" class="dcjq-parent active">
                         <span>3D</span>
                     </a>
                     <ul class="sub">
@@ -77,11 +75,12 @@
                         <li><a href="torus/index.html" target="frame">Torus</a></li>
                         <li><a href="torus-test/index.html" target="frame">Torus Test</a></li>
                         <li><a href="sphere/index.html" target="frame">Sphere</a></li>
-                        <li><a href="davrous/index.html" target="frame">David Rousset</a></li>
+                        <li><a href="software-engine/index.html" target="frame">3D Software Engine</a></li>
                     </ul>
                 </li>
-                -->
 
+
+                <!--
                 <li class="mt">
                     <a href="cube/index.html" target="frame">
                         <span>Cube</span>
@@ -137,6 +136,8 @@
                         <span>3D Software Engine</span>
                     </a>
                 </li>
+                -->
+
             </ul>
             <!-- sidebar menu end-->
         </div>
@@ -173,19 +174,18 @@
 
         var frame, parent = document.getElementsByClassName('wrapper')[0];
 
-        console.log('parent:', parent);
         if (navigator.userAgent.indexOf('Electron') >= 0) {
             frame = document.createElement('webview');
         } else {
             frame = document.createElement('iframe');
         }
 
-        console.log('frame:', frame);
         window.frame = frame;
         frame.id = 'frame';
         frame.name = 'frame';
         frame.frameBorder = 0;
         frame.scrolling = 'no';
+        frame.src = 'software-engine/index.html';
         parent.appendChild(frame);
 
     }());
