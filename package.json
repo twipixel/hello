@@ -5,7 +5,7 @@
   "main": "./lab/3d/index.html",
   "scripts": {
     "build": "webpack --build",
-    "browser-sync": "webpack",
+    "dev": "webpack",
     "electron-2d": "electron electron-2d.js",
     "electron-3d": "electron electron-3d.js",
     "electron-image": "electron electron-image.js",

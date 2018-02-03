@@ -47,7 +47,8 @@ const PATH_WEBGL_START = PATH_DIST_IMAGE + 'index.html';
  * 그리고 npm run browser-sync 을 실행하면
  * 해당 모듈만 Browser Sync 가 적용 됩니다.
  */
-var developmentStartPath = PATH_2D_START;
+// const developmentStartPath = PATH_2D_START;
+const developmentStartPath = PATH_3D_START;
 
 
 
