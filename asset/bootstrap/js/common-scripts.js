@@ -2,7 +2,8 @@
 $(function() {
     $('#nav-accordion').dcAccordion({
         eventType: 'click',
-        autoClose: true,
+        menuClose: false,
+        autoClose: false,
         saveState: true,
         disableLink: true,
         speed: 'slow',
