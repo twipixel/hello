@@ -5,11 +5,11 @@
   "main": "./lab/3d/index.html",
   "scripts": {
     "build": "webpack --build",
-    "browser-sync": "webpack",
-    "electron-2d": "electron electron-2d.js",
-    "electron-3d": "electron electron-3d.js",
-    "electron-image": "electron electron-image.js",
-    "electron-webgl": "electron electron-webgl.js"
+    "start": "webpack",
+    "2d": "electron electron-2d.js",
+    "3d": "electron electron-3d.js",
+    "image": "electron electron-image.js",
+    "webgl": "electron electron-webgl.js"
   },
   "repository": {
     "type": "git",
