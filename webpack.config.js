@@ -47,8 +47,10 @@ const PATH_WEBGL_START = PATH_DIST_IMAGE + 'index.html';
  * 그리고 npm run browser-sync 을 실행하면
  * 해당 모듈만 Browser Sync 가 적용 됩니다.
  */
-// var developmentStartPath = PATH_2D_START;
-var developmentStartPath = PATH_3D_START;
+// const START_PATH = PATH_2D_START;
+const START_PATH = PATH_3D_START;
+// const START_PATH = PATH_IMAGE_START;
+// const START_PATH = PATH_WEBGL_START;
 
 
 
@@ -396,7 +398,7 @@ const development = {
             server: {
                 baseDir: './'
             },
-            startPath: developmentStartPath,
+            startPath: START_PATH,
         })
     ],
 
@@ -725,14 +727,14 @@ module.exports =
             console.log('');
             console.log('//////////////////////////////////////////////////////////////////');
             console.log('//');
-            console.log('// DEVELOPMENT MODE, developmentStartPath:', developmentStartPath);
+            console.log('// DEVELOPMENT MODE, developmentStartPath:', START_PATH);
             console.log('//');
             console.log('//////////////////////////////////////////////////////////////////');
             console.log('');
 
             var config = Object.assign(development);
 
-            switch (developmentStartPath) {
+            switch (START_PATH) {
                 case PATH_2D_START:
                     var plugins = config2d.plugins || [];
                     config.plugins = plugins.concat(config.plugins || []);
