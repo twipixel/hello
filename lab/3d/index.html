@@ -65,17 +65,17 @@
                         <span>3D</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="cube/index.html" target="frame">Cube</a></li>
-                        <li><a href="rotate/index.html" target="frame">Rotate</a></li>
-                        <li><a href="basic/index.html" target="frame">Basic</a></li>
-                        <li><a href="map-triangle/index.html" target="frame">Map Triangle</a></li>
-                        <li><a href="draw-triangle/index.html" target="frame">Draw Triangle</a></li>
-                        <li><a href="cubemap/index.html" target="frame">CubeMap</a></li>
-                        <li><a href="cylinder/index.html" target="frame">Cylinder</a></li>
-                        <li><a href="torus/index.html" target="frame">Torus</a></li>
-                        <li><a href="torus-test/index.html" target="frame">Torus Test</a></li>
-                        <li><a href="sphere/index.html" target="frame">Sphere</a></li>
-                        <li><a href="software-engine/index.html" target="frame">3D Software Engine</a></li>
+                        <li><a href="cube/index.html" target="iframe">Cube</a></li>
+                        <li><a href="rotate/index.html" target="iframe">Rotate</a></li>
+                        <li><a href="basic/index.html" target="iframe">Basic</a></li>
+                        <li><a href="map-triangle/index.html" target="iframe">Map Triangle</a></li>
+                        <li><a href="draw-triangle/index.html" target="iframe">Draw Triangle</a></li>
+                        <li><a href="cubemap/index.html" target="iframe">CubeMap</a></li>
+                        <li><a href="cylinder/index.html" target="iframe">Cylinder</a></li>
+                        <li><a href="torus/index.html" target="iframe">Torus</a></li>
+                        <li><a href="torus-test/index.html" target="iframe">Torus Test</a></li>
+                        <li><a href="sphere/index.html" target="iframe">Sphere</a></li>
+                        <li><a href="software-engine/index.html" target="iframe">3D Software Engine</a></li>
                     </ul>
                 </li>
 
@@ -149,7 +149,7 @@
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
     <section id="main-content">
-        <section class="wrapper">
+        <section id="contents" class="wrapper">
             <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
         </section>
     </section>
@@ -170,25 +170,22 @@
 <!-- Electron 브라우저와 일반 브라우저에서 컨턴츠 보여줄 frame 설정 -->
 <script>
 
-    (function () {
-
-        var frame, parent = document.getElementsByClassName('wrapper')[0];
-
-        if (navigator.userAgent.indexOf('Electron') >= 0) {
-            frame = document.createElement('webview');
-        } else {
-            frame = document.createElement('iframe');
-        }
-
-        window.frame = frame;
-        frame.id = 'frame';
-        frame.name = 'frame';
-        frame.frameBorder = 0;
-        frame.scrolling = 'no';
-        frame.src = 'software-engine/index.html';
-        parent.appendChild(frame);
-
-    }());
+  (function () {
+    let iframe, parent = document.getElementById('contents');
+    if (navigator.userAgent.indexOf('Electron') >= 0) {
+      iframe = document.createElement('webview');
+    } else {
+      iframe = document.createElement('iframe');
+    }
+    window.iframe = iframe;
+    iframe.id = 'iframe';
+    iframe.name = 'iframe';
+    iframe.frameBorder = 0;
+    iframe.scrolling = 'no';
+    iframe.width = '100%';
+    iframe.height = '100%';
+    parent.appendChild(iframe);
+  }());
 
 </script>
 

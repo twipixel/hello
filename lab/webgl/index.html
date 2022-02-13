@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="twipixel">
-    <meta name="keyword" content="Hello">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="description">
+    <meta content="twipixel" name="author">
+    <meta content="Hello" name="keyword">
 
     <title>Paint</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../asset/bootstrap/css/bootstrap.css" rel="stylesheet">
     <!--external css-->
-    <link href="../../asset/bootstrap/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="../../asset/bootstrap/font-awesome/css/font-awesome.css" rel="stylesheet"/>
     <!-- Custom styles for this template -->
     <link href="../../asset/bootstrap/css/style.css" rel="stylesheet">
     <link href="../../asset/bootstrap/css/style-responsive.css" rel="stylesheet">
@@ -33,10 +33,10 @@
     <!--header start-->
     <header class="header black-bg">
         <div class="sidebar-toggle-box">
-            <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+            <div class="fa fa-bars tooltips" data-original-title="Toggle Navigation" data-placement="right"></div>
         </div>
         <!--logo start-->
-        <a href="index.html" class="logo"><b>HELLO</b></a>
+        <a class="logo" href="index.html"><b>HELLO</b></a>
         <!--logo end-->
 
         <div class="top-menu">
@@ -52,7 +52,7 @@
     *********************************************************************************************************************************************************** -->
     <!--sidebar start-->
     <aside>
-        <div id="sidebar" class="nav-collapse ">
+        <div class="nav-collapse " id="sidebar">
             <!-- sidebar menu start-->
             <ul class="sidebar-menu" id="nav-accordion">
 
@@ -60,13 +60,13 @@
                                                                 class="img-circle" width="60"></a></p>
                 <h5 class="centered">twipixel</h5>-->
 
-                <li class="sub-menu">
-                    <a href="javascript:;">
+                <li class="sub-menu dcjq-parent-li">
+                    <a  href="javascript:;" class="dcjq-parent active">
                         <!--<i class="fa fa-desktop"></i>-->
-                        <span>3D</span>
+                        <span>WebGL</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="basic/index.html" target="frame">Basic</a></li>
+                        <li><a href="basic/index.html" target="iframe">Basic</a></li>
                     </ul>
                 </li>
 
@@ -123,7 +123,7 @@
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
     <section id="main-content">
-        <section class="wrapper">
+        <section id="contents" class="wrapper">
             <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
         </section>
     </section>
@@ -145,22 +145,18 @@
 <script>
 
     (function () {
-
-        var frame, parent = document.getElementsByClassName('wrapper')[0];
-
+        let iframe, parent = document.getElementById('contents');
         if (navigator.userAgent.indexOf('Electron') >= 0) {
-            frame = document.createElement('webview');
+            iframe = document.createElement('webview');
         } else {
-            frame = document.createElement('iframe');
+            iframe = document.createElement('iframe');
         }
-
-        window.frame = frame;
-        frame.id = 'frame';
-        frame.name = 'frame';
-        frame.frameBorder = 0;
-        frame.scrolling = 'no';
-        parent.appendChild(frame);
-
+        window.iframe = iframe;
+        iframe.id = 'iframe';
+        iframe.name = 'iframe';
+        iframe.frameBorder = 0;
+        iframe.scrolling = 'no';
+        parent.appendChild(iframe);
     }());
 
 </script>
@@ -169,7 +165,7 @@
 <script src="../../asset/bootstrap/js/jquery.js"></script>
 <script src="../../asset/bootstrap/js/jquery-1.8.3.min.js"></script>
 <script src="../../asset/bootstrap/js/bootstrap.min.js"></script>
-<script class="include" type="text/javascript" src="../../asset/bootstrap/js/jquery.dcjqaccordion.2.7.js"></script>
+<script class="include" src="../../asset/bootstrap/js/jquery.dcjqaccordion.2.7.js" type="text/javascript"></script>
 <script src="../../asset/bootstrap/js/jquery.scrollTo.min.js"></script>
 <script src="../../asset/bootstrap/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script src="../../asset/bootstrap/js/jquery.sparkline.js"></script>

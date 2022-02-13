@@ -10,7 +10,7 @@ Premium: http://www.gridgum.com
 @import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
 
 /* BASIC THEME CONFIGURATION */
-body {
+html, body {
     color: #797979;
 	background: #191919;
     font-family: 'Ruda', sans-serif;
@@ -18,6 +18,8 @@ body {
     margin: 0px !important;
     font-size:13px;
     overflow:hidden;
+    width: 100%;
+    height: 100%;
 }
 
 ul li {
@@ -401,6 +403,8 @@ ul.sidebar-menu li a.active i {
 /* MAIN CONTENT CONFIGURATION */
 #main-content {
     margin-left: 210px;
+    width: 100%;
+    height: 100%;
 }
 
 #frame {

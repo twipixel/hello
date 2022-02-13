@@ -50,16 +50,7 @@ var Script = function () {
     });
 
     $('.fa-bars').click(function () {
-        if ($('#sidebar > ul').is(":visible") === true) {
-            $('#main-content').css({
-                'margin-left': '0px'
-            });
-            $('#sidebar').css({
-                'margin-left': '-210px'
-            });
-            $('#sidebar > ul').hide();
-            $("#container").addClass("sidebar-closed");
-        } else {
+        if ($('#container')[0].classList.contains('sidebar-closed')) {
             $('#main-content').css({
                 'margin-left': '210px'
             });
@@ -68,6 +59,17 @@ var Script = function () {
                 'margin-left': '0'
             });
             $("#container").removeClass("sidebar-closed");
+            window.dispatchEvent(new Event('resize'));
+        } else {
+            $('#main-content').css({
+                'margin-left': '0px'
+            });
+            $('#sidebar').css({
+                'margin-left': '-210px'
+            });
+            $('#sidebar > ul').hide();
+            $("#container").addClass("sidebar-closed");
+            window.dispatchEvent(new Event('resize'));
         }
     });
 

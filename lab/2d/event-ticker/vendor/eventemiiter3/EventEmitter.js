@@ -10,7 +10,8 @@ var has = Object.prototype.hasOwnProperty
  * @constructor
  * @api private
  */
-function Events() {}
+function Events() {
+}
 
 //
 // We try to not inherit from `Object.prototype`. In some engines creating an
@@ -136,15 +137,21 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
 
     console.log('emit, len', len);
     switch (len) {
-      case 1: return listeners.fn.call(listeners.context), true;
-      case 2: return listeners.fn.call(listeners.context, a1), true;
-      case 3: return listeners.fn.call(listeners.context, a1, a2), true;
-      case 4: return listeners.fn.call(listeners.context, a1, a2, a3), true;
-      case 5: return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
-      case 6: return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
+      case 1:
+        return listeners.fn.call(listeners.context), true;
+      case 2:
+        return listeners.fn.call(listeners.context, a1), true;
+      case 3:
+        return listeners.fn.call(listeners.context, a1, a2), true;
+      case 4:
+        return listeners.fn.call(listeners.context, a1, a2, a3), true;
+      case 5:
+        return listeners.fn.call(listeners.context, a1, a2, a3, a4), true;
+      case 6:
+        return listeners.fn.call(listeners.context, a1, a2, a3, a4, a5), true;
     }
 
-    for (i = 1, args = new Array(len -1); i < len; i++) {
+    for (i = 1, args = new Array(len - 1); i < len; i++) {
       args[i - 1] = arguments[i];
     }
 
@@ -157,12 +164,20 @@ EventEmitter.prototype.emit = function emit(event, a1, a2, a3, a4, a5) {
       if (listeners[i].once) this.removeListener(event, listeners[i].fn, undefined, true);
 
       switch (len) {
-        case 1: listeners[i].fn.call(listeners[i].context); break;
-        case 2: listeners[i].fn.call(listeners[i].context, a1); break;
-        case 3: listeners[i].fn.call(listeners[i].context, a1, a2); break;
-        case 4: listeners[i].fn.call(listeners[i].context, a1, a2, a3); break;
+        case 1:
+          listeners[i].fn.call(listeners[i].context);
+          break;
+        case 2:
+          listeners[i].fn.call(listeners[i].context, a1);
+          break;
+        case 3:
+          listeners[i].fn.call(listeners[i].context, a1, a2);
+          break;
+        case 4:
+          listeners[i].fn.call(listeners[i].context, a1, a2, a3);
+          break;
         default:
-          if (!args) for (j = 1, args = new Array(len -1); j < len; j++) {
+          if (!args) for (j = 1, args = new Array(len - 1); j < len; j++) {
             args[j - 1] = arguments[j];
           }
 
@@ -191,18 +206,13 @@ EventEmitter.prototype.on = function on(event, fn, context) {
   var listener = new EE(fn, context || this)
     , evt = prefix ? prefix + event : event;
 
-  if (!this._events[evt])
-  {
-      //이벤트 이름의 리스너가 없으면
+  if (!this._events[evt]) {
+    //이벤트 이름의 리스너가 없으면
     this._events[evt] = listener, this._eventsCount++;
-  }
-  else if (!this._events[evt].fn)
-  {
+  } else if (!this._events[evt].fn) {
     // this._events[evt] 가 배열이라면 계속 넣어라!
     this._events[evt].push(listener);
-  }
-  else
-  {
+  } else {
     // 이벤트 이름의 리스너가 있으면 배열에 하나 더 등록
     this._events[evt] = [this._events[evt], listener];
   }
@@ -245,15 +255,11 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
 
   if (!this._events[evt]) return this;
 
-  if (!fn)
-  {
+  if (!fn) {
     console.log('************************ no');
-    if (--this._eventsCount === 0)
-    {
+    if (--this._eventsCount === 0) {
       this._events = new Events();
-    }
-    else
-    {
+    } else {
       delete this._events[evt];
     }
     return this;
@@ -262,37 +268,28 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
   var listeners = this._events[evt];
 
 
-    // 한개가 등록된 경우 (라스트 리스너 삭제)
-  if (listeners.fn)
-  {
-      // 등록된 리스너의 함수와 context가 같은 경우
+  // 한개가 등록된 경우 (라스트 리스너 삭제)
+  if (listeners.fn) {
+    // 등록된 리스너의 함수와 context가 같은 경우
     if (
-         listeners.fn === fn
+      listeners.fn === fn
       && (!once || listeners.once)
       && (!context || listeners.context === context)
-    )
-    {
-      if (--this._eventsCount === 0)
-      {
+    ) {
+      if (--this._eventsCount === 0) {
         this._events = new Events();
-      }
-      else
-      {
+      } else {
         delete this._events[evt];
       }
     }
-  }
-  else
-  {
+  } else {
     // 배열로 등록된 경우
-    for (var i = 0, events = [], length = listeners.length; i < length; i++)
-    {
+    for (var i = 0, events = [], length = listeners.length; i < length; i++) {
       if (
-           listeners[i].fn !== fn
+        listeners[i].fn !== fn
         || (once && !listeners[i].once)
         || (context && listeners[i].context !== context)
-      )
-      {
+      ) {
         events.push(listeners[i]);
       }
     }
@@ -300,16 +297,11 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
     //
     // Reset the array, or remove it completely if we have no more listeners.
     //
-    if (events.length)
-    {
+    if (events.length) {
       this._events[evt] = events.length === 1 ? events[0] : events;
-    }
-    else if (--this._eventsCount === 0)
-    {
+    } else if (--this._eventsCount === 0) {
       this._events = new Events();
-    }
-    else
-    {
+    } else {
       delete this._events[evt];
     }
   }
@@ -327,24 +319,17 @@ EventEmitter.prototype.removeListener = function removeListener(event, fn, conte
 EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
   var evt;
 
-  if (event)
-  {
+  if (event) {
     evt = prefix ? prefix + event : event;
 
-    if (this._events[evt])
-    {
-      if (--this._eventsCount === 0)
-      {
+    if (this._events[evt]) {
+      if (--this._eventsCount === 0) {
         this._events = new Events();
-      }
-      else
-      {
+      } else {
         delete this._events[evt];
       }
     }
-  }
-  else
-  {
+  } else {
     this._events = new Events();
     this._eventsCount = 0;
   }
