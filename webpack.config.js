@@ -36,6 +36,9 @@ const PATH_WEBGL = './lab/webgl/';
 const PATH_DIST_WEBGL = './dist/webgl/';
 const PATH_WEBGL_START = PATH_DIST_WEBGL + 'index.html';
 
+const PATH_PAINT = './lab/paint/';
+const PATH_DIST_PAINT = './dist/paint/';
+const PATH_PAINT_START = PATH_DIST_PAINT + 'index.html';
 
 /**
  * Browser Sync 할 시작 패스를 선택합니다.
@@ -44,11 +47,28 @@ const PATH_WEBGL_START = PATH_DIST_WEBGL + 'index.html';
  * 그리고 npm run browser-sync 을 실행하면
  * 해당 모듈만 Browser Sync 가 적용 됩니다.
  */
-// const PATH_START = PATH_2D_START;
-const PATH_START = PATH_3D_START;
-// const PATH_START = PATH_IMAGE_START;
-// const PATH_START = PATH_WEBGL_START;
+  // const PATH_START = PATH_2D_START;
+  // const PATH_START = PATH_3D_START;
+  // const PATH_START = PATH_IMAGE_START;
+  // const PATH_START = PATH_WEBGL_START;
+const START_WITH = '3d';
 
+const getStartPath = (env) => {
+  const start = env.toUpperCase();
+  switch (start) {
+    case '2D':
+      return PATH_2D_START;
+    case '3D':
+      return PATH_3D_START;
+    case 'IMAGE':
+      return PATH_IMAGE_START;
+    default:
+    case 'WEBGL':
+      return PATH_WEBGL_START;
+    case 'PAINT':
+      return PATH_PAINT_START;
+  }
+};
 
 /**
  * setRoot 함수에서
@@ -359,81 +379,82 @@ const production = {
   }
 };
 
+const development = (startPath) => {
+  return {
+    name: 'DEVELOPMENT',
 
-const development = {
-  name: 'DEVELOPMENT',
-
-  module: {
-    loaders: [
-      {test: /\.html$/, loader: 'raw-loader'},
-      {test: /\.css$/, loader: 'raw-loader'},
-      {
-        test: /\.js$/, loader: 'babel-loader',
-        exclude: [
-          path.resolve(__dirname, 'node_modules')
-        ],
-        query: {
-          presets: ['es2015']
+    module: {
+      loaders: [
+        {test: /\.html$/, loader: 'raw-loader'},
+        {test: /\.css$/, loader: 'raw-loader'},
+        {
+          test: /\.js$/, loader: 'babel-loader',
+          exclude: [
+            path.resolve(__dirname, 'node_modules')
+          ],
+          query: {
+            presets: ['es2015']
+          }
         }
-      }
-    ]
-  },
+      ]
+    },
 
-  watch: true,
-  debug: true,
-  /**
-   * sourcemap: 실제 map 파일을 생성 (map 파일을 따로 생성)
-   * inline-source-map: 컴파일된 파일에서도 원래의 파일 구조를 확인할 수 있는 옵션
-   * (inline 은 map 파일을 따로 생성하지 않고 bundle에 포함 시킵니다.)
-   */
-  devtool: '#inline-source-map',
-  plugins: [
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 9000,
-      server: {
-        baseDir: './'
-      },
-      startPath: PATH_START,
-    })
-  ],
+    watch: true,
+    debug: true,
+    /**
+     * sourcemap: 실제 map 파일을 생성 (map 파일을 따로 생성)
+     * inline-source-map: 컴파일된 파일에서도 원래의 파일 구조를 확인할 수 있는 옵션
+     * (inline 은 map 파일을 따로 생성하지 않고 bundle에 포함 시킵니다.)
+     */
+    devtool: '#inline-source-map',
+    plugins: [
+      new BrowserSyncPlugin({
+        host: 'localhost',
+        port: 9000,
+        server: {
+          baseDir: './'
+        },
+        startPath,
+      })
+    ],
 
-  /**
-   * https://webpack.github.io/docs/webpack-dev-server.html
-   *
-   * webpack-dev-server 의 장점은
-   * bundle 된 파일을 메모리에 가지고 있어서 빠릅니다.
-   * 설정한 포트 번호로 접근해서 페이지로 접근합니다.
-   * (http://localhost:9000)
-   * 속도도 빠르고 페이지 리로딩도 알아서 해주니까 개발할 때 좋습니다.
-   *
-   * contentBase: 서버 시작 위치 설정
-   * src 로 정하면 src을 기본 베이스로 시작합니다.
-   * https://webpack.github.io/docs/webpack-dev-server.html
-   *
-   * Automatic Refresh
-   * Iframe mode, Inline mode
-   * http://webpack.github.io/docs/webpack-dev-server.html
-   *
-   * inline, hot 옵션
-   * inline 은 전체 페이지에 대한 실시간 리로딩(“Live Reloading”) 옵션이며,
-   * hot 은 컴포넌트가 수정 될 경우 그 수정된 부분만 리로드 해주는 부분 모듈 리로딩(“Hot Module Reloading”) 옵션이다.
-   * 만약 두개 옵션을 모두 지정할 경우 “Hot Module Reloading”이 처음 발생한다.
-   * 그리고 “Hot Module Reloading”이 안되면 전체 페이지 로딩을 한다.
-   * http://webframeworks.kr/tutorials/translate/webpack-the-confusing-parts/
-   *
-   */
+    /**
+     * https://webpack.github.io/docs/webpack-dev-server.html
+     *
+     * webpack-dev-server 의 장점은
+     * bundle 된 파일을 메모리에 가지고 있어서 빠릅니다.
+     * 설정한 포트 번호로 접근해서 페이지로 접근합니다.
+     * (http://localhost:9000)
+     * 속도도 빠르고 페이지 리로딩도 알아서 해주니까 개발할 때 좋습니다.
+     *
+     * contentBase: 서버 시작 위치 설정
+     * src 로 정하면 src을 기본 베이스로 시작합니다.
+     * https://webpack.github.io/docs/webpack-dev-server.html
+     *
+     * Automatic Refresh
+     * Iframe mode, Inline mode
+     * http://webpack.github.io/docs/webpack-dev-server.html
+     *
+     * inline, hot 옵션
+     * inline 은 전체 페이지에 대한 실시간 리로딩(“Live Reloading”) 옵션이며,
+     * hot 은 컴포넌트가 수정 될 경우 그 수정된 부분만 리로드 해주는 부분 모듈 리로딩(“Hot Module Reloading”) 옵션이다.
+     * 만약 두개 옵션을 모두 지정할 경우 “Hot Module Reloading”이 처음 발생한다.
+     * 그리고 “Hot Module Reloading”이 안되면 전체 페이지 로딩을 한다.
+     * http://webframeworks.kr/tutorials/translate/webpack-the-confusing-parts/
+     *
+     */
 
-  /*
-  devServer: {
-      port: 9000,
-      contentBase: path.join(__dirname, './'),
-      inline: true,
-      progress: true,
-      colors: true,
-      publicPath:path.resolve('assets'),
-  }
-  */
+    /*
+    devServer: {
+        port: 9000,
+        contentBase: path.join(__dirname, './'),
+        inline: true,
+        progress: true,
+        colors: true,
+        publicPath:path.resolve('assets'),
+    }
+    */
+  };
 };
 
 
@@ -653,6 +674,85 @@ const configWebGL = {
 };
 
 
+///////////////////////////////////////////////////////////////////////////////
+//
+//  Paint 설정
+//
+///////////////////////////////////////////////////////////////////////////////
+
+
+const configPaint = {
+  resolve: {
+    root: setRoot([PATH_NODE_MODULES, PATH_EXTERNAL_LIB, PATH_EXTERNAL_VENDOR])
+  },
+
+
+  /**
+   * entry 는 string, array, object, object & array 식으로 설정할 수 있습니다.
+   * https://github.com/FEDevelopers/tech.description/wiki/Webpack%EC%9D%98-%ED%98%BC%EB%9E%80%EC%8A%A4%EB%9F%B0-%EC%82%AC%ED%95%AD%EB%93%A4
+   */
+  entry: setEntry(fs.readdirSync(PATH_PAINT, 'utf8'), PATH_PAINT),
+
+  /**
+   * publicPath: 웹사이트에서 해당 에셋에 접근하기 위해 필요한 경로.
+   */
+  output: {
+    path: PATH_DIST_PAINT + 'bundle',
+    publicPath: PATH_ASSET,
+    filename: '[name].js'
+  },
+
+  plugins: [
+
+    new RemoveWebpackPlugin(PATH_DIST_PAINT),
+
+    /**
+     * 공통으로 사용하는 파일을 뽑아주는 플러그인
+     */
+    new webpack.optimize.CommonsChunkPlugin('commons.js'),
+
+    /**
+     * 브라우저 환경의 전역 scope 로 미리 등록시켜주는 플러그인
+     */
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      ns: 'namespace'
+    }),
+
+    new CopyWebpackPlugin([
+      {
+        from: PATH_PAINT + 'index.html',
+        to: './../'
+      },
+      {
+        context: PATH_PAINT,
+        from: '**/*',
+        to: './../',
+        transform: content =>
+          new Buffer(content).toString('utf-8').replace(regBundle, '.min.js'),
+        ignore: '*.js'
+      }
+    ], {
+      ignore: [
+        'ui.html',
+        'asset.html',
+        '*.md'
+      ]
+    }),
+
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      output: {
+        comments: false
+      },
+      compress: {
+        warnings: false
+      }
+    })
+  ]
+};
+
+
 /**
  * package.json 을 통해
  * production 과 development 를 구분 지을 수 있다.
@@ -689,6 +789,13 @@ module.exports =
 
 module.exports =
   (() => {
+
+    const env = process.argv[2] || START_WITH;
+    console.log('************************************************');
+    console.log('process.argv', process.argv);
+    console.log('env', env);
+    console.log('************************************************');
+    const startPath = getStartPath(env);
     /**
      * PRODUCTION 모드
      * 번들링 과정은 전체 빌드하도록 셋팅합니다.
@@ -709,8 +816,9 @@ module.exports =
       var lab3d = Object.assign(config3d, config);
       var labImage = Object.assign(configImage, config);
       var labWebGL = Object.assign(configWebGL, config);
+      var labPaint = Object.assign(configPaint, config);
 
-      return [lab2d, lab3d, labImage, labWebGL];
+      return [lab2d, lab3d, labImage, labWebGL, labPaint];
     }
     /**
      * DEVELOPMENT 모드
@@ -723,14 +831,14 @@ module.exports =
       console.log('');
       console.log('//////////////////////////////////////////////////////////////////');
       console.log('//');
-      console.log('// DEVELOPMENT MODE, developmentStartPath:', PATH_START);
+      console.log('// DEVELOPMENT MODE, developmentStartPath:', startPath);
       console.log('//');
       console.log('//////////////////////////////////////////////////////////////////');
       console.log('');
 
-      var config = Object.assign(development);
+      var config = Object.assign(development(startPath));
 
-      switch (PATH_START) {
+      switch (startPath) {
         case PATH_2D_START:
           var plugins = config2d.plugins || [];
           config.plugins = plugins.concat(config.plugins || []);
@@ -750,6 +858,11 @@ module.exports =
           var plugins = configWebGL.plugins || [];
           config.plugins = plugins.concat(config.plugins || []);
           return Object.assign(configWebGL, config);
+
+        case PATH_PAINT_START:
+          var plugins = configPaint.plugins || [];
+          config.plugins = plugins.concat(config.plugins || []);
+          return Object.assign(configPaint, config);
       }
     }
 

@@ -4,7 +4,6 @@ import EventEmitter from './vendor/eventemiiter3/EventEmitter';
 export default class App {
   constructor() {
     this.initialize();
-    this.initializeGUI();
   }
 
   initialize() {

@@ -62,6 +62,8 @@ export default class App {
       emitter = null,
       renderer = new PIXI.CanvasRenderer(canvas.width, canvas.height, rendererOptions);
 
+    this.renderer = renderer;
+
     var elapsed = Date.now();
     var updateId;
     var update = function () {
@@ -75,15 +77,6 @@ export default class App {
       stats.end();
       renderer.render(stage);
     };
-
-    window.parent.onresize = function () {
-      const iframe = window.parent.document.getElementById('iframe');
-      const {left, top, width, height} = iframe.getBoundingClientRect();
-      canvas.width = width - left;
-      canvas.height = height - top;
-      renderer.resize(canvas.width, canvas.height);
-    };
-    window.parent.onresize();
 
     // Preload the particle images and create PIXI textures from it
     var urls, makeTextures = false;
@@ -171,34 +164,17 @@ export default class App {
     });
   }
 
+  resize(width, height) {
+    this.renderer.resize(width, height);
+  }
+
   initializeGUI() {
-    this.gui = new dat.GUI();
-    this.config = {
-      x: 0,
-      y: 0,
-      z: 0,
-      prevx: 0,
-      prevy: 0,
-      prevz: 0,
-    };
-    /*this.config.autorotate = this.autorotate.bind(this);
-    this.config.reset = this.reset.bind(this);
-    this.gui.add(this.config, 'x').min(0).max(this.canvas.width).step(1).onChange((value) => {
-        var dx = value - this.config.prevx;
-        this.config.prevx = value;
-        this.cube.setProperty('x', dx);
-    });
-    this.gui.add(this.config, 'y').min(0).max(this.canvas.height).step(1).onChange((value) => {
-        var dy = value - this.config.prevy;
-        this.config.prevy = value;
-        this.cube.setProperty('y', dy);
-    });
-    this.gui.add(this.config, 'z').min(-300).max(300).step(1).onChange((value) => {
-        var dz = value - this.config.prevz;
-        this.config.prevz = value;
-        this.cube.setProperty('z', dz);
-    });
-    this.gui.add(this.config, 'autorotate');
-    this.gui.add(this.config, 'reset');*/
+    // const gui = this.gui = new dat.GUI({autoPlace: false});
+    // const guiEl = gui.domElement;
+    // document.getElementById('content').appendChild(guiEl);
+    // const style = guiEl.style;
+    // style.position = 'absolute';
+    // style.top = 0;
+    // style.left = 0;
   }
 }

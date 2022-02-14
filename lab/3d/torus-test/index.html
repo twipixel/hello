@@ -23,30 +23,29 @@
 <!--<img id="source" src="../../../asset/image/3d/texture/material/donut.jpg" style="display: none;">-->
 <img id="source" src="../../../asset/image/3d/texture/tester/uv.jpg" style="display: none;">
 
-<script type="text/javascript" src="../../../external/vendor/be.js"></script>
-<script type="text/javascript" src="../../../external/vendor/pixi.js"></script>
-<script type="text/javascript" src="../../../external/vendor/dat.gui.js"></script>
-<script type="text/javascript" src="../../../external/lib/math.js"></script>
-<script type="text/javascript" src="../../../external/lib/test.common.js"></script>
+<script src="../../../external/vendor/be.js" type="text/javascript"></script>
+<script src="../../../external/vendor/pixi.js" type="text/javascript"></script>
+<script src="../../../external/vendor/dat.gui.js" type="text/javascript"></script>
+<script src="../../../external/lib/math.js" type="text/javascript"></script>
+<script src="../../../external/lib/test.common.js" type="text/javascript"></script>
 
 <script>
-    (function() {
-        if (navigator.userAgent.indexOf('Electron') >= 0) {
-            // Install babel hooks to the browser process
-            require('babel-core/register')();
-            require('./index');
-        }
-        else {
-            // commons 은 build 할 때 생성합니다.
-            addScriptToHeadSync('../bundle/commons.js');
-            const loc = window.location.pathname
-                , dir = loc.substring(0, loc.lastIndexOf('/'))
-                , folders = dir.split('/')
-                , currentFolder = folders[folders.length - 1];
-            addScriptToBodySync(`../bundle/${currentFolder}.js`);
-        }
-    })();
+  (function () {
+    if (navigator.userAgent.indexOf('Electron') >= 0) {
+      // Install babel hooks to the browser process
+      require('babel-core/register')();
+      require('./index');
+    } else {
+      // commons 은 build 할 때 생성합니다.
+      addScriptToHeadSync('../bundle/commons.js');
+      const loc = window.location.pathname
+        , dir = loc.substring(0, loc.lastIndexOf('/'))
+        , folders = dir.split('/')
+        , currentFolder = folders[folders.length - 1];
+      addScriptToBodySync(`../bundle/${currentFolder}.js`);
+    }
+  })();
 </script>
-
+<div id="content"></div>
 </body>
 </html>

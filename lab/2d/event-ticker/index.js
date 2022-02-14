@@ -4,7 +4,7 @@ import KeyCode from '../../../src/consts/KeyCode';
 
 (function () {
   window.onload = function () {
-    var main = new Main();
+    new Main();
   }
 }());
 
@@ -12,11 +12,11 @@ class Main {
   constructor() {
     this.init();
     this.addEvent();
-    this.onresize();
   }
 
   init() {
-    this.app = new App();
+    window.app = this.app = new App();
+    window.parent.onresize();
   }
 
   addEvent() {

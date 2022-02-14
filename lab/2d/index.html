@@ -31,7 +31,7 @@
     TOP BAR CONTENT & NOTIFICATIONS
     *********************************************************************************************************************************************************** -->
     <!--header start-->
-    <header id="header" class="header black-bg">
+    <header class="header black-bg" id="header">
         <div class="sidebar-toggle-box">
             <div class="fa fa-bars tooltips" data-original-title="Toggle Navigation" data-placement="right"></div>
         </div>
@@ -146,7 +146,6 @@
 <script>
 
   (function () {
-
     const parent = document.getElementById('wrapper');
     const isElectron = navigator.userAgent.indexOf('Electron') >= 0;
     const iframe = isElectron ? document.createElement('webview') : document.createElement('iframe');
@@ -154,13 +153,39 @@
     window.iframe = iframe;
     iframe.id = 'iframe';
     iframe.name = 'iframe';
-    iframe.frameBorder = 0;
-    iframe.scrolling = 'no';
     iframe.width = '100%';
     iframe.height = '100%';
     iframe.src = 'pixi-particles/index.html';
     parent.appendChild(iframe);
 
+    window.onresize = () => {
+      const {left, top, width, height} = iframe.getBoundingClientRect();
+      const app = iframe?.contentWindow?.app;
+      const pixi = app?.pixi;
+      const canvasWidth = width - left;
+      const canvasHeight = height - top;
+      if (pixi) {
+        pixi.renderer.view.width = canvasWidth;
+        pixi.renderer.view.height = canvasHeight;
+        pixi.renderer.resize(canvasWidth, canvasHeight);
+      }
+      app?.resize(canvasWidth, canvasHeight);
+    };
+
+    window.getContentSize = () => {
+      const isClose = document.getElementById('container').classList.contains('sidebar-closed');
+      const sidebar = document.getElementById('sidebar');
+      const {width, height} = iframe.getBoundingClientRect();
+      const {width: sidebarWidth} = sidebar.getBoundingClientRect();
+      return {
+        width: isClose ? width : width - sidebarWidth,
+        height
+      }
+    };
+
+    window.getParent = () => {
+      return iframe;
+    }
   }());
 
 </script>

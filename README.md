@@ -13,6 +13,6 @@
 
 
     npm run build (빌드)
-    npm run dev (개발 환경, Webpack)
+    npm run start -- (2d || 3d || webgl || image || paint)
     
      

@@ -123,7 +123,7 @@
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
     <section id="main-content">
-        <section id="contents" class="wrapper">
+        <section id="wrapper" class="wrapper">
             <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
         </section>
     </section>
@@ -145,18 +145,45 @@
 <script>
 
   (function () {
-    let iframe, parent = document.getElementById('contents');
-    if (navigator.userAgent.indexOf('Electron') >= 0) {
-      iframe = document.createElement('webview');
-    } else {
-      iframe = document.createElement('iframe');
-    }
+    const parent = document.getElementById('wrapper');
+    const isElectron = navigator.userAgent.indexOf('Electron') >= 0;
+    const iframe = isElectron ? document.createElement('webview') : document.createElement('iframe');
+
     window.iframe = iframe;
     iframe.id = 'iframe';
     iframe.name = 'iframe';
-    iframe.frameBorder = 0;
-    iframe.scrolling = 'no';
+    iframe.width = '100%';
+    iframe.height = '100%';
+    iframe.src = 'cube/index.html';
     parent.appendChild(iframe);
+
+    window.onresize = () => {
+      const {left, top, width, height} = iframe.getBoundingClientRect();
+      const app = iframe?.contentWindow?.app;
+      const pixi = app?.pixi;
+      const canvasWidth = width - left;
+      const canvasHeight = height - top;
+      if (pixi) {
+        pixi.renderer.view.width = canvasWidth;
+        pixi.renderer.view.height = canvasHeight;
+      }
+      app?.resize(canvasWidth, canvasHeight);
+    };
+
+    window.getContentSize = () => {
+      const isClose = document.getElementById('container').classList.contains('sidebar-closed');
+      const sidebar = document.getElementById('sidebar');
+      const {width, height} = iframe.getBoundingClientRect();
+      const {width: sidebarWidth} = sidebar.getBoundingClientRect();
+      return {
+        width: isClose ? width : width - sidebarWidth,
+        height
+      }
+    };
+
+    window.getParent = () => {
+      return iframe;
+    }
   }());
 
 </script>
