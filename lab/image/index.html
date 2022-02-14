@@ -154,7 +154,7 @@
     iframe.name = 'iframe';
     iframe.width = '100%';
     iframe.height = '100%';
-    iframe.src = 'cube/index.html';
+    iframe.src = 'basic/index.html';
     parent.appendChild(iframe);
 
     window.onresize = () => {
@@ -166,6 +166,7 @@
       if (pixi) {
         pixi.renderer.view.width = canvasWidth;
         pixi.renderer.view.height = canvasHeight;
+        pixi.renderer.resize(canvasWidth, canvasHeight);
       }
       app?.resize(canvasWidth, canvasHeight);
     };

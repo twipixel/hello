@@ -17,7 +17,7 @@ class Main {
 
   init() {
     window.app = this.app = new App();
-      window.parent.onresize();
+    window.parent.onresize();
   }
 
   addEvent() {

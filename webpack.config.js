@@ -51,7 +51,8 @@ const PATH_PAINT_START = PATH_DIST_PAINT + 'index.html';
   // const PATH_START = PATH_3D_START;
   // const PATH_START = PATH_IMAGE_START;
   // const PATH_START = PATH_WEBGL_START;
-const START_WITH = '3d';
+  // const PATH_START = PATH_PAINT_START;
+const START_WITH = 'paint';
 
 const getStartPath = (env) => {
   const start = env.toUpperCase();

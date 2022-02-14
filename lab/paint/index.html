@@ -63,7 +63,7 @@
                 <li class="sub-menu dcjq-parent-li">
                     <a  href="javascript:;" class="dcjq-parent active">
                         <!--<i class="fa fa-desktop"></i>-->
-                        <span>WebGL</span>
+                        <span>Paint</span>
                     </a>
                     <ul class="sub">
                         <li><a href="basic/index.html" target="iframe">Basic</a></li>
@@ -123,7 +123,7 @@
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
     <section id="main-content">
-        <section id="contents" class="wrapper">
+        <section id="wrapper" class="wrapper">
             <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
         </section>
     </section>
@@ -154,7 +154,7 @@
       iframe.name = 'iframe';
       iframe.width = '100%';
       iframe.height = '100%';
-      iframe.src = 'cube/index.html';
+      iframe.src = 'basic/index.html';
       parent.appendChild(iframe);
 
       window.onresize = () => {
@@ -166,6 +166,7 @@
         if (pixi) {
           pixi.renderer.view.width = canvasWidth;
           pixi.renderer.view.height = canvasHeight;
+          pixi.renderer.resize(canvasWidth, canvasHeight);
         }
         app?.resize(canvasWidth, canvasHeight);
       };

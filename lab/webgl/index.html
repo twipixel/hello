@@ -7,7 +7,7 @@
     <meta content="twipixel" name="author">
     <meta content="Hello" name="keyword">
 
-    <title>Paint</title>
+    <title>WebGL</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../../asset/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -123,7 +123,7 @@
     *********************************************************************************************************************************************************** -->
     <!--main content start-->
     <section id="main-content">
-        <section id="contents" class="wrapper">
+        <section id="wrapper" class="wrapper">
             <!-- 실행되는 브라우저에 따라 webview, iframe 동적 생성 -->
         </section>
     </section>
@@ -154,7 +154,7 @@
       iframe.name = 'iframe';
       iframe.width = '100%';
       iframe.height = '100%';
-      iframe.src = 'cube/index.html';
+      iframe.src = 'basic/index.html';
       parent.appendChild(iframe);
 
       window.onresize = () => {
@@ -166,6 +166,7 @@
         if (pixi) {
           pixi.renderer.view.width = canvasWidth;
           pixi.renderer.view.height = canvasHeight;
+          pixi.renderer.resize(canvasWidth, canvasHeight);
         }
         app?.resize(canvasWidth, canvasHeight);
       };
